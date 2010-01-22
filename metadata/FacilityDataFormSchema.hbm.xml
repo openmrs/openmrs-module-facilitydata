@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.facilitydata.model">
+
+    <class name="FacilityDataFormSchema" table="facilitydata_form_schema" lazy="false">
+
+        <id name="id" type="int" column="schema_id">
+            <generator class="native"/>
+        </id>
+
+        <!-- OpenMRS Metadata Stuff -->
+
+        <property name="name" column="name" not-null="true" length="255"/>
+
+        <property name="description" column="description" not-null="false" length="255"/>
+
+        <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"
+                     cascade="save-update,persist"/>
+
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>
+
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+
+        <!-- / OpenMRS Stuff -->
+
+        <property name="frequency" column="frequency" not-null="true">
+            <type name="org.openmrs.module.facilitydata.util.hibernate.types.GenericEnumUserType">
+                <param name="enumClass">org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency</param>
+            </type>
+        </property>
+
+        <property name="validFrom" type="java.util.Date" not-null="false" column="valid_from"/>
+
+        <property name="validTo" type="java.util.Date" not-null="false" column="valid_to"/>
+        
+        <list table="facilitydata_schemas" name="formSections" cascade="all-delete-orphan,evict" inverse="false">
+            <key column="schema_id" not-null="true"/>
+            <list-index column="section_index" base="0"/>
+            <many-to-many class="org.openmrs.module.facilitydata.model.FacilityDataFormSection" column="section_id"/>
+        </list>
+    </class>
+</hibernate-mapping>

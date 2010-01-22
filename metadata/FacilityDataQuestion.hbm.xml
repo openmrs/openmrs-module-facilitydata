@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.facilitydata.model">
+
+    
+    <class name="FacilityDataQuestion" table="facilitydata_question" lazy="false">
+
+        <id name="id" type="int" column="question_id">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="data_type" type="string" not-null="true" length="255"/>
+
+        <property name="name" column="name" not-null="true" length="255"/>
+
+        <property name="description" column="description" not-null="false" length="255"/>
+
+        <!-- OpenMRS Metadata Stuff -->       
+        <many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>
+
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+
+        <!-- / OpenMRS Stuff -->
+        <property name='aggregationMethod' column="aggregation_method" not-null="true">
+            <type name="org.openmrs.module.facilitydata.util.hibernate.types.GenericEnumUserType">
+                <param name="enumClass">org.openmrs.module.facilitydata.model.enums.AggregationMethod</param>
+            </type>
+        </property>
+                
+        <subclass name="NumericQuestion">
+            <property name="minValue" type="java.lang.Double" not-null="false" column="min_value" />
+            <property name="maxValue" type="java.lang.Double" not-null="false" column="max_value"/>
+            <property name="allowDecimals" type="java.lang.Boolean" not-null="false" column="allow_decimal"/>
+        </subclass>
+
+        <subclass name="StockQuestion">
+            <!-- the days and reason will be populated from the valueText field in FacilityDataValue Class; thus will just load the instance.  -->
+        </subclass>
+
+        <subclass name="BooleanCodedQuestion">
+            <!-- this class has no properties. Just load the instance -->
+        </subclass>
+    </class>
+</hibernate-mapping>
