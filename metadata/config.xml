@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">-->
+
+<module configVersion="1.0">
+
+    <!-- Base Module Properties -->
+    <id>facilitydata</id>
+    <name>Facility Data Module</name>
+    <version>1.0</version>
+    <package>org.openmrs.module.@MODULE_ID@</package>
+    <author>Robert O'Connor</author>
+    <description>A module to collect and manage non-patient centric data from external sources.</description>
+    <activator>org.openmrs.module.facilitydata.activator.FacilityDataModuleActivator</activator>
+
+
+    <!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+    <!-- /Base Module Properties -->
+
+    <require_version>1.5.0.00</require_version>
+
+    <!-- Extensions -->
+    <extension>
+        <point>org.openmrs.admin.list</point>
+        <class>org.openmrs.module.facilitydata.extension.html.AdminList</class>
+    </extension>
+    <!--  --> /Extensions -->
+
+
+    <!-- AOP
+     <advice>
+         <point>org.openmrs.api.FormService</point>
+         <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
+     </advice>
+      /AOP -->
+
+
+    <!-- Required Privileges -->
+    <privilege>
+        <name>Enter Facility Data Reports</name>
+        <description>Allow users to fill out and view reports</description>
+    </privilege>
+
+    <privilege>
+        <name>View Facility Data Reports</name>
+        <description>Allows user to view reports that are saved.</description>
+    </privilege>
+
+    <privilege>
+        <name>Manage Facility Data Reports</name>
+        <description>Allows user to manage reports. (e.g. create, delete, etc)</description>
+    </privilege>
+
+    <!-- /Required Privileges -->
+
+
+    <!-- Required Global Properties
+     <globalProperty>
+         <property>@MODULE_ID@.someProperty</property>
+         <defaultValue></defaultValue>
+         <description>
+             A description of the global property goes here.  The description
+             should explain enough for administrators to understand the purpose
+             and possible values for the global property.
+         </description>
+     </globalProperty>
+     /Required Global Properties -->
+
+    <!--<dwr>
+        <allow>
+            <create creator="new" javascript="DWRGroovyService">
+                <param name="class" value="org.openmrs.module.@MODULE_ID@.web.dwr.DWRGroovyService"/>
+                <include method="eval"/>
+            </create>
+            <convert match="java.lang.StackTraceElement" converter="bean"/>
+        </allow>
+
+        <signatures>
+        </signatures>
+    </dwr-->
+
+    <!-- Servlets -->
+    <!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name>
+     <servlet>
+         <servlet-name>formDownload</servlet-name>
+         <servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class>
+     </servlet>
+     -->
+    <!-- /Servlets -->
+
+
+    <!-- Internationalization -->
+    <!-- All message codes should start with @MODULE_ID@.* -->
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+    <!-- /Internationalization -->
+
+    <mappingFiles>
+        FacilityDataFormSchema.hbm.xml
+        FacilityDataFormSection.hbm.xml
+        FacilityDataFormQuestion.hbm.xml
+        FacilityDataQuestion.hbm.xml
+        FacilityDataValue.hbm.xml
+    </mappingFiles>
+</module>
