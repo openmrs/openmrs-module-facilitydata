@@ -5,7 +5,7 @@
 <!-- ** @author Robert O'Connor                             ** -->
 <!-- ** @version 1.0                                        ** -->
 <!-- ********************************************************* -->
-<project name="facilitydata" default="package-module">
+<project name="facilitydata-trunk" default="package-module">
 		
 	<!-- *********************************************************** -->
 	<!-- **                     TARGETS                           ** -->
