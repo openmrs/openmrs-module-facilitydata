@@ -43,7 +43,7 @@ public class FacilityDataDAOImpl implements FacilityDataDAO {
      * @return the saved schema
      */
     public FacilityDataFormSchema saveFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
-        sessionFactory.getCurrentSession().merge(formSchema);
+        sessionFactory.getCurrentSession().saveOrUpdate(formSchema);
         return formSchema;
     }
 
