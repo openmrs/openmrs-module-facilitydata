@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
@@ -38,9 +37,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+
 
 @Controller
 @RequestMapping("/module/facilitydata/schema.form")
@@ -51,7 +50,7 @@ public class FacilityDataFormSchemaFormController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSection.class, new FacilityDataFormSectionEditor());
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
-        binder.registerCustomEditor(Date.class,new CustomDateEditor(FacilityDataDateUtils.getDateFormat(),true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(FacilityDataDateUtils.getDateFormat(), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -72,26 +71,17 @@ public class FacilityDataFormSchemaFormController {
                              @ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result,
                              HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
         FacilityDataService svc = FacilityDataUtil.getService();
-        new FacilityDataFormSchemaValidator().validate(schema,result);               
-        if(result.hasErrors()) {
+        new FacilityDataFormSchemaValidator().validate(schema, result);
+        if (result.hasErrors()) {
             return "/module/facilitydata/schemaForm";
-        }     
-        map.addAttribute("sections",svc.getAllFacilityDataFormSections());
-        map.addAttribute("frequencies", FacilityDataFrequency.values());
-        map.addAttribute("schema",schema);
-        request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");
-        return String.format("redirect:schema.form?id=%s", svc.saveFacilityDataFormSchema(schema).getId());
-    }
-
-    private List<FacilityDataFormSection> getSectionList(Map<Integer,FacilityDataFormSection> sectionMap) {
-        List<FacilityDataFormSection> sections = Lists.newArrayList();
-        for(FacilityDataFormSection section : sectionMap.values()) {
-            sections.add(section);
         }
-        return sections;
-    }
-
-    private Map<Integer,FacilityDataFormSection> parseRequestForSections(HttpServletRequest request) {
-        return null;
+        map.addAttribute("sections", svc.getAllFacilityDataFormSections());
+        map.addAttribute("frequencies", FacilityDataFrequency.values());
+        map.addAttribute("schema", schema);
+        request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");
+        if (request.getParameterValues("formSections") == null) {
+            schema.setFormSections(Collections.EMPTY_LIST);
+        }
+        return String.format("redirect:schema.form?id=%s", svc.saveFacilityDataFormSchema(schema).getId());
     }
 }
