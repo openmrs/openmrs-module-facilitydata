@@ -106,7 +106,7 @@
 </div> <%-- so bad stuff doesn't happen; layout oddities --%>
 
 <c:if test="${(param.schema != null && param.site != null && param.month != null && param.year != null) or (param.site != null && param.year != null && param.schema != null && facilitydata:isMonthly(param.schema))}">
-    <facilitydata:calendar schemaId="${param.schema}" locationId="${param.site}" month="${param.month != null }"
+    <facilitydata:calendar schemaId="${param.schema}" locationId="${param.site}" month="${param.month}"
                            year="${param.year}"/>
 </c:if>
 <%@ include file="/WEB-INF/template/footer.jsp" %>
