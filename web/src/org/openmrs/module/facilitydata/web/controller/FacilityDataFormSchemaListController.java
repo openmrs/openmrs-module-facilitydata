@@ -40,7 +40,7 @@ public class FacilityDataFormSchemaListController {
         FacilityDataService svc = FacilityDataUtil.getService();
         svc.deleteFacilityDataFormSchema(svc.getFacilityDataFormSchema(id));
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.deleted-form-schema");
-        map.addAttribute("questions", svc.getAllFacilityDataQuestions());
+        map.addAttribute("schemas", svc.getAllFacilityDataFormSchemas());
         return "/module/facilitydata/schemaList";
     }
 }

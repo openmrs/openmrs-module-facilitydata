@@ -49,7 +49,7 @@
     <c:forEach items="${schemas}" var="schema" varStatus="varstatus">
         <tr>
             <form method="post" action="schema.list">
-                <input type="hidden" value="${question.id}" name="id"/>
+                <input type="hidden" value="${schema.id}" name="id"/>
                 <td style="vertical-align:top;width:1em;text-align:center;"><input type="image"
                                                                                    onclick="return confirm('<spring:message code="
                                                                                    facilitydata.schema.delete-warning"/>');"
