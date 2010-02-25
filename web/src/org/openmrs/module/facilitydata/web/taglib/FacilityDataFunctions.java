@@ -37,9 +37,8 @@ public class FacilityDataFunctions {
     public static String getDays(String s) {
         if(s == null || s.equals("")) return "";
         String[] sp = s.split(":");
-        if(sp.length >= 1) {
-            return sp[0];
-        }
+        if(sp.length >= 1)
+            return sp[0];        
         return "";
     }
 
