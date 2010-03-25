@@ -454,7 +454,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param fromDate the start of the period.
      * @param toDate the end of the period.
      */
-    void saveValues(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
+    void processReportAnswers(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
                            Date fromDate, Date toDate);
 
     /**
