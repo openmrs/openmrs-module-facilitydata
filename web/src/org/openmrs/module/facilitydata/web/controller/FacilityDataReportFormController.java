@@ -129,10 +129,10 @@ public class FacilityDataReportFormController {
                     value = dataValue;
                     break; // look no further
                 }
-            }
-            FacilityDataUtil.getService().saveValues(question,value,answer,comment,site,
-                    startDate, endDate);
+            }         
             map.addAttribute("values", getValues(schema, formData));
+                FacilityDataUtil.getService().processReportAnswers(question,value,answer,comment,site,
+                        startDate, endDate);
         }
         return String.format("redirect:report.form?id=%d&startDate=%s&endDate=%s&site=%s",
                 schema.getId(), FacilityDataDateUtils.getDateFormat().format(startDate),

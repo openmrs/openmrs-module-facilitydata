@@ -595,7 +595,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
      * @param fromDate the start of the period.
      * @param toDate the end of the period.
      */
-    public void saveValues(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
+    public void processReportAnswers(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
                                   Date fromDate, Date toDate) {
         // don't process empty questions; this prevents false positives when determining completion status
         if ("".equals(val)) return;
