@@ -106,7 +106,7 @@ public class FacilityDataReportFormController {
             String answer = questions.containsKey("question."+uuid) ? questions.get("question."+uuid)[0] : null;
             String comment = request.getParameter(uuid+"_comment");
             String days = request.getParameter(uuid + "_days");
-            String reason = request.getParameter(uuid + "_reason");            
+            String reason = request.getParameter(uuid + "_reason");
             // only thing we need to check before it hits the method to save the report is stock
             // questions; and set the comment field approriately.
             // comment field is *ALWAYS* in the form: 'days:reason' even if one or both components is missing,
@@ -129,10 +129,10 @@ public class FacilityDataReportFormController {
                     value = dataValue;
                     break; // look no further
                 }
-            }         
+            }
+            FacilityDataUtil.getService().processReportAnswers(question, value, answer, comment, site,
+                    startDate, endDate);
             map.addAttribute("values", getValues(schema, formData));
-                FacilityDataUtil.getService().processReportAnswers(question,value,answer,comment,site,
-                        startDate, endDate);
         }
         return String.format("redirect:report.form?id=%d&startDate=%s&endDate=%s&site=%s",
                 schema.getId(), FacilityDataDateUtils.getDateFormat().format(startDate),
