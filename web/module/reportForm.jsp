@@ -12,7 +12,6 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
 <%@ taglib prefix="render" tagdir="/WEB-INF/tags/module/facilitydata" %>

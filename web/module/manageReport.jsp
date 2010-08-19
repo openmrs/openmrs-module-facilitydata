@@ -13,12 +13,10 @@
 
 --%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm"
-                 redirect="/module/facilitydata/question.form"/>
+                 redirect="/module/facilitydata/manage.form"/>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-1.3.2.min.js"></script>
 
