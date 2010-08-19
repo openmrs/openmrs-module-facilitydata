@@ -12,9 +12,7 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/manageLocalHeader.jsp" %>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm"
                  redirect="/module/facilitydata/schema.list"/>
 <script type="text/javascript">
@@ -31,9 +29,10 @@
         });
     });
 </script>
+
 <div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message
         code="facilitydata.manage-form-schema"/></div>
-<br/><br/>
+<br/>
 <table cellpadding="2" cellspacing="1" id="schemaList">
     <thead>
     <tr>
@@ -51,8 +50,7 @@
             <form method="post" action="schema.list">
                 <input type="hidden" value="${schema.id}" name="id"/>
                 <td style="vertical-align:top;width:1em;text-align:center;"><input type="image"
-                                                                                   onclick="return confirm('<spring:message code="
-                                                                                   facilitydata.schema.delete-warning"/>');"
+                                                                                   onclick="return confirm('<spring:message code="facilitydata.schema.delete-warning"/>');"
                     alt="<spring:message code="general.delete"/>" src="${pageContext.request.contextPath}/images/trash.gif"/>
                 </td>
                 <td style="vertical-align:top;overflow:hidden;width:1em;"><a

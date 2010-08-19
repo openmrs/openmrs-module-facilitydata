@@ -12,9 +12,7 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm"
                  redirect="/module/facilitydata/question.form"/>
@@ -26,8 +24,6 @@
         src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/util.js"></script>
 
 <spring:message code="facilitydata.question.info"/>
-<br/><br/>
-<a href="question.form"><spring:message code="facilitydata.add-question"/></a>
 <br/><br/>
 <div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message code="facilitydata.question-form"/></div>
 <form:form commandName="command" method="post" cssClass="box">    

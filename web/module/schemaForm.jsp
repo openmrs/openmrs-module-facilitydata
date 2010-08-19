@@ -12,10 +12,8 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-1.3.2.min.js"></script>
@@ -56,63 +54,11 @@
         $("#multiselect").multiselect();
 
     });
-    function removeHiddenRows() {
-        var rows = document.getElementsByTagName("tr");
-        var i = 0;
-        while (i < rows.length) {
-            if (rows[i].style.display == "none") {
-                rows[i].parentNode.removeChild(rows[i]);
-            }
-            else {
-                i++;
-            }
-        }
-    }
-
-    function remove(btn) {
-        var parent = btn.parentNode;
-        while (parent.tagName.toLowerCase() != "tr")
-            parent = parent.parentNode;
-        parent.style.display = 'none';
-        updateRowColors();
-    }
-
-    function addQuestion() {
-        var tbody = document.getElementById("sectionList");
-        var tmpQ = document.getElementById("newSection");
-        var newQ = tmpQ.cloneNode(true);
-        newQ.style.display = '';
-        newQ.id = '';
-
-        //var inputs = newProp.getElementsByTagName("input");
-        //for (var i=0; i< inputs.length; i++)
-        //	if (inputs[i].type == "text")
-        //		inputs[i].value = "";
-
-        tbody.appendChild(newQ);
-
-        updateRowColors();
-    }
-
-    function updateRowColors() {
-        var tbody = document.getElementById('sectionList');
-        var alternator = 1;
-        for (var i = 0; i < tbody.rows.length; i++) {
-            var qRow = tbody.rows[i++];
-            if (qRow.style.display != "none") { // skip deleted rows
-                qRow.className = alternator < 0 ? "oddRow" : "evenRow";
-                alternator *= -1;
-            }
-        }
-    }
-
 </script>
 
 <p>
     <spring:message code="facilitydata.schema.info"/>
 </p>
-<a href="schema.form"><spring:message code="facilitydata.add-schema"/></a>
-<br/><br/>
 <div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message
         code="facilitydata.schema.form"/></div>
 <form:form commandName="schema" cssClass="box" method="post" onsubmit="removeHiddenRows();">
