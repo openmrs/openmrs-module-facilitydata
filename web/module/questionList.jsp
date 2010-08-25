@@ -12,9 +12,10 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
-
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/manageLocalHeader.jsp" %>
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm"
                  redirect="/module/facilitydata/formQuestion.list"/>
 <script type="text/javascript">
@@ -27,7 +28,7 @@
             "bSort": false,
             "bInfo": true,
             "bAutoWidth": true,
-            "bSortable": true          
+            "bSortable": true
         });
     });
 </script>

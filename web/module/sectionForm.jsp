@@ -13,6 +13,7 @@
 
 --%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-1.3.2.min.js"></script>
@@ -100,6 +101,8 @@
 <p>
     <spring:message code="facilitydata.section.info"/>
 </p>
+<a href="section.form"><spring:message code="facilitydata.add-section"/></a>
+<br/><br/>
 <div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message
         code="facilitydata.section.form"/></div>
 <form:form commandName="section" cssClass="box" method="post" onsubmit="removeHiddenRows();">
@@ -124,7 +127,7 @@
        <thead>
             <th><spring:message code="general.name"/></th>
             <th><spring:message code="facilitydata.question.number"/></th>
-            <th><spring:message code="facilitydata.question"/></th>            
+            <th><spring:message code="facilitydata.question"/></th>
             <th><spring:message code="general.description"/></th>
         </thead>
         <tbody id="questionList" style="table-layout:auto;text-align:left;">
