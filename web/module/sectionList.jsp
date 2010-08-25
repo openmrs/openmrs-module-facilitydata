@@ -12,6 +12,8 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
 --%>
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm"
                  redirect="/module/facilitydata/section.list"/>

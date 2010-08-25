@@ -13,7 +13,8 @@
 
 --%>
 
-
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-1.3.2.min.js"></script>
