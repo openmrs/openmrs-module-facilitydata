@@ -6,33 +6,21 @@
     <!-- Base Module Properties -->
     <id>facilitydata</id>
     <name>Facility Data Module</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <package>org.openmrs.module.@MODULE_ID@</package>
-    <author>Robert O'Connor</author>
-    <description>A module to collect and manage non-patient centric data from external sources.</description>
+    <author>Partners In Health and Robert O'Connor</author>
+    <description>A module to collect and manage periodic facility-based indicator data</description>
     <activator>org.openmrs.module.facilitydata.activator.FacilityDataModuleActivator</activator>
 
-
-    <!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
     <!-- /Base Module Properties -->
 
-    <require_version>1.5.0.00</require_version>
+    <require_version>1.6</require_version>
 
     <!-- Extensions -->
     <extension>
         <point>org.openmrs.admin.list</point>
         <class>org.openmrs.module.facilitydata.extension.html.AdminList</class>
     </extension>
-    <!--  --> /Extensions -->
-
-
-    <!-- AOP
-     <advice>
-         <point>org.openmrs.api.FormService</point>
-         <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
-     </advice>
-      /AOP -->
-
 
     <!-- Required Privileges -->
     <privilege>
@@ -50,45 +38,6 @@
         <description>Allows user to manage reports. (e.g. create, delete, etc)</description>
     </privilege>
 
-    <!-- /Required Privileges -->
-
-
-    <!-- Required Global Properties
-     <globalProperty>
-         <property>@MODULE_ID@.someProperty</property>
-         <defaultValue></defaultValue>
-         <description>
-             A description of the global property goes here.  The description
-             should explain enough for administrators to understand the purpose
-             and possible values for the global property.
-         </description>
-     </globalProperty>
-     /Required Global Properties -->
-
-    <!--<dwr>
-        <allow>
-            <create creator="new" javascript="DWRGroovyService">
-                <param name="class" value="org.openmrs.module.@MODULE_ID@.web.dwr.DWRGroovyService"/>
-                <include method="eval"/>
-            </create>
-            <convert match="java.lang.StackTraceElement" converter="bean"/>
-        </allow>
-
-        <signatures>
-        </signatures>
-    </dwr-->
-
-    <!-- Servlets -->
-    <!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name>
-     <servlet>
-         <servlet-name>formDownload</servlet-name>
-         <servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class>
-     </servlet>
-     -->
-    <!-- /Servlets -->
-
-
-    <!-- Internationalization -->
     <!-- All message codes should start with @MODULE_ID@.* -->
     <messages>
         <lang>en</lang>

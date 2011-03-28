@@ -14,24 +14,17 @@
 package org.openmrs.module.facilitydata.web.taglib;
 
 import org.apache.log4j.Logger;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
+import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.enums.Frequency;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
 
-@SuppressWarnings({"ClassWithoutConstructor", "UtilityClassWithoutPrivateConstructor", "ClassWithoutLogger"})
 public class FacilityDataFunctions {
     private static final Logger log = Logger.getLogger(FacilityDataFunctions.class);
 
     public static boolean isNumericQuestion(FacilityDataQuestion question) {
-        return FacilityDataUtil.isNumericQuestion(question);
-    }
-
-    public static boolean isBooleanCodedQuestion(FacilityDataQuestion question) {
-        return FacilityDataUtil.isBooleanCodedQuestion(question);
-    }
-
-    public static boolean isStockQuestion(FacilityDataQuestion question) {
-       return FacilityDataUtil.isStockQuestion(question);
+        return question instanceof NumericFacilityDataQuestion;
     }
     
     public static String getDays(String s) {
@@ -67,6 +60,6 @@ public class FacilityDataFunctions {
     }
 
     public static boolean isMonthly(int schemaId) {
-        return FacilityDataUtil.getService().getFacilityDataFormSchema(schemaId).getFrequency() == FacilityDataFrequency.MONTHLY;
+        return Context.getService(FacilityDataService.class).getFacilityDataFormSchema(schemaId).getFrequency() == Frequency.MONTHLY;
     }
 }

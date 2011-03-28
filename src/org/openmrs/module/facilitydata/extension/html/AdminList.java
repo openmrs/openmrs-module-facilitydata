@@ -14,12 +14,12 @@
 
 package org.openmrs.module.facilitydata.extension.html;
 
-import com.google.common.collect.Maps;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class AdminList extends AdministrationSectionExt {
     @Override
@@ -34,7 +34,7 @@ public class AdminList extends AdministrationSectionExt {
 
     @Override
     public Map<String, String> getLinks() {
-        Map<String, String> map = Maps.newTreeMap();
+        Map<String, String> map = new LinkedHashMap<String, String>();
         map.put("module/facilitydata/manage.form", "facilitydata.view-enter");
         map.put("module/facilitydata/schema.list", "facilitydata.manage-form-schema");
         map.put("module/facilitydata/question.list", "facilitydata.manage-question");

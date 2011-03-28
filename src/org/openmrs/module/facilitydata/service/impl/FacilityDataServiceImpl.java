@@ -13,7 +13,12 @@
  */
 package org.openmrs.module.facilitydata.service.impl;
 
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openmrs.Location;
@@ -24,20 +29,14 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataReportFormData;
+import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 
 /**
  * This class serves as the layer just below the api layer but above the database layer.
  */
-@SuppressWarnings({"ALL"})
 public class FacilityDataServiceImpl extends BaseOpenmrsService implements FacilityDataService {
     private static final Logger log = Logger.getLogger(FacilityDataServiceImpl.class);
 
@@ -60,7 +59,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
     public FacilityDataFormSchema saveFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
         if (formSchema == null)
             throw new IllegalArgumentException("formSchema cannot be null");
-        List<FacilityDataFormSection> formSections = formSchema.getFormSections();
+        List<FacilityDataFormSection> formSections = formSchema.getSections();
         // for now we'll do this; later on a handler will be written to do this.
         if (formSections != null) {
             for (FacilityDataFormSection section : formSections) {
@@ -595,15 +594,15 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
      * @param fromDate the start of the period.
      * @param toDate the end of the period.
      */
-    public void processReportAnswers(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
+    public void processReportAnswers(FacilityDataFormQuestion question, FacilityDataValue value, String val, String comments, Location location,
                                   Date fromDate, Date toDate) {
         // don't process empty questions; this prevents false positives when determining completion status
         if ("".equals(val)) return;
         //TODO: validate input; it is assumed that valid input is provided for the time being.
-        if (FacilityDataUtil.isNumericQuestion(question)) {
+        if (question.getQuestion() instanceof NumericFacilityDataQuestion) {
             if (value != null) {
                 if (value.getValueNumeric() != null && value.getValueNumeric() != Double.parseDouble(val)) {
-                    FacilityDataUtil.getService().voidFacilityDataFormValue(value, String.format("Report was edited by %s on %s", Context.getAuthenticatedUser(),
+                    voidFacilityDataFormValue(value, String.format("Report was edited by %s on %s", Context.getAuthenticatedUser(),
                             Context.getDateFormat().format(new Date())));
                 } else {
                     return;
@@ -628,11 +627,11 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
             value.setFromDate(fromDate);
             value.setToDate(toDate);
             value.setQuestion(question);
-            FacilityDataUtil.getService().saveFacilityDataValue(value);
-        } else if (FacilityDataUtil.isBooleanCodedQuestion(question)) {
+            saveFacilityDataValue(value);
+        } else {
             if (value != null) {
                 if (!value.getValueText().equals(val)) {
-                    FacilityDataUtil.getService().voidFacilityDataFormValue(value, String.format("Report was edited by %s on %s", Context.getAuthenticatedUser(),
+                    voidFacilityDataFormValue(value, String.format("Report was edited by %s on %s", Context.getAuthenticatedUser(),
                             Context.getDateFormat().format(new Date())));
                 } else {
                     return;
@@ -653,30 +652,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
             value.setFromDate(fromDate);
             value.setToDate(toDate);
             value.setQuestion(question);
-            FacilityDataUtil.getService().saveFacilityDataValue(value);
-        } else if (FacilityDataUtil.isStockQuestion(question)) {
-            if (value != null) {
-                if (!value.getValueText().equals(val) || !value.getComments().equals(comments)) {
-                    FacilityDataUtil.getService().voidFacilityDataFormValue(value, String.format("Report was edited by %s on %s", Context.getAuthenticatedUser(),
-                            Context.getDateFormat().format(new Date())));
-                } else {
-                    return;
-                }
-                value = new FacilityDataValue();
-                value.setValueText(val);
-                // in the case of stock questions comment is ALWAYS filled out.
-                value.setComments(comments);
-            } else {
-                value = new FacilityDataValue();
-                value.setValueText(val);
-                // in the case of stock questions comment is ALWAYS filled out.
-                value.setComments(comments);
-            }
-            value.setFacility(location);
-            value.setFromDate(fromDate);
-            value.setToDate(toDate);
-            value.setQuestion(question);
-            FacilityDataUtil.getService().saveFacilityDataValue(value);
+            saveFacilityDataValue(value);
         }
     }
 
@@ -686,10 +662,10 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
      * @param schema
      * @return
      */
-    public int getNumberOfQuestionedFilledOut(FacilityDataReportFormData formData, FacilityDataFormSchema schema) {
+    public int getNumberOfQuestionedFilledOut(FacilityDataReport formData, FacilityDataFormSchema schema) {
         if (formData == null || schema == null) return 0;
         int cnt = 0;
-        for (FacilityDataFormSection section : schema.getFormSections()) {
+        for (FacilityDataFormSection section : schema.getSections()) {
             for (FacilityDataFormQuestion formQuestion : section.getQuestions()) {
                 for (FacilityDataValue value : formData.getValues()) {
                     if (formQuestion.getQuestion().getUuid().equals(value.getQuestion().getUuid()))
@@ -702,10 +678,8 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 
     public int getNumberOfQuestionsInReport(FacilityDataFormSchema schema) {
         int cnt = 0;
-        for (FacilityDataFormSection section : schema.getFormSections()) {
-            for (FacilityDataFormQuestion formQuestion : section.getQuestions()) {
-                cnt++;
-            }
+        for (FacilityDataFormSection section : schema.getSections()) {
+        	cnt += section.getQuestions().size();
         }
         return cnt;
     }
@@ -717,18 +691,18 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
      * @param startDate
      * @param endDate
      * @param location  the location of the clinic
-     * @return an instance of {@link org.openmrs.module.facilitydata.model.FacilityDataReportFormData}.
+     * @return an instance of {@link org.openmrs.module.facilitydata.model.FacilityDataReport}.
      */
-    public FacilityDataReportFormData getFacilityDataReportFormData(FacilityDataFormSchema schema, Date startDate, Date endDate, Location location) {
-        FacilityDataReportFormData formData = new FacilityDataReportFormData();
+    public FacilityDataReport getFacilityDataReportFormData(FacilityDataFormSchema schema, Date startDate, Date endDate, Location location) {
+        FacilityDataReport formData = new FacilityDataReport();
         formData.setSchema(schema);
         formData.setStartDate(startDate);
         formData.setEndDate(endDate);
         formData.setLocation(location);
-        List<FacilityDataValue> valueList = Lists.newArrayList();
-        for (FacilityDataFormSection section : schema.getFormSections()) {
+        Set<FacilityDataValue> valueList = new HashSet<FacilityDataValue>();
+        for (FacilityDataFormSection section : schema.getSections()) {
             for (FacilityDataFormQuestion question : section.getQuestions()) {
-                for (FacilityDataValue value : FacilityDataUtil.getService().getAllFacilityDataValues()) {
+                for (FacilityDataValue value : getAllFacilityDataValues()) {
                     // first check to see if a question with this {@link UUID} has a {@link FacilityDataValue}.
                     if (question.getQuestion().getUuid().equals(value.getQuestion().getUuid()) && !value.isVoided()) {
                         // now check the rest of the constraints.

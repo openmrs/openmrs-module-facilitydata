@@ -1,23 +1,11 @@
-<%--
-  The contents of this file are subject to the OpenMRS Public License
-  Version 1.0 (the "License"); you may not use this file except in
-  compliance with the License. You may obtain a copy of the License at
-  http://license.openmrs.org
+<%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-  Software distributed under the License is distributed on an "AS IS"
-  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  License for the specific language governing rights and limitations
-  under the License.
+<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/report.form"/>
 
-  Copyright (C) OpenMRS, LLC.  All Rights Reserved.
 
---%>
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
-<%@ taglib prefix="render" tagdir="/WEB-INF/tags/module/facilitydata" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
-<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm"
-                 redirect="/module/facilitydata/report.form"/>
+
 <a href="manage.form?site=${param.site}&schema=${param.id}&month=${facilitydata:getMonth(param.startDate)}&year=${facilitydata:getYear(param.startDate)}"><spring:message code="facilitydata.manage"/></a>
 <c:if test="${param.editable == null}">
     | <a
@@ -25,14 +13,14 @@
     <spring:message code="general.edit"/></a>
 </c:if>
 <br>
-<form:form commandName="schema" method="post" action="report.form">
+<frm:form commandName="schema" method="post" action="report.form">
     <%-- Validation errors will display above the form itself. --%>
-    <form:errors path="*" cssClass="error"/>
-    <form:hidden path="frequency"/>
+    <frm:errors path="*" cssClass="error"/>
+    <frm:hidden path="frequency"/>
     <input type="hidden" name="startDate" value=${param.startDate}/>
     <input type="hidden" name="endDate" value="${param.endDate}"/>
     <input type="hidden" name="site" value="${param.site}"/>
-    <form:hidden path="id"/>
+    <frm:hidden path="id"/>
 
     <table width="100%">
         <tr align="center" bgcolor="#8FABC7" style="color:#fff;">
@@ -49,14 +37,14 @@
             <c:forEach items="${section.questions}" var="formQuestion">
                 <c:choose>
                     <c:when test="${facilitydata:isNumericQuestion(formQuestion.question)}">
-                        <render:numericQuestion question="${formQuestion.question}"
+                        <facilitydataTag:numericQuestion question="${formQuestion.question}"
                                                 formQuestion="${formQuestion}"
                                                 value="${values[formQuestion.question.uuid]}"
                                                 editable="${param.editable}"/>
                     </c:when>
 
                     <c:when test="${facilitydata:isBooleanCodedQuestion(formQuestion.question)}">
-                        <render:booleanCodedQuestion question="${formQuestion.question}"
+                        <facilitydataTag:booleanCodedQuestion question="${formQuestion.question}"
                                                      formQuestion="${formQuestion}"
                                                      value="${values[formQuestion.question.uuid]}"
                                                      editable="${param.editable}"/>
@@ -64,7 +52,7 @@
                     </c:when>
 
                     <c:when test="${facilitydata:isStockQuestion(formQuestion.question)}">
-                        <render:stockQuestion question="${formQuestion.question}"
+                        <facilitydataTag:stockQuestion question="${formQuestion.question}"
                                               formQuestion="${formQuestion}"
                                               value="${values[formQuestion.question.uuid]}"
                                               editable="${param.editable}"/>
@@ -74,8 +62,8 @@
         </tr>
     </c:forEach>
     <br/><br/>
-    <render:buttons editable="${param.editable}"/>
-</form:form>
+    <facilitydataTag:buttons editable="${param.editable}"/>
+</frm:form>
 </table>
 </br></br>
 <%@ include file="/WEB-INF/template/footer.jsp" %>

@@ -19,7 +19,6 @@
 	<classpathentry kind="lib" path="lib-common/mail.jar"/>
 	<classpathentry kind="lib" path="lib-common/activation.jar"/>
 	<classpathentry kind="lib" path="lib-common/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="lib/google-collect-1.0-rc2.jar"/>
 	<classpathentry kind="lib" path="lib-common/c3p0-0.9.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/asm-1.5.3.jar"/>
@@ -27,7 +26,6 @@
 	<classpathentry kind="lib" path="lib-common/jstl-1.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/antlr_2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib-common/dwr-205.jar"/>
-	<classpathentry kind="lib" path="lib/standard.jar"/>
 	<classpathentry kind="lib" path="lib-common/jta.jar"/>
 	<classpathentry kind="lib" path="lib-common/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib-common/ehcache-1.2.4.jar"/>

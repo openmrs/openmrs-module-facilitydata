@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
-
 <sqldiff version="1.0">
-	<help>
-		USE:
-			The diffs are ordered by datamodel version number.
-			The script can be run in a top down fashion and is
-			expected to not failor overwrite old data
-
-		EXPECT:
-			- "use business-database-name;" was called prior to
-			   calling this script
-	</help>
-
+	<help>See OpenMRS documentation</help>
 	<diff>
-		<version>1.0.0</version>                        
-		<author>Robert O'Connor</author>
-		<date>2 June 2009</date>
-		<description>
-		</description>
+		<version>1.0</version>                        
+		<author>Robert O'Connor; Partners In Health</author>
+		<date>28 Mar 2011</date>
+		<description></description>
 		<sql>
              create table if not exists `facilitydata_form_schema` (
                 `schema_id` int(11) not null auto_increment,
@@ -43,13 +30,16 @@
                  constraint `user who created this schema` foreign key (`creator`) references `users` (`user_id`) ,
                  constraint  `user who changed this schema` foreign key (`changed_by`) references `users` (`user_id`),
                  constraint  `user who retired this schema` foreign key (`retired_by`) references `users` (`user_id`)
-            )ENGINE=InnoDB default CHARSET=utf8;
+            )
+            ENGINE=InnoDB default CHARSET=utf8;
             
             create table if not exists `facilitydata_form_section` (
                 `form_section_id` int(11)  not null auto_increment,
                 `uuid` char(36) not null,
                 `name` varchar(255) not null,
                 `description` varchar(255) default null,
+                `section_number` int(11) not null,
+                `schema_id` int(11) not null,              
                 `creator` int(11) not null,
                 `changed_by` int(11) default null,
                 `date_created` datetime not null,
@@ -59,13 +49,16 @@
                 `date_retired` datetime default null,
                 `retired_reason` varchar(255) default null,                                 
                  primary key (`form_section_id`),
+                 key `form schema for this  section` (`schema_id`),
                  key `user who created this section` (`creator`),
                  key `user who changed this section` (`changed_by`),
                  key `user who retired this section` (`retired_by`),
+                 constraint `form schema for this  section` foreign key (`schema_id`) references `facilitydata_form_schema` (`schema_id`),
                  constraint `user who created this section` foreign key (`creator`) references `users` (`user_id`),
                  constraint  `user who changed this section` foreign key (`changed_by`) references `users` (`user_id`),
                  constraint  `user who retired this section` foreign key (`retired_by`) references `users` (`user_id`)
-             )ENGINE=InnoDB default CHARSET=utf8;
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
              
              create table if not exists `facilitydata_question` (
                  `question_id` int(11) not null auto_increment,
@@ -92,7 +85,36 @@
                   constraint `user who created this question` foreign key (`creator`) references `users` (`user_id`),
                   constraint  `user who changed this question` foreign key (`changed_by`) references `users` (`user_id`),
                   constraint  `user who retired this question` foreign key (`retired_by`) references `users` (`user_id`)
-             )ENGINE=InnoDB default CHARSET=utf8;
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
+             
+             create table if not exists `facilitydata_coded_question_option` (
+                 `id` int(11) not null auto_increment,
+                 `uuid` char(36) not null,
+                 `name` varchar(255) not null,                
+                 `description` varchar(1000) default null,
+                 `creator` int(11) not null,
+                 `changed_by` int(11) default null,
+                 `date_changed` datetime default null,
+                 `date_created` datetime not null,
+                 `retired` tinyint(1) default '0',
+                 `retired_by` int(11) default null,
+                 `date_retired` datetime default null,
+                 `retired_reason` varchar(255) default null,
+                 `option_order` int(11) not null,
+                 `code` varchar(255) not null,
+                 `question_id` int(11) not null,
+                  primary key (`id`),
+                  key `user who created this coded option` (`creator`),
+                  key `user who changed this coded option` (`changed_by`),
+                  key `user who retired this coded_option` (`retired_by`),
+                  key `question for this coded option` (`question_id`),
+                  constraint `user who created this coded option` foreign key (`creator`) references `users` (`user_id`),
+                  constraint  `user who changed this coded option` foreign key (`changed_by`) references `users` (`user_id`),
+                  constraint  `user who retired this coded option` foreign key (`retired_by`) references `users` (`user_id`),
+                  constraint  `question for this coded option` foreign key (`question_id`) references `facilitydata_question` (`question_id`)
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
              
              create table if not exists `facilitydata_form_question` (
                   `form_question_id` int(11) not null auto_increment,
@@ -121,7 +143,8 @@
                   constraint  `user who retired this form question` foreign key (`retired_by`) references `users` (`user_id`),
                   constraint  `section this is associated with` foreign key (`section`) references `facilitydata_form_section` (`form_section_id`),
                   constraint  `question this is associated with` foreign key (`question`) references `facilitydata_question` (`question_id`)
-             )ENGINE=InnoDB default CHARSET=utf8;
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
             
              create table if not exists `facilitydata_value` (
                   `id` int(11) not null auto_increment,
@@ -151,17 +174,9 @@
                    constraint  `user who changed this record` foreign key (`changed_by`) references `users` (`user_id`),
                    constraint  `user who voided this record` foreign key (`voided_by`) references `users` (`user_id`),
                    constraint  `location of this clinic` foreign key (`facility`) references `location` (`location_id`),
-                   constraint  `question which is associated` foreign key (`question`) references `facilitydata_question` (`question_id`)
-             )ENGINE=InnoDB default CHARSET=utf8;
-            create table if not exists `facilitydata_schemas` (
-                  `schema_id` int(11) not null,
-                  `section_id` int(11) not null,
-                  `section_index` int(11), 
-                   key `section` (`section_id`),
-                   key `schema` (`schema_id`),
-                   constraint `section` foreign key (`section_id`) references `facilitydata_form_section` (`form_section_id`),
-                   constraint `schema` foreign key (`schema_id`) references `facilitydata_form_schema` (`schema_id`)
-            )ENGINE=InnoDB default CHARSET=utf8;
+                   constraint  `question which is associated` foreign key (`question`) references `facilitydata_form_question` (`form_question_id`)
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
 
 		</sql>
 	</diff>

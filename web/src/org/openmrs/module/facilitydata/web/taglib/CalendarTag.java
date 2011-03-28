@@ -13,24 +13,25 @@
  */
 package org.openmrs.module.facilitydata.web.taglib;
 
-import org.openmrs.Location;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataReportFormData;
-import org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
-import org.apache.commons.lang.time.DateUtils;
+import java.io.IOException;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.io.IOException;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.openmrs.Location;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
+import org.openmrs.module.facilitydata.model.FacilityDataReport;
+import org.openmrs.module.facilitydata.model.enums.Frequency;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
 
 public class CalendarTag extends TagSupport {
     private int month, year;
@@ -47,7 +48,7 @@ public class CalendarTag extends TagSupport {
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Context.getLocale());
         String[] daysOfWeek = dateFormatSymbols.getWeekdays();
         String[] months = dateFormatSymbols.getMonths();
-        schema = FacilityDataUtil.getService().getFacilityDataFormSchema(schemaId);
+        schema = Context.getService(FacilityDataService.class).getFacilityDataFormSchema(schemaId);
         location = Context.getLocationService().getLocation(locationId);
         startDate = String.format("%s/%s/%s", year, month, "01");
         try {
@@ -59,13 +60,13 @@ public class CalendarTag extends TagSupport {
             throw new JspException(e);
         }
         StringBuilder sb = new StringBuilder();
-        if (schema != null && schema.getFrequency() == FacilityDataFrequency.DAILY) {
+        if (schema != null && schema.getFrequency() == Frequency.DAILY) {
             String nextLink = getNextLink(startCal);
             sb.append("<table cellspacing=\"1\" cellpadding=\"2\">");
             sb.append("<tr>").append("<th style=\"background:#8ac;color:#fff;\" colspan=\"7\">").append(String.format("%s %s %d %s", getPrevLink(startCal),months[month - 1], year,nextLink)).append("</th></tr>");
             sb.append(getDaysOfWeekHeading(daysOfWeek));
             sb.append(getCalendarTableForDaily(startCal, endCal, schema, location)).append("</table>");
-        } else if (schema != null && schema.getFrequency() == FacilityDataFrequency.MONTHLY) {
+        } else if (schema != null && schema.getFrequency() == Frequency.MONTHLY) {
             try {
                 sb.append(getCalendarTableForMonthly(schema, location, months));
             } catch (ParseException e) {
@@ -108,9 +109,9 @@ public class CalendarTag extends TagSupport {
             boolean showView = true;
             if (showDayNumber) {
                 Date rounded = DateUtils.round(iterCal.getTime(), Calendar.HOUR);
-                FacilityDataReportFormData formData = FacilityDataUtil.getService().getFacilityDataReportFormData(schema, rounded,
+                FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema, rounded,
                         rounded, location);
-                int numFilled = FacilityDataUtil.getService().getNumberOfQuestionedFilledOut(formData, schema);
+                int numFilled = Context.getService(FacilityDataService.class).getNumberOfQuestionedFilledOut(formData, schema);
                 if (numFilled < 1) {
                     showView = false;
                     if (inFuture) {
@@ -121,7 +122,7 @@ public class CalendarTag extends TagSupport {
                         bgColor = MISSING_COLOR;
                         fontColor = MISSING_FONT;
                     }
-                } else if (numFilled < FacilityDataUtil.getService().getNumberOfQuestionsInReport(schema)) {
+                } else if (numFilled < Context.getService(FacilityDataService.class).getNumberOfQuestionsInReport(schema)) {
                     bgColor = PARTIAL_COLOR;
                     fontColor = PARTIAL_FONT;
                 } else {
@@ -183,9 +184,9 @@ public class CalendarTag extends TagSupport {
             String bgColor = "#fff";
             Date roundedFirstOfMonth = DateUtils.round(firstOfMonth, Calendar.HOUR);
             Date roundedLastOfMonth = DateUtils.round(lastOfMonth, Calendar.HOUR);
-            FacilityDataReportFormData formData = FacilityDataUtil.getService().getFacilityDataReportFormData(schema, roundedFirstOfMonth,
+            FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema, roundedFirstOfMonth,
                     roundedLastOfMonth, location);
-            int numFilled = FacilityDataUtil.getService().getNumberOfQuestionedFilledOut(formData, schema);
+            int numFilled = Context.getService(FacilityDataService.class).getNumberOfQuestionedFilledOut(formData, schema);
             if (inFuture) {
                 bgColor = "#aaa";
                 fontColor = "#000;";
@@ -195,7 +196,7 @@ public class CalendarTag extends TagSupport {
                 if (numFilled < 1) {
                     bgColor = MISSING_COLOR;
                     fontColor = MISSING_FONT;
-                } else if (numFilled < FacilityDataUtil.getService().getNumberOfQuestionsInReport(schema)) {
+                } else if (numFilled < Context.getService(FacilityDataService.class).getNumberOfQuestionsInReport(schema)) {
                     bgColor = PARTIAL_COLOR;
                     fontColor = PARTIAL_FONT;
                 } else {

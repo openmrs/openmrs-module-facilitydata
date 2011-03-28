@@ -13,18 +13,18 @@
  */
 package org.openmrs.module.facilitydata.propertyeditor;
 
-import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.springframework.util.StringUtils;
-
 import java.beans.PropertyEditorSupport;
+
+import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.springframework.util.StringUtils;
 
 public class FacilityDataFormSectionEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        FacilityDataService svc = FacilityDataUtil.getService();
+    	FacilityDataService svc = Context.getService(FacilityDataService.class);
         if (StringUtils.hasText(text)) {
             setValue(svc.getFacilityDataFormSection(Integer.parseInt(text)));
         } else {

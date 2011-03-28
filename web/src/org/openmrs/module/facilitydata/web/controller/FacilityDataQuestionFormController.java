@@ -13,49 +13,45 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import com.google.common.collect.Maps;
-import org.apache.log4j.Logger;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.BooleanCodedQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.NumericQuestion;
-import org.openmrs.module.facilitydata.model.StockQuestion;
-import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-import org.openmrs.module.facilitydata.validator.FacilityDataQuestionValidator;
 import org.openmrs.module.facilitydata.command.FacilityDataQuestionCommand;
+import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.validator.FacilityDataQuestionValidator;
+import org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.ui.ModelMap;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
-@SuppressWarnings({"unchecked"})
 @Controller("question")
 @RequestMapping("/module/facilitydata/question.form")
 public class FacilityDataQuestionFormController {
-    private static final Logger log = Logger.getLogger(FacilityDataQuestionFormController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(ModelMap map, @RequestParam(required = false) Integer id, @ModelAttribute("command") FacilityDataQuestionCommand command) {
         if (id != null) {
-            FacilityDataQuestion question = FacilityDataUtil.getService().getQuestion(id);
+            FacilityDataQuestion question = Context.getService(FacilityDataService.class).getQuestion(id);
             command.setName(question.getName());
             command.setDescription(command.getDescription());
             command.setType(question.getClass().getSimpleName());
             command.setMethod(question.getAggregationMethod());
             command.setRetired(question.getRetired());
             command.setRetireReason(question.getRetireReason());
-            if (FacilityDataUtil.isNumericQuestion(question)) {
-                NumericQuestion numericQuestion = (NumericQuestion) question;
+            if (FacilityDataFunctions.isNumericQuestion(question)) {
+                NumericFacilityDataQuestion numericQuestion = (NumericFacilityDataQuestion) question;
                 command.setMinValue(numericQuestion.getMinValue());
                 command.setMaxValue(numericQuestion.getMaxValue());
                 command.setAllowDecimals(numericQuestion.isAllowDecimals());
@@ -67,7 +63,7 @@ public class FacilityDataQuestionFormController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveQuestion(@RequestParam(required = false) Integer id, @ModelAttribute("command") FacilityDataQuestionCommand command, BindingResult result, HttpServletRequest request) {
 
-        Map<String, String> questionTypes = Maps.newHashMap();
+        Map<String, String> questionTypes = new HashMap<String, String>();
         questionTypes.put("NumericQuestion", "org.openmrs.module.facilitydata.model.NumericQuestion");
         questionTypes.put("StockQuestion", "org.openmrs.module.facilitydata.model.StockQuestion");
         questionTypes.put("BooleanCodedQuestion", "org.openmrs.module.facilitydata.model.BooleanCodedQuestion");
@@ -75,13 +71,13 @@ public class FacilityDataQuestionFormController {
         if (result.hasErrors()) {
             return "/module/facilitydata/questionForm";
         }
-        FacilityDataService service = FacilityDataUtil.getService();
+        FacilityDataService service = Context.getService(FacilityDataService.class);
         if (id != null) {
             FacilityDataQuestion question = service.getQuestion(id);
             if (hasDataTypeChanged(question, command)) {
                 command.setType(question.getClass().getSimpleName());
                 // need to clear out the NumericQuestion properties.
-                if (!FacilityDataUtil.isNumericQuestion(question)) {
+                if (!FacilityDataFunctions.isNumericQuestion(question)) {
                     command.setAllowDecimals(false);
                     command.setMinValue(null);
                     command.setMaxValue(null);
@@ -95,21 +91,21 @@ public class FacilityDataQuestionFormController {
             if (command.getRetired() != null && command.getRetired())
                 service.retireFacilityDataQuestion(question, command.getRetireReason());
             if (command.getRetired() != null && !command.getRetired()) service.unretireFacilityDataQuestion(question);
-            if (FacilityDataUtil.isNumericQuestion(question)) {
+            if (FacilityDataFunctions.isNumericQuestion(question)) {
                 if (StringUtils.hasText(request.getParameter("minValue")))
-                    ((NumericQuestion) question).setMinValue(command.getMinValue());
+                    ((NumericFacilityDataQuestion) question).setMinValue(command.getMinValue());
                 if (StringUtils.hasText(request.getParameter("maxValue")))
-                    ((NumericQuestion) question).setMaxValue(command.getMaxValue());
+                    ((NumericFacilityDataQuestion) question).setMaxValue(command.getMaxValue());
                 if (command.getAllowDecimals() != null)
-                    ((NumericQuestion) question).setAllowDecimals(command.getAllowDecimals());
+                    ((NumericFacilityDataQuestion) question).setAllowDecimals(command.getAllowDecimals());
             }
-            FacilityDataQuestion q = service.saveQuestion(question);
+            service.saveQuestion(question);
             request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage("facilitydata.question.saved"));
         } else if (command.getTypes().contains(command.getType())) {
             try {
                 Class<?> clazz = Class.forName(questionTypes.get(command.getType()));
-                if (NumericQuestion.class.isAssignableFrom(clazz)) {
-                    NumericQuestion question = (NumericQuestion) clazz.newInstance();
+                if (NumericFacilityDataQuestion.class.isAssignableFrom(clazz)) {
+                    NumericFacilityDataQuestion question = (NumericFacilityDataQuestion) clazz.newInstance();
                     question.setName(command.getName());
                     if (command.getDescription() != null) question.setDescription(command.getDescription());
                     question.setAggregationMethod(command.getMethod());
@@ -121,20 +117,12 @@ public class FacilityDataQuestionFormController {
                     FacilityDataQuestion q = service.saveQuestion(question);
                     request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage("facilitydata.question.saved"));
                     return getRedirect(q);
-                } else if (BooleanCodedQuestion.class.isAssignableFrom(clazz)) {
-                    BooleanCodedQuestion codedQuestion = (BooleanCodedQuestion) clazz.newInstance();
+                } else if (CodedFacilityDataQuestion.class.isAssignableFrom(clazz)) {
+                    CodedFacilityDataQuestion codedQuestion = (CodedFacilityDataQuestion) clazz.newInstance();
                     codedQuestion.setAggregationMethod(command.getMethod());
                     codedQuestion.setName(command.getName());
                     if (command.getDescription() != null) codedQuestion.setDescription(command.getDescription());
                     FacilityDataQuestion q = service.saveQuestion(codedQuestion);
-                    request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage("facilitydata.question.saved"));
-                    return getRedirect(q);
-                } else if (StockQuestion.class.isAssignableFrom(clazz)) {
-                    StockQuestion stockQuestion = (StockQuestion) clazz.newInstance();
-                    stockQuestion.setAggregationMethod(command.getMethod());
-                    stockQuestion.setName(command.getName());
-                    if (command.getDescription() != null) stockQuestion.setDescription(command.getDescription());
-                    FacilityDataQuestion q = service.saveQuestion(stockQuestion);
                     request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage("facilitydata.question.saved"));
                     return getRedirect(q);
                 }

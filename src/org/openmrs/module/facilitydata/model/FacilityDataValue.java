@@ -19,141 +19,159 @@ import org.openmrs.Location;
 import java.util.Date;
 
 /**
- * This is where the entered data is stored.
+ * This represents a particular value entered for a particular question on a form
  */
 public class FacilityDataValue extends BaseOpenmrsData {
+	
+	//***** PROPERTIES *****
+	
     private Integer id;
-
-    /**
-     * the {@link Location} of the clinic
-     */
     private Location facility;
-    /**
-     * Start date of the period for which this form is entered.
-     */
     private Date fromDate;
-
-    /**
-     * End date of the period for which this form is entered.
-     */
     private Date toDate;
+    private FacilityDataFormQuestion question; // The question on the form that was answered
+    private Double valueNumeric; // Populated if this is a numeric question
+    private String valueText; // Populated if this is a non-numeric question
+    private String comments; // Optional comments associated with the value entered
 
+    //***** CONSTRUCTORS *****
+    
+    public FacilityDataValue() {}
+
+    //***** INSTANCE METHODS *****
+    
     /**
-     * Question to which this is storing the answer for.
+     * @see Object#equals(Object)
      */
-    private FacilityDataQuestion question;
-
-    /**
-     * Numeric answer (if non-numeric this should always be null)
-     */
-    private Double valueNumeric;
-
-    /**
-     * if coded, this is where the coded option will be stored.
-     */
-    private String valueText;
-
-    /**
-     * The comments (e.g. Why?)
-     */
-    private String comments;
-
-    public FacilityDataValue() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Location getFacility() {
-        return facility;
-    }
-
-    public void setFacility(Location facility) {
-        this.facility = facility;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
-    public FacilityDataQuestion getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(FacilityDataQuestion question) {
-        this.question = question;
-    }
-
-    public Double getValueNumeric() {
-        return valueNumeric;
-    }
-
-    public void setValueNumeric(Double valueNumeric) {
-        this.valueNumeric = valueNumeric;
-    }
-
-    public String getValueText() {
-        return valueText;
-    }
-
-    public void setValueText(String valueText) {
-        this.valueText = valueText;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FacilityDataValue value = (FacilityDataValue) o;
-
-        if (comments != null ? !comments.equals(value.comments) : value.comments != null) return false;
-        if (!facility.equals(value.facility)) return false;
-        if (!fromDate.equals(value.fromDate)) return false;
-        if (!id.equals(value.id)) return false;
-        if (!question.equals(value.question)) return false;
-        if (!toDate.equals(value.toDate)) return false;
-        if (valueNumeric != null ? !valueNumeric.equals(value.valueNumeric) : value.valueNumeric != null) return false;
-        if (valueText != null ? !valueText.equals(value.valueText) : value.valueText != null) return false;
-
-        return true;
+        if (o == null || !(o instanceof FacilityDataValue)) return false;
+        FacilityDataValue that = (FacilityDataValue) o;
+        return this.getId() != null && this.getId().equals(that.getId());
     }
 
+    /**
+     * @see Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result = 7;
-        result = 31 * result + (facility != null ? facility.hashCode() : 0);
-        result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
-        result = 31 * result + (toDate != null ? toDate.hashCode() : 0); 
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (valueNumeric != null ? valueNumeric.hashCode() : 0);
-        result = 31 * result + (valueText != null ? valueText.hashCode() : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
         return result;
     }
+    
+    //***** PROPERTY ACCESS *****
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the facility
+	 */
+	public Location getFacility() {
+		return facility;
+	}
+
+	/**
+	 * @param facility the facility to set
+	 */
+	public void setFacility(Location facility) {
+		this.facility = facility;
+	}
+
+	/**
+	 * @return the fromDate
+	 */
+	public Date getFromDate() {
+		return fromDate;
+	}
+
+	/**
+	 * @param fromDate the fromDate to set
+	 */
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	/**
+	 * @return the toDate
+	 */
+	public Date getToDate() {
+		return toDate;
+	}
+
+	/**
+	 * @param toDate the toDate to set
+	 */
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	/**
+	 * @return the question
+	 */
+	public FacilityDataFormQuestion getQuestion() {
+		return question;
+	}
+
+	/**
+	 * @param question the question to set
+	 */
+	public void setQuestion(FacilityDataFormQuestion question) {
+		this.question = question;
+	}
+
+	/**
+	 * @return the valueNumeric
+	 */
+	public Double getValueNumeric() {
+		return valueNumeric;
+	}
+
+	/**
+	 * @param valueNumeric the valueNumeric to set
+	 */
+	public void setValueNumeric(Double valueNumeric) {
+		this.valueNumeric = valueNumeric;
+	}
+
+	/**
+	 * @return the valueText
+	 */
+	public String getValueText() {
+		return valueText;
+	}
+
+	/**
+	 * @param valueText the valueText to set
+	 */
+	public void setValueText(String valueText) {
+		this.valueText = valueText;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 }

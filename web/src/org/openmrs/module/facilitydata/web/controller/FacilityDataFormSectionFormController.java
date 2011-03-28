@@ -13,18 +13,21 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormQuestionEditor;
-import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSectionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 import org.openmrs.module.facilitydata.validator.FacilityDataFormSectionValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
@@ -39,17 +42,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-
 @Controller
 @RequestMapping("/module/facilitydata/section.form")
 public class FacilityDataFormSectionFormController {
-    private static final Logger log = Logger.getLogger(FacilityDataFormSectionFormController.class);
-
+ 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSection.class, new FacilityDataFormSectionEditor());
@@ -59,7 +55,7 @@ public class FacilityDataFormSectionFormController {
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("section") FacilityDataFormSection section) {
-        FacilityDataService svc = FacilityDataUtil.getService();
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         map.addAttribute("questions", svc.getAllFacilityDataQuestions());
         if (id != null) {
             section = svc.getFacilityDataFormSection(id);
@@ -73,7 +69,7 @@ public class FacilityDataFormSectionFormController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveSection(@ModelAttribute("section") FacilityDataFormSection section, BindingResult result,
                               HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
-        FacilityDataService svc = FacilityDataUtil.getService();
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         new FacilityDataFormSectionValidator().validate(section, result);
         if (result.hasErrors()) {
             return "/module/facilitydata/sectionForm";
@@ -83,11 +79,11 @@ public class FacilityDataFormSectionFormController {
         String[] questionNumbers = ServletRequestUtils.getStringParameters(request, "questionNumber");
         String[] descriptions = ServletRequestUtils.getStringParameters(request, "desc");
         int[] questionIds = ServletRequestUtils.getIntParameters(request, "questionId");
-        Map<Integer, FacilityDataFormQuestion> questionMap = Maps.newHashMap();
-        SortedSet<FacilityDataFormQuestion> questions = section.getQuestions();
+        Map<Integer, FacilityDataFormQuestion> questionMap = new HashMap<Integer, FacilityDataFormQuestion>();
+        Set<FacilityDataFormQuestion> questions = section.getQuestions();
 
         // used for removing questions that no longer exist (removed via the UI).
-        List<FacilityDataFormQuestion> formQuestionList = Lists.newArrayList();
+        List<FacilityDataFormQuestion> formQuestionList = new ArrayList<FacilityDataFormQuestion>();
 
         FacilityDataFormSection formSection = null;
 
@@ -123,13 +119,16 @@ public class FacilityDataFormSectionFormController {
                 if (question.getSection() == null) {
                     question.setSection(section);
                 }
-                section.addQuestion(question);
+                section.getQuestions().add(question);
                 formQuestionList.add(question);
 
             } else {
-                FacilityDataFormQuestion q = FacilityDataUtil.createNewFormQuestion(name, questionNumber, facilityDataQuestion);
+                FacilityDataFormQuestion q = new FacilityDataFormQuestion();
+                q.setName(name);
+                q.setQuestionNumber(questionNumber);
+                q.setQuestion(facilityDataQuestion);
                 if (!"".equals(desc)) q.setDescription(desc);
-                section.addQuestion(q);
+                section.getQuestions().add(q);
                 formQuestionList.add(q);
             }
         }
@@ -140,25 +139,5 @@ public class FacilityDataFormSectionFormController {
         return formSection != null ? String.format("redirect:section.form?id=%s", formSection.getId())
                 : "/module/facilitydata/sectionForm";
 
-    }
-
-    private void pruneQuestions(FacilityDataFormSection section, List<FacilityDataFormQuestion> questions) {
-        for (FacilityDataFormQuestion q : section.getQuestions()) {
-            if (questions.contains(q)) {
-                //TODO: do we want to remove or retire??
-                //removeQuestion(section, q);
-            }
-            else {
-                section.addQuestion(q);
-            }
-        }
-    }
-
-    // remove the question from the section's Set.
-    private void removeQuestion(FacilityDataFormSection section, FacilityDataFormQuestion question) {
-        for (Iterator<FacilityDataFormQuestion> iterator = section.getQuestions().iterator(); iterator.hasNext();) {
-            FacilityDataFormQuestion q = iterator.next();
-            if (q.equals(question)) iterator.remove();
-        }
     }
 }

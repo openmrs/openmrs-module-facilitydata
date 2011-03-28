@@ -13,99 +13,74 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.module.facilitydata.util.DelimitedKeyComparator;
 
 /**
- * This represents a question as it is displayed on the report form itself.
+ * This represents a question that is a part of a particular report.  It is an instance of a question
  */
-public class FacilityDataFormQuestion extends BaseOpenmrsMetadata implements Comparable<FacilityDataFormQuestion> {
-    private Integer id;
-
-    /**
-     * Parent section
-     */
+public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Comparable<FacilityDataFormQuestion> {
+    
+	//***** PROPERTIES *****
+	
     private FacilityDataFormSection section;
-    /**
-     * Question number (e.g. 1a)
-     */
     private String questionNumber;
-
-    /**
-     * A reference to the question itself.
-     */
     private FacilityDataQuestion question;
 
-    public FacilityDataFormQuestion() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public FacilityDataFormSection getSection() {
-        return section;
-    }
-
-    public void setSection(FacilityDataFormSection section) {
-        this.section = section;
-    }
-
-    public String getQuestionNumber() {
-        return questionNumber;
-    }
-
-    public void setQuestionNumber(String questionNumber) {
-        this.questionNumber = questionNumber;
-    }
-
-    public FacilityDataQuestion getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(FacilityDataQuestion question) {
-        this.question = question;
-    }
+    //**** CONSTRUCTORS *****
+    
+    public FacilityDataFormQuestion() {}
+    
+    //***** INSTANCE METHODS *****
 
     /**
-     * @see Object#toString()
+     * @see Comparable#compareTo(Object)
      */
-    @Override
-    public String toString() {
-        if (getName() == null) {
-            return super.toString();
-        }
-        return getName();
-    }
+    public int compareTo(FacilityDataFormQuestion that) {
+    	DelimitedKeyComparator c = new DelimitedKeyComparator();
+    	return c.compare(this.getQuestionNumber(), that.getQuestionNumber());
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FacilityDataFormQuestion)) return false;
+    //***** PROPERTY ACCESS *****
+    
+	/**
+	 * @return the section
+	 */
+	public FacilityDataFormSection getSection() {
+		return section;
+	}
 
-        FacilityDataFormQuestion question1 = (FacilityDataFormQuestion) o;
+	/**
+	 * @param section the section to set
+	 */
+	public void setSection(FacilityDataFormSection section) {
+		this.section = section;
+	}
 
-        if (id != null ? !id.equals(question1.id) : question1.id != null) return false;
+	/**
+	 * @return the questionNumber
+	 */
+	public String getQuestionNumber() {
+		return questionNumber;
+	}
 
-        return true;
-    }
+	/**
+	 * @param questionNumber the questionNumber to set
+	 */
+	public void setQuestionNumber(String questionNumber) {
+		this.questionNumber = questionNumber;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        return result;
-    }
+	/**
+	 * @return the question
+	 */
+	public FacilityDataQuestion getQuestion() {
+		return question;
+	}
 
-    /**
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(FacilityDataFormQuestion question) {
-        if (this.getQuestionNumber() == null || question.getQuestionNumber() == null) {
-            return 0;
-        }
-        return this.getQuestionNumber().compareTo(question.getQuestionNumber());
+	/**
+	 * @param question the question to set
+	 */
+	public void setQuestion(FacilityDataQuestion question) {
+		this.question = question;
 	}
 }

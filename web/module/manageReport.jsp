@@ -1,30 +1,9 @@
-<%--
-  The contents of this file are subject to the OpenMRS Public License
-  Version 1.0 (the "License"); you may not use this file except in
-  compliance with the License. You may obtain a copy of the License at
-  http://license.openmrs.org
+<%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
+<%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-  Software distributed under the License is distributed on an "AS IS"
-  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  License for the specific language governing rights and limitations
-  under the License.
+<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/manage.form"/>
 
-  Copyright (C) OpenMRS, LLC.  All Rights Reserved.
-
---%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp" %>
-<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm"
-                 redirect="/module/facilitydata/manage.form"/>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-1.3.2.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/moduleResources/facilitydata/js/jquery-ui-1.7.2.custom.min.js"
-        type="text/javascript"></script>
-
-<link rel="stylesheet" type="text/css"
-      href="${pageContext.request.contextPath}/moduleResources/facilitydata/css/redmond/jquery-ui-1.7.2.custom.css"/>
 <br/>
 
 <p>

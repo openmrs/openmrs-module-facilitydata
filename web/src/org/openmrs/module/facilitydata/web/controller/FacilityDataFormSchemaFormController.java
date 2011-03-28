@@ -13,15 +13,18 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import org.apache.log4j.Logger;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency;
+import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSectionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 import org.openmrs.module.facilitydata.validator.FacilityDataFormSchemaValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -36,15 +39,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Date;
-
 
 @Controller
 @RequestMapping("/module/facilitydata/schema.form")
 public class FacilityDataFormSchemaFormController {
-    private static final Logger log = Logger.getLogger(FacilityDataFormSchemaFormController.class);
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -56,9 +54,9 @@ public class FacilityDataFormSchemaFormController {
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("schema") FacilityDataFormSchema schema) {
-        FacilityDataService svc = FacilityDataUtil.getService();
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         map.addAttribute("sections", svc.getAllFacilityDataFormSections());
-        map.addAttribute("frequencies", FacilityDataFrequency.values());
+        map.addAttribute("frequencies", Frequency.values());
         if (id != null) {
             schema = svc.getFacilityDataFormSchema(id);
             map.addAttribute("schema", schema);
@@ -70,18 +68,15 @@ public class FacilityDataFormSchemaFormController {
     public String saveSchema(@RequestParam(required = false) Integer id,
                              @ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result,
                              HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
-        FacilityDataService svc = FacilityDataUtil.getService();
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         new FacilityDataFormSchemaValidator().validate(schema, result);
         if (result.hasErrors()) {
             return "/module/facilitydata/schemaForm";
         }
         map.addAttribute("sections", svc.getAllFacilityDataFormSections());
-        map.addAttribute("frequencies", FacilityDataFrequency.values());
+        map.addAttribute("frequencies", Frequency.values());
         map.addAttribute("schema", schema);
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");
-        if (request.getParameterValues("formSections") == null) {
-            schema.setFormSections(Collections.EMPTY_LIST);
-        }
         return String.format("redirect:schema.form?id=%s", svc.saveFacilityDataFormSchema(schema).getId());
     }
 }

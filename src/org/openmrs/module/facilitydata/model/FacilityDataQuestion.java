@@ -13,68 +13,34 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.module.facilitydata.model.enums.AggregationMethod;
 
 /**
  * The base class for all question types.
  */
-public abstract class FacilityDataQuestion extends BaseOpenmrsMetadata {
-    private Integer id;
-    /**
-     * Aggregation method. e.g. the last value entered or the sum of all values (if numeric.)
-     */
+public abstract class FacilityDataQuestion extends BaseFacilityMetaData {
+
+	//***** PROPERTIES *****
+	
     private AggregationMethod aggregationMethod;
 
-
-    public FacilityDataQuestion() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public AggregationMethod getAggregationMethod() {
-        return aggregationMethod;
-    }
-
-    public void setAggregationMethod(AggregationMethod aggregationMethod) {
-        this.aggregationMethod = aggregationMethod;
-    }
+    //***** CONSTRUCTORS *****
+    
+    public FacilityDataQuestion() {}
+    
+    //***** PROPERTY ACCESS *****
 
     /**
-     * Used to validate the input given.
-     *
-     * @param value
-     */
-    public boolean validate(FacilityDataValue value) {
-        return true; // do nothing
-    }
+	 * @return the aggregationMethod
+	 */
+	public AggregationMethod getAggregationMethod() {
+		return aggregationMethod;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FacilityDataQuestion)) return false;
-
-        FacilityDataQuestion that = (FacilityDataQuestion) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s",getName());
-    }
+	/**
+	 * @param aggregationMethod the aggregationMethod to set
+	 */
+	public void setAggregationMethod(AggregationMethod aggregationMethod) {
+		this.aggregationMethod = aggregationMethod;
+	}
 }
