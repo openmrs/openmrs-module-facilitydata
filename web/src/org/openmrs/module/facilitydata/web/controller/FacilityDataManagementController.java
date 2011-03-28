@@ -13,39 +13,36 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
+import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/module/facilitydata/manage.form")
 public class FacilityDataManagementController {
-    private static final Logger log = Logger.getLogger(FacilityDataManagementController.class);
 
     @ModelAttribute("reports")
     public List<FacilityDataValue> getReports() {
-        return FacilityDataUtil.getService().getAllFacilityDataValues();
+        return Context.getService(FacilityDataService.class).getAllFacilityDataValues();
     }
 
     @ModelAttribute("months")
     public List<String> getMonths() {
-        List<String> months = Lists.newArrayList();
+        List<String> months = new ArrayList<String>();
         for (int i = 1; i <= 12; i++) {
             months.add((i < 10 ? "0" + i : "" + i));
         }
@@ -61,12 +58,11 @@ public class FacilityDataManagementController {
     public String managementHomepage(ModelMap map, @RequestParam(required = false) Integer schamaId,
                                      @RequestParam(required = false) Integer site, @RequestParam(required = false) String year,
                                      @RequestParam(required = false) String month, HttpServletRequest request) throws ParseException {
-        FacilityDataService service = FacilityDataUtil.getService();
+        FacilityDataService service = Context.getService(FacilityDataService.class);
         if (service.getAllFacilityDataFormSchemas().size() > 0)
             map.addAttribute("schemas", service.getAllFacilityDataFormSchemas());
         else {
-            List<FacilityDataFormSchema> schemas = Lists.newArrayList();
-            schemas.add(FacilityDataUtil.createMockSchema());
+            List<FacilityDataFormSchema> schemas = new ArrayList<FacilityDataFormSchema>();
             map.addAttribute("schemas",schemas);
         }
 

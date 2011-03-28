@@ -13,11 +13,11 @@
  */
 package org.openmrs.module.facilitydata.web.dwr;
 
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 
 /**
  * DWR class to perform various JS->Java tasks. 
@@ -29,14 +29,14 @@ public class DWRFacilityDataService {
      * @return the simple class name (e.g.,String instead of java.lang.String)
      */
     public String getType(Integer questionId) {
-        FacilityDataService service = FacilityDataUtil.getService();
+        FacilityDataService service = Context.getService(FacilityDataService.class);
         FacilityDataQuestion facilityDataQuestion = service.getQuestion(questionId);
         return questionId != null ? facilityDataQuestion.getClass().getSimpleName() : "";
     }
 
     public boolean isMonthlyReport(int schemaId) {
-        FacilityDataService svc = FacilityDataUtil.getService();
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         FacilityDataFormSchema schema = svc.getFacilityDataFormSchema(schemaId);
-        return schema.getFrequency() == FacilityDataFrequency.MONTHLY;        
+        return schema.getFrequency() == Frequency.MONTHLY;        
     }
 }

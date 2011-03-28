@@ -16,11 +16,7 @@ package org.openmrs.module.facilitydata.model.enums;
 /**
  * This enum specifies the frequency to which the report will be filled out.
  */
-public enum FacilityDataFrequency {
+public enum Frequency {
     DAILY,
-   // WEEKLY,
     MONTHLY
-    //QUARTERLY,
-    //SEMIANNUALLY,
-    //ANNUALLY
 }

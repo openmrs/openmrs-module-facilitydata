@@ -1,25 +1,9 @@
-<%--
-  The contents of this file are subject to the OpenMRS Public License
-  Version 1.0 (the "License"); you may not use this file except in
-  compliance with the License. You may obtain a copy of the License at
-  http://license.openmrs.org
+<%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp" %>
 
-  Software distributed under the License is distributed on an "AS IS"
-  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  License for the specific language governing rights and limitations
-  under the License.
-
-  Copyright (C) OpenMRS, LLC.  All Rights Reserved.
-
---%>
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ taglib prefix="facilitydata" uri="/WEB-INF/view/module/facilitydata/facilitydata.tld" %>
 <%@ attribute name="question" required="true" type="org.openmrs.module.facilitydata.model.BooleanCodedQuestion" %>
-<%@ attribute name="formQuestion" required="true"
-              type="org.openmrs.module.facilitydata.model.FacilityDataFormQuestion" %>
+<%@ attribute name="formQuestion" required="true" type="org.openmrs.module.facilitydata.model.FacilityDataFormQuestion" %>
 <%@ attribute name="value" required="false" type="org.openmrs.module.facilitydata.model.FacilityDataValue" %>
-<%@ attribute name="editable" type="java.lang.Boolean" required="false"
-              description="Denotes whether or not the report should be editable." %>
+<%@ attribute name="editable" type="java.lang.Boolean" required="false" description="Denotes whether or not the report should be editable." %>
 
 <tr align=left>
     <td width=50% align=right>${formQuestion.name}</td>

@@ -13,124 +13,86 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import com.google.common.collect.Lists;
-import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.module.facilitydata.model.enums.FacilityDataFrequency;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.openmrs.module.facilitydata.model.enums.Frequency;
+
 /**
- * This represents an overall report form.
+ * This represents a collection of questions that are asked together on a Form, in one or more sections
  */
-public class FacilityDataFormSchema extends BaseOpenmrsMetadata {
+public class FacilityDataFormSchema extends BaseFacilityMetaData {
 
-    /**
-     * Primary key identifier
-     */
-    private Integer id;
+	//***** PROPERTIES *****
 
-    /**
-     * The frequency to which this form is to be filled out.
-     * e.g. Daily, Quarterly, etc.
-     */
-    private FacilityDataFrequency frequency;
-
-    /**
-     * Start date to which this form is valid.
-     */
-
+    private Frequency frequency;
     private Date validFrom;
-
-    /**
-     * End date to which this form is valid.
-     */
-
     private Date validTo;
+    private List<FacilityDataFormSection> sections;
 
-    /**
-     * A {@link List} containing the {@link FacilityDataFormSection}s.
-     */
-    private List<FacilityDataFormSection> formSections = Lists.newArrayList();
+    //***** CONSTRUCTORS *****
+    
+    public FacilityDataFormSchema() {}
 
-    public FacilityDataFormSchema() {
-    }
+    //***** PROPERTY ACCESS *****
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * @return the frequency
+	 */
+	public Frequency getFrequency() {
+		return frequency;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * @param frequency the frequency to set
+	 */
+	public void setFrequency(Frequency frequency) {
+		this.frequency = frequency;
+	}
 
-    public FacilityDataFrequency getFrequency() {
-        return frequency;
-    }
+	/**
+	 * @return the validFrom
+	 */
+	public Date getValidFrom() {
+		return validFrom;
+	}
 
-    public void setFrequency(FacilityDataFrequency frequency) {
-        this.frequency = frequency;
-    }
+	/**
+	 * @param validFrom the validFrom to set
+	 */
+	public void setValidFrom(Date validFrom) {
+		this.validFrom = validFrom;
+	}
 
-    public Date getValidFrom() {
-        return validFrom;
-    }
+	/**
+	 * @return the validTo
+	 */
+	public Date getValidTo() {
+		return validTo;
+	}
 
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
+	/**
+	 * @param validTo the validTo to set
+	 */
+	public void setValidTo(Date validTo) {
+		this.validTo = validTo;
+	}
 
-    public Date getValidTo() {
-        return validTo;
-    }
+	/**
+	 * @return the sections
+	 */
+	public List<FacilityDataFormSection> getSections() {
+		if (sections != null) {
+			sections = new ArrayList<FacilityDataFormSection>();
+		}
+		return sections;
+	}
 
-    public void setValidTo(Date validTo) {
-        this.validTo = validTo;
-    }
-
-    public List<FacilityDataFormSection> getFormSections() {
-        return formSections;
-    }
-
-    public void setFormSections(List<FacilityDataFormSection> formSections) {
-        this.formSections = formSections;
-    }
-
-    public void addFormSection(FacilityDataFormSection section) {
-        if (formSections == null) {
-            formSections = new ArrayList<FacilityDataFormSection>();
-        }
-        formSections.add(section);
-        section.addSectionToSchema(this);
-    }
-
-    /**
-     * @see Object#toString()
-     */
-    @Override
-    public String toString() {
-        if (getName() == null) {
-            return super.toString();
-        }
-        return getName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FacilityDataFormSchema)) return false;
-
-        FacilityDataFormSchema schema = (FacilityDataFormSchema) o;
-
-        if (id != null ? !id.equals(schema.id) : schema.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        return result;
-    }
+	/**
+	 * @param sections the sections to set
+	 */
+	public void setSections(List<FacilityDataFormSection> sections) {
+		this.sections = sections;
+	}
 }

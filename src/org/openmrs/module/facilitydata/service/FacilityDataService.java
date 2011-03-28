@@ -20,7 +20,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataReportFormData;
+import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.util.FacilityDataConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -454,7 +454,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param fromDate the start of the period.
      * @param toDate the end of the period.
      */
-    void processReportAnswers(FacilityDataQuestion question, FacilityDataValue value, String val, String comments, Location location,
+    void processReportAnswers(FacilityDataFormQuestion question, FacilityDataValue value, String val, String comments, Location location,
                            Date fromDate, Date toDate);
 
     /**
@@ -463,7 +463,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param schema
      * @return
      */
-    int getNumberOfQuestionedFilledOut(FacilityDataReportFormData formData, FacilityDataFormSchema schema);
+    int getNumberOfQuestionedFilledOut(FacilityDataReport formData, FacilityDataFormSchema schema);
 
     int getNumberOfQuestionsInReport(FacilityDataFormSchema schema);
 
@@ -474,9 +474,9 @@ public interface FacilityDataService extends OpenmrsService {
      * @param startDate
      * @param endDate
      * @param location  the location of the clinic
-     * @return an instance of {@link FacilityDataReportFormData}.
+     * @return an instance of {@link FacilityDataReport}.
      */
-    public FacilityDataReportFormData getFacilityDataReportFormData(FacilityDataFormSchema schema, 
+    public FacilityDataReport getFacilityDataReportFormData(FacilityDataFormSchema schema, 
                                                                            Date startDate,
                                                                            Date endDate, Location location);
 }
