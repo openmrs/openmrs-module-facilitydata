@@ -20,25 +20,34 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.util.StringUtils;
 
+/**
+ * Editor for FacilityDataFormSchema
+ */
 public class FacilityDataFormSchemaEditor extends PropertyEditorSupport {
 
+	/**
+	 * @see PropertyEditorSupport#setAsText(String)
+	 */
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-    	FacilityDataService svc = Context.getService(FacilityDataService.class);
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         if (StringUtils.hasText(text)) {
             setValue(svc.getFacilityDataFormSchema(Integer.parseInt(text)));
-        } else {
+        } 
+        else {
             setValue(null);
         }
     }
 
+	/**
+	 * @see PropertyEditorSupport#getAsText()
+	 */
     @Override
     public String getAsText() {
         FacilityDataFormSchema schema = (FacilityDataFormSchema) getValue();
         if (schema != null) {
-            return schema.toString();
-        } else {
-            return "";
+            return schema.getId().toString();
         }
+        return "";
     }
 }

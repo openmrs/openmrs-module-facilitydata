@@ -31,7 +31,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
+import org.openmrs.module.facilitydata.util.DateUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,7 +47,7 @@ public class FacilityDataReportFormController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        DateFormat dateFormat = FacilityDataDateUtils.getDateFormat();
+        DateFormat dateFormat = DateUtil.getDateFormat();
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
@@ -68,10 +68,10 @@ public class FacilityDataReportFormController {
         if(Context.isAuthenticated()) {
             FacilityDataFormSchema schema = Context.getService(FacilityDataService.class).getFacilityDataFormSchema(id);
             map.addAttribute("schema", schema);
-            Date startDate = FacilityDataDateUtils.getDateFormat().parse(request.getParameter("startDate"));
-            Date endDate = FacilityDataDateUtils.getDateFormat().parse(request.getParameter("endDate"));
+            Date startDate = DateUtil.getDateFormat().parse(request.getParameter("startDate"));
+            Date endDate = DateUtil.getDateFormat().parse(request.getParameter("endDate"));
             Location location = Context.getLocationService().getLocation(Integer.parseInt(request.getParameter("site")));
-            FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema,startDate,endDate, location);
+            FacilityDataReport formData = Context.getService(FacilityDataService.class).getReport(schema,startDate,endDate, location);
             map.addAttribute("values",getValues(schema,formData));
         }
         return "/module/facilitydata/reportForm";
@@ -85,7 +85,7 @@ public class FacilityDataReportFormController {
         Map<String,String[]> parameterMap = request.getParameterMap();
         // filter out the questions -- we only need them, we have site, frequency, and the validity period.
         Map<String, String[]> questions = new HashMap<String, String[]>(); // TODO: Implement this
-        FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema,startDate,endDate,site);
+        FacilityDataReport formData = Context.getService(FacilityDataService.class).getReport(schema,startDate,endDate,site);
         //TODO: look to see if this can be cleaned up more.
         //TODO: validate! 
         for(Map.Entry<String, String[]> entry : questions.entrySet()) {
@@ -102,7 +102,7 @@ public class FacilityDataReportFormController {
             map.addAttribute("values", getValues(schema, formData));
         }
         return String.format("redirect:report.form?id=%d&startDate=%s&endDate=%s&site=%s",
-                schema.getId(), FacilityDataDateUtils.getDateFormat().format(startDate),
-                FacilityDataDateUtils.getDateFormat().format(endDate),request.getParameter("site"));
+                schema.getId(), DateUtil.getDateFormat().format(startDate),
+                DateUtil.getDateFormat().format(endDate),request.getParameter("site"));
     }
 }

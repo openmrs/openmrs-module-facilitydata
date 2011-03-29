@@ -20,25 +20,34 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.util.StringUtils;
 
+/**
+ * Editor for FacilityDataQuestion
+ */
 public class FacilityDataQuestionEditor extends PropertyEditorSupport {
 
+	/**
+	 * @see PropertyEditorSupport#setAsText(String)
+	 */
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-    	FacilityDataService svc = Context.getService(FacilityDataService.class);
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
         if (StringUtils.hasText(text)) {
             setValue(svc.getQuestion(Integer.parseInt(text)));
-        } else {
+        } 
+        else {
             setValue(null);
         }
     }
 
+	/**
+	 * @see PropertyEditorSupport#getAsText()
+	 */
     @Override
     public String getAsText() {
         FacilityDataQuestion question = (FacilityDataQuestion) getValue();
         if (question != null) {
-            return question.toString();
-        } else {
-            return "";
+            return question.getId().toString();
         }
+        return "";
     }
 }

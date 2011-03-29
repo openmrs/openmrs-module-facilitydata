@@ -30,7 +30,7 @@ public class FacilityDataQuestionListController {
 
     @RequestMapping(method= RequestMethod.GET)
     public String homepage(ModelMap map) {
-        map.addAttribute("questions", Context.getService(FacilityDataService.class).getAllFacilityDataQuestions());
+        map.addAttribute("questions", Context.getService(FacilityDataService.class).getAllQuestions());
         return "/module/facilitydata/questionList";
     }
 
@@ -39,7 +39,7 @@ public class FacilityDataQuestionListController {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
         svc.deleteQuestion(svc.getQuestion(id));
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.deleted-question");
-        map.addAttribute("questions",svc.getAllFacilityDataQuestions());        
+        map.addAttribute("questions",svc.getAllQuestions());        
         return "/module/facilitydata/questionList";
     }
 }

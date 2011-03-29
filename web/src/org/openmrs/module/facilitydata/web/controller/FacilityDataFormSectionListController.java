@@ -13,13 +13,8 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,19 +28,14 @@ public class FacilityDataFormSectionListController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(ModelMap map) {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("sections", svc.getAllFacilityDataFormSections());
         return "/module/facilitydata/sectionList";
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
     public String deleteFormSection(@RequestParam Integer id, ModelMap map, HttpServletRequest request) {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        svc.deleteFacilityDataFormSection(svc.getFacilityDataFormSection(id));
+        // TODO: The delete here
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.deleted-form-section");
-        List<FacilityDataFormSection> sections = svc.getAllFacilityDataFormSections();
-        map.addAttribute("sections", sections);
         return "/module/facilitydata/sectionList";
     }
 

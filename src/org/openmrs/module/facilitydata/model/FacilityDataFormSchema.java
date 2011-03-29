@@ -34,6 +34,19 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
     //***** CONSTRUCTORS *****
     
     public FacilityDataFormSchema() {}
+    
+    //***** INSTANCE METHODS *****
+    
+    /**
+     * @return the number of questions in the schema
+     */
+    public int getTotalNumberOfQuestions() {
+        int cnt = 0;
+        for (FacilityDataFormSection section : getSections()) {
+        	cnt += section.getQuestions().size();
+        }
+        return cnt;
+    }
 
     //***** PROPERTY ACCESS *****
 

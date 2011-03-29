@@ -23,7 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
+import org.openmrs.module.facilitydata.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,7 +37,7 @@ public class FacilityDataManagementController {
 
     @ModelAttribute("reports")
     public List<FacilityDataValue> getReports() {
-        return Context.getService(FacilityDataService.class).getAllFacilityDataValues();
+    	return new ArrayList<FacilityDataValue>();
     }
 
     @ModelAttribute("months")
@@ -51,7 +51,7 @@ public class FacilityDataManagementController {
 
     @ModelAttribute("today")
     public String getToday() {
-        return FacilityDataDateUtils.today();
+        return DateUtil.today();
     }
 
     @RequestMapping(method = RequestMethod.GET)
