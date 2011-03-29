@@ -19,12 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
-import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSectionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
+import org.openmrs.module.facilitydata.util.DateUtil;
 import org.openmrs.module.facilitydata.validator.FacilityDataFormSchemaValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -46,16 +44,14 @@ public class FacilityDataFormSchemaFormController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(FacilityDataFormSection.class, new FacilityDataFormSectionEditor());
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(FacilityDataDateUtils.getDateFormat(), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtil.getDateFormat(), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("schema") FacilityDataFormSchema schema) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("sections", svc.getAllFacilityDataFormSections());
         map.addAttribute("frequencies", Frequency.values());
         if (id != null) {
             schema = svc.getFacilityDataFormSchema(id);
@@ -73,7 +69,6 @@ public class FacilityDataFormSchemaFormController {
         if (result.hasErrors()) {
             return "/module/facilitydata/schemaForm";
         }
-        map.addAttribute("sections", svc.getAllFacilityDataFormSections());
         map.addAttribute("frequencies", Frequency.values());
         map.addAttribute("schema", schema);
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");

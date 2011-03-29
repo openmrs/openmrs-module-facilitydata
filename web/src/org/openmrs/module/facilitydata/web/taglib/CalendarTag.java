@@ -19,7 +19,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -31,10 +30,13 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.FacilityDataDateUtils;
+import org.openmrs.module.facilitydata.util.DateUtil;
 
 public class CalendarTag extends TagSupport {
-    private int month, year;
+
+	private static final long serialVersionUID = 1L;
+	
+	private int month, year;
     private Calendar startCal = Calendar.getInstance();
     private Calendar endCal = Calendar.getInstance();
     private FacilityDataFormSchema schema;
@@ -44,7 +46,7 @@ public class CalendarTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Context.getLocale());
         String[] daysOfWeek = dateFormatSymbols.getWeekdays();
         String[] months = dateFormatSymbols.getMonths();
@@ -53,9 +55,9 @@ public class CalendarTag extends TagSupport {
         startDate = String.format("%s/%s/%s", year, month, "01");
         try {
             endDate = String.format("%s/%s/%s", year, month,
-                    FacilityDataDateUtils.getDateFormat().format(FacilityDataDateUtils.getLastOfMonthDate(FacilityDataDateUtils.getDateFormat().parse(startDate))));
-            startCal.setTime(FacilityDataDateUtils.getDateFormat().parse(startDate));
-            endCal.setTime(FacilityDataDateUtils.getDateFormat().parse(endDate));
+                    DateUtil.getDateFormat().format(DateUtil.getLastOfMonthDate(DateUtil.getDateFormat().parse(startDate))));
+            startCal.setTime(DateUtil.getDateFormat().parse(startDate));
+            endCal.setTime(DateUtil.getDateFormat().parse(endDate));
         } catch (ParseException e) {
             throw new JspException(e);
         }
@@ -109,9 +111,8 @@ public class CalendarTag extends TagSupport {
             boolean showView = true;
             if (showDayNumber) {
                 Date rounded = DateUtils.round(iterCal.getTime(), Calendar.HOUR);
-                FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema, rounded,
-                        rounded, location);
-                int numFilled = Context.getService(FacilityDataService.class).getNumberOfQuestionedFilledOut(formData, schema);
+                FacilityDataReport formData = Context.getService(FacilityDataService.class).getReport(schema, rounded, rounded, location);
+                int numFilled = formData.getValues().size();
                 if (numFilled < 1) {
                     showView = false;
                     if (inFuture) {
@@ -122,7 +123,7 @@ public class CalendarTag extends TagSupport {
                         bgColor = MISSING_COLOR;
                         fontColor = MISSING_FONT;
                     }
-                } else if (numFilled < Context.getService(FacilityDataService.class).getNumberOfQuestionsInReport(schema)) {
+                } else if (numFilled < schema.getTotalNumberOfQuestions()) {
                     bgColor = PARTIAL_COLOR;
                     fontColor = PARTIAL_FONT;
                 } else {
@@ -139,13 +140,13 @@ public class CalendarTag extends TagSupport {
                 if (showEdit) {
                     sb.append("<br/>").append("&nbsp;&nbsp;&nbsp;&nbsp;");
                     sb.append(String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d&editable=true\">%s</a>", fontColor, schemaId,
-                            FacilityDataDateUtils.getDateFormat().format(iterCal.getTime()), FacilityDataDateUtils.getDateFormat().format(iterCal.getTime()), locationId,
+                            DateUtil.getDateFormat().format(iterCal.getTime()), DateUtil.getDateFormat().format(iterCal.getTime()), locationId,
                             Context.getMessageSourceService().getMessage("general.edit")));
                 }
                 if (showView) {
                     sb.append("<br/>").append("&nbsp;&nbsp;&nbsp;&nbsp;");
                     sb.append(String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d\">%s</a>", fontColor, schemaId,
-                            FacilityDataDateUtils.getDateFormat().format(iterCal.getTime()), FacilityDataDateUtils.getDateFormat().format(iterCal.getTime()), locationId,
+                            DateUtil.getDateFormat().format(iterCal.getTime()), DateUtil.getDateFormat().format(iterCal.getTime()), locationId,
                             Context.getMessageSourceService().getMessage("general.view")));
                 }
             } else {
@@ -175,8 +176,8 @@ public class CalendarTag extends TagSupport {
                 .append(getNextYearLink(startCal));
         for (int i = 1; i <= 12; ++i) {
             String ymd = String.format("%s/%s/%s", year, (i < 10 ? "0" + i : i), "01");
-            Date firstOfMonth = FacilityDataDateUtils.getDateFormat().parse(ymd);
-            Date lastOfMonth = FacilityDataDateUtils.getLastOfMonthDate(firstOfMonth);
+            Date firstOfMonth = DateUtil.getDateFormat().parse(ymd);
+            Date lastOfMonth = DateUtil.getLastOfMonthDate(firstOfMonth);
             boolean inFuture = lastOfMonth.after(new Date());
             boolean showEdit = true;
             boolean showView = true;
@@ -184,9 +185,8 @@ public class CalendarTag extends TagSupport {
             String bgColor = "#fff";
             Date roundedFirstOfMonth = DateUtils.round(firstOfMonth, Calendar.HOUR);
             Date roundedLastOfMonth = DateUtils.round(lastOfMonth, Calendar.HOUR);
-            FacilityDataReport formData = Context.getService(FacilityDataService.class).getFacilityDataReportFormData(schema, roundedFirstOfMonth,
-                    roundedLastOfMonth, location);
-            int numFilled = Context.getService(FacilityDataService.class).getNumberOfQuestionedFilledOut(formData, schema);
+            FacilityDataReport formData = Context.getService(FacilityDataService.class).getReport(schema, roundedFirstOfMonth, roundedLastOfMonth, location);
+            int numFilled = formData.getValues().size();
             if (inFuture) {
                 bgColor = "#aaa";
                 fontColor = "#000;";
@@ -196,7 +196,7 @@ public class CalendarTag extends TagSupport {
                 if (numFilled < 1) {
                     bgColor = MISSING_COLOR;
                     fontColor = MISSING_FONT;
-                } else if (numFilled < Context.getService(FacilityDataService.class).getNumberOfQuestionsInReport(schema)) {
+                } else if (numFilled < schema.getTotalNumberOfQuestions()) {
                     bgColor = PARTIAL_COLOR;
                     fontColor = PARTIAL_FONT;
                 } else {
@@ -208,10 +208,10 @@ public class CalendarTag extends TagSupport {
             sb.append(String.format("<tr style=\" background:%s;color:%s\">", bgColor, fontColor)).append("<td>");
             sb.append(inFuture ? months[i-1] : String.format("<b>%s</b>",months[i-1]));
             sb.append("<td>").append(showEdit ? String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d&editable=true\">%s</a>", fontColor, schemaId,
-                        FacilityDataDateUtils.getDateFormat().format(firstOfMonth), FacilityDataDateUtils.getDateFormat().format(lastOfMonth), locationId,
+                        DateUtil.getDateFormat().format(firstOfMonth), DateUtil.getDateFormat().format(lastOfMonth), locationId,
                         Context.getMessageSourceService().getMessage("general.edit")) : "").append("</td>");
             sb.append("<td>").append(showView ? String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d\">%s</a>", fontColor, schemaId,
-                    FacilityDataDateUtils.getDateFormat().format(firstOfMonth), FacilityDataDateUtils.getDateFormat().format(lastOfMonth), locationId,
+                    DateUtil.getDateFormat().format(firstOfMonth), DateUtil.getDateFormat().format(lastOfMonth), locationId,
                     Context.getMessageSourceService().getMessage("general.view")) : "").append("</td>");
             sb.append("</tr>");
         }
@@ -228,10 +228,10 @@ public class CalendarTag extends TagSupport {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("<a href=\"manage.form?schema=%s&site=%s&", schemaId, locationId));
         if (c.get(Calendar.MONTH) == 11) {
-            String month = FacilityDataDateUtils.incrementMonth(c,1);
+            String month = DateUtil.incrementMonth(c,1);
             sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>", month,year+1));
         } else {
-            sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>",FacilityDataDateUtils.incrementMonth(c,1),year));
+            sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>",DateUtil.incrementMonth(c,1),year));
         }
 
         return sb.toString();
@@ -246,10 +246,10 @@ public class CalendarTag extends TagSupport {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("<a href=\"manage.form?schema=%s&site=%s&", schemaId, locationId));
         if (c.get(Calendar.MONTH) == 0) {
-            String month = FacilityDataDateUtils.incrementMonth(c, -1);
+            String month = DateUtil.incrementMonth(c, -1);
             sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", month, year-1));
         } else {
-            sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", FacilityDataDateUtils.incrementMonth(c, -1), year));
+            sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", DateUtil.incrementMonth(c, -1), year));
         }
 
         return sb.toString();

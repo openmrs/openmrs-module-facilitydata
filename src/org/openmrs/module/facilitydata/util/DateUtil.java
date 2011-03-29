@@ -1,14 +1,14 @@
 package org.openmrs.module.facilitydata.util;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-
-public class FacilityDataDateUtils {
-
+/**
+ * Date Utility methods
+ */
+public class DateUtil {
 
     public static Date getLastOfMonthDate(Date inputDate) {
         Calendar cal = Calendar.getInstance();
@@ -22,7 +22,6 @@ public class FacilityDataDateUtils {
         cal.setTime(d);
         return cal;
     }
-
 
     public static Date incrementMonths(Date d1, int numMonths) {
         Calendar cal = Calendar.getInstance();
@@ -41,7 +40,6 @@ public class FacilityDataDateUtils {
         calendar.add(Calendar.YEAR,numYears);
         return calendar.get(Calendar.YEAR);
     }
-
 
     public static Date getIncrementedDate(Date d1, int increment) {
         Calendar cal = Calendar.getInstance();
@@ -64,7 +62,6 @@ public class FacilityDataDateUtils {
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         return df.format(new Date());
     }
-
 
     public static DateFormat getDateFormat() {
         return new SimpleDateFormat("yyyy/MM/dd");

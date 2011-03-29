@@ -25,8 +25,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormQuestionEditor;
-import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSectionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
@@ -47,17 +45,15 @@ public class FacilityDataFormSectionFormController {
  
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(FacilityDataFormSection.class, new FacilityDataFormSectionEditor());
-        binder.registerCustomEditor(FacilityDataFormQuestion.class, new FacilityDataFormQuestionEditor());
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String homepage(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("section") FacilityDataFormSection section) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("questions", svc.getAllFacilityDataQuestions());
+        map.addAttribute("questions", svc.getAllQuestions());
         if (id != null) {
-            section = svc.getFacilityDataFormSection(id);
+            section = null; // TBD
             map.addAttribute("section", section);
         }
 
@@ -135,7 +131,7 @@ public class FacilityDataFormSectionFormController {
         }
         //pruneQuestions(section.formQuestionList);
 
-        formSection = svc.saveFacilityDataFormSection(section);
+        formSection = null;  // TODO: Save the section
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR,"facilitydata.save-section");
         return formSection != null ? String.format("redirect:section.form?id=%s", formSection.getId())
                 : "/module/facilitydata/sectionForm";

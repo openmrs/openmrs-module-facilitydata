@@ -13,7 +13,9 @@
  */
 package org.openmrs.module.facilitydata.validator;
 
+import org.openmrs.annotation.Handler;
 import org.openmrs.module.facilitydata.model.BaseFacilityMetaData;
+import org.openmrs.util.HandlerUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -21,13 +23,15 @@ import org.springframework.validation.Validator;
 /**
  * Validates a Facility Data MetaData Object
  */
+@Handler(supports={BaseFacilityMetaData.class})
 public class BaseFacilityMetadataValidator implements Validator {
 	
 	/**
 	 * @see Validator#supports(Class)
 	 */
-    public boolean supports(Class aClass) {
-        return BaseFacilityMetaData.class.isAssignableFrom(aClass);
+    public final boolean supports(Class aClass) {
+    	Validator v = HandlerUtil.getPreferredHandler(this.getClass(), Validator.class);
+        return this.getClass().equals(v.getClass());
     }
 
 	/**
