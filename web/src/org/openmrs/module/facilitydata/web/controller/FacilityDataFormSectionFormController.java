@@ -28,7 +28,6 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormQuestionEditor;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSectionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.validator.FacilityDataFormSectionValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -70,7 +69,9 @@ public class FacilityDataFormSectionFormController {
     public String saveSection(@ModelAttribute("section") FacilityDataFormSection section, BindingResult result,
                               HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        new FacilityDataFormSectionValidator().validate(section, result);
+        
+        // TODO: Validate
+        
         if (result.hasErrors()) {
             return "/module/facilitydata/sectionForm";
         }

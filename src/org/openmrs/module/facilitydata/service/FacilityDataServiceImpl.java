@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.facilitydata.service.impl;
+package org.openmrs.module.facilitydata.service;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.facilitydata.dao.FacilityDataDAO;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
@@ -32,7 +31,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
-import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.service.db.FacilityDataDAO;
 
 /**
  * This class serves as the layer just below the api layer but above the database layer.

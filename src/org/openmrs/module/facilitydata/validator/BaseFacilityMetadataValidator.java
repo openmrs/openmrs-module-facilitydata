@@ -13,29 +13,27 @@
  */
 package org.openmrs.module.facilitydata.validator;
 
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.BaseFacilityMetaData;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**
- * Validates a Facility Data Question
+ * Validates a Facility Data MetaData Object
  */
-public class FacilityDataQuestionValidator extends BaseFacilityMetadataValidator {
+public class BaseFacilityMetadataValidator implements Validator {
 	
 	/**
 	 * @see Validator#supports(Class)
 	 */
-	public boolean supports(Class aClass) {
-        return FacilityDataQuestion.class.isAssignableFrom(aClass);
+    public boolean supports(Class aClass) {
+        return BaseFacilityMetaData.class.isAssignableFrom(aClass);
     }
 
 	/**
 	 * @see Validator#validate(Object, Errors)
 	 */
     public void validate(Object o, Errors errors) {
-    	super.validate(o, errors);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.null");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aggregationMethod", "error.null");
     }
 }

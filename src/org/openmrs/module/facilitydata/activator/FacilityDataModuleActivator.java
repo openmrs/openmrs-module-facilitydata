@@ -16,16 +16,23 @@ package org.openmrs.module.facilitydata.activator;
 import org.openmrs.module.Activator;
 import org.apache.log4j.Logger;
 
-
+/**
+ * Module Activator
+ */
 public class FacilityDataModuleActivator implements Activator {
 
     private static final Logger log = Logger.getLogger(FacilityDataModuleActivator.class);
 
+    /**
+     * @see Activator#startup()
+     */
     public void startup() {
         log.info("Starting FacilityData Module");
     }
 
-
+    /**
+     * @see Activator#shutdown()
+     */
     public void shutdown() {
         log.info("Shutting down FacilityData Module");
     }
