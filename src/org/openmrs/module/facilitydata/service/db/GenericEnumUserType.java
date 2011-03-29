@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.facilitydata.util.hibernate.types;
+package org.openmrs.module.facilitydata.service.db;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;

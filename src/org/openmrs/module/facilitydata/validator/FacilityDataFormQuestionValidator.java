@@ -4,18 +4,25 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 
-public class FacilityDataFormQuestionValidator implements Validator {
-    public boolean supports(Class aClass) {
+/**
+ * Validates a Facility Data Question
+ */
+public class FacilityDataFormQuestionValidator extends BaseFacilityMetadataValidator {
+	
+	/**
+	 * @see Validator#supports(Class)
+	 */
+	public boolean supports(Class aClass) {
         return FacilityDataFormQuestion.class.isAssignableFrom(aClass);
     }
 
+	/**
+	 * @see Validator#validate(Object, Errors)
+	 */
     public void validate(Object o, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.null");
+    	super.validate(o, errors);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "questionNumber", "error.null");
-        FacilityDataFormQuestion q = (FacilityDataFormQuestion) o;
-        if (q.getRetired() != null && q.getRetired()) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "retireReason", "general.retiredReason.empty");
-        }
     }
 }

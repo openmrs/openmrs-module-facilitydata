@@ -11,21 +11,20 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.facilitydata.dao.impl;
+package org.openmrs.module.facilitydata.service.db;
+
+import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.module.facilitydata.dao.FacilityDataDAO;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
-
-import java.util.List;
-import java.util.UUID;
 
 @SuppressWarnings({"unchecked", "override", "DesignForExtension", "ChainedMethodCall"})
 public class FacilityDataDAOImpl implements FacilityDataDAO {

@@ -1,18 +1,28 @@
 package org.openmrs.module.facilitydata.validator;
 
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-public class FacilityDataFormSchemaValidator implements Validator {
-    public boolean supports(Class aClass) {
+/**
+ * Validates a Facility Data Question
+ */
+public class FacilityDataFormSchemaValidator extends BaseFacilityMetadataValidator {
+	
+	/**
+	 * @see Validator#supports(Class)
+	 */
+	public boolean supports(Class aClass) {
         return FacilityDataFormSchema.class.isAssignableFrom(aClass);
     }
 
+	/**
+	 * @see Validator#validate(Object, Errors)
+	 */
     public void validate(Object o, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "errors.null");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "frequency", "errors.null");
-
+    	super.validate(o, errors);
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "frequency", "error.null");
     }
 }

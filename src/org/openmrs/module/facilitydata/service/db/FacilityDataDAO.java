@@ -11,17 +11,16 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.facilitydata.dao;
-
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
-import org.openmrs.api.db.DAOException;
+package org.openmrs.module.facilitydata.service.db;
 
 import java.util.List;
 import java.util.UUID;
+
+import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
+import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataValue;
 
 
 public interface FacilityDataDAO {

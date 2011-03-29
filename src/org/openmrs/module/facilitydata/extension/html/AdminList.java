@@ -21,17 +21,30 @@ import java.util.Map;
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
+/**
+ * Extension for the administration page to add links for the facilitydata module
+ */
 public class AdminList extends AdministrationSectionExt {
+	
+	/**
+	 * @see Extension#getMediaType()
+	 */
     @Override
     public MEDIA_TYPE getMediaType() {
         return Extension.MEDIA_TYPE.html;
     }
 
+	/**
+	 * @see AdministrationSectionExt#getTitle()
+	 */
     @Override
     public String getTitle() {
         return "facilitydata.title";
     }
 
+	/**
+	 * @see AdministrationSectionExt#getLinks()
+	 */
     @Override
     public Map<String, String> getLinks() {
         Map<String, String> map = new LinkedHashMap<String, String>();

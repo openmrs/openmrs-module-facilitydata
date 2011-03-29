@@ -28,9 +28,9 @@
                         <ref bean="transactionManager"/>
                     </property>
                     <property name="target">
-                        <bean class="org.openmrs.module.facilitydata.service.impl.FacilityDataServiceImpl">
+                        <bean class="org.openmrs.module.facilitydata.service.FacilityDataServiceImpl">
                             <property name="dao">
-                                <bean class="org.openmrs.module.facilitydata.dao.impl.FacilityDataDAOImpl">
+                                <bean class="org.openmrs.module.facilitydata.service.db.FacilityDataDAOImpl">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory"/>
                                     </property>

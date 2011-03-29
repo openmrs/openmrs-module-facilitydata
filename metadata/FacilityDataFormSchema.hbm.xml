@@ -22,7 +22,7 @@
         <!-- / OpenMRS Stuff -->
 
         <property name="frequency" column="frequency" not-null="true">
-            <type name="org.openmrs.module.facilitydata.util.hibernate.types.GenericEnumUserType">
+            <type name="org.openmrs.module.facilitydata.service.db.GenericEnumUserType">
                 <param name="enumClass">org.openmrs.module.facilitydata.model.enums.Frequency</param>
             </type>
         </property>
