@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
@@ -88,6 +89,60 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	 */
 	public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
 		dao.deleteFacilityDataFormSchema(formSchema);
+	}
+
+	/**
+	 * @see FacilityDataService#saveCodedOptionSet(FacilityDataCodedOptionSet)
+	 */
+	public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
+		return dao.saveCodedOptionSet(optionSet);
+	}
+
+	/**
+	 * @see FacilityDataService#getCodedOptionSet(java.lang.Integer)
+	 */
+	public FacilityDataCodedOptionSet getCodedOptionSet(Integer id) {
+		return dao.getCodedOptionSet(id);
+	}
+
+	/**
+	 * @see FacilityDataService#getCodedOptionSetByUUID(String)
+	 */
+	public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid) {
+		return dao.getCodedOptionSetByUUID(uuid);
+	}
+
+	/**
+	 * @see FacilityDataService#getAllCodedOptionSets()
+	 */
+	public List<FacilityDataCodedOptionSet> getAllCodedOptionSets() {
+		return dao.getAllCodedOptionSets();
+	}
+
+	/**
+	 * @see FacilityDataService#retireCodedOptionSet(FacilityDataCodedOptionSet, String)
+	 */
+	public FacilityDataCodedOptionSet retireCodedOptionSet(FacilityDataCodedOptionSet optionSet, String reason) {
+		optionSet.setRetired(true);
+		optionSet.setRetireReason(reason);
+		return saveCodedOptionSet(optionSet);
+	}
+
+	/**
+	 * @see FacilityDataService#unretireQuestion(FacilityDataCodedOptionSet)
+	 */
+	public FacilityDataCodedOptionSet unretireCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
+		optionSet.setRetired(false);
+		optionSet.setDateRetired(new Date());
+		optionSet.setRetireReason(null);
+		return saveCodedOptionSet(optionSet);
+	}
+
+	/**
+	 * @see FacilityDataService#deleteCodedOptionSet(FacilityDataCodedOptionSet)
+	 */
+	public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
+		dao.deleteCodedOptionSet(optionSet);
 	}
 
 	/**

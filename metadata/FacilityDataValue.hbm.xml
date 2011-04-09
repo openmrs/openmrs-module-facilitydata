@@ -24,7 +24,7 @@
         <property name="toDate" type="java.util.Date" column="to_date" not-null="true"/>
         <many-to-one name="question" column="question" class="FacilityDataFormQuestion" not-null="true"/>
         <property name="valueNumeric" type="java.lang.Double" column="value_numeric" not-null="false" length="255"/>
-        <property name="valueText" type="java.lang.String" column="value_text" not-null="false" length="255"/>
+        <many-to-one name="valueCoded" class="FacilityDataCodedOption" column="value_coded" not-null="false"/>
         <property name="comments" type="java.lang.String" column="comments" not-null="false" length="255"/>
 
     </class>

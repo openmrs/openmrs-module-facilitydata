@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
@@ -36,10 +37,7 @@ public interface FacilityDataService extends OpenmrsService {
      * Saves a form schema
      * @param formSchema
      * @return the saved schema
-     * @throws IllegalArgumentException if passed a null parameter
-     * @should throw an exception if passed a null parameter
-     * @should save the specified formSchema
-     * @should return the saved schema
+     * @should save and return the specified formSchema
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
@@ -49,9 +47,7 @@ public interface FacilityDataService extends OpenmrsService {
      * Get a specified form schema
      * @param id the id of the schema to retrieve
      * @return the schema or null if it does not exist.
-     * @throws IllegalArgumentException if passed a null parameter
-     * @should throw an exception if passed a null parameter
-     * @should return the specified object with that id or null if it doesn't exist
+     * @should return the schema with the passed id or null if it doesn't exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
@@ -61,8 +57,6 @@ public interface FacilityDataService extends OpenmrsService {
      * Gets a specified form schema using its {@link UUID}.
      * @param uuid the UUID of the schema to retrieve.
      * @return the schema or null if it does exist.
-     * @throws IllegalArgumentException if passed a null parameter
-     * @should throw an exception if passed a null parameter
      * @should return the schema with the specified uuid or null if it doesn't exist
      */
     @Transactional(readOnly = true)
@@ -82,7 +76,6 @@ public interface FacilityDataService extends OpenmrsService {
     /**
      * Retire a schema
      * @param schema the schema
-     * @should throw an exception if passed a null parameter
      * @should retire the given schema then save it.
      */
     @Transactional
@@ -92,7 +85,6 @@ public interface FacilityDataService extends OpenmrsService {
     /**
      * Un-retire a schema
      * @param schema the schema
-     * @should throw an exception if passed a null parameter
      * @should unretire the given schema then save it
      */
     @Transactional
@@ -103,20 +95,87 @@ public interface FacilityDataService extends OpenmrsService {
      * Delete a schema
      * @param formSchema the schema to delete.
      * @throws IllegalArgumentException if passed a null parameter
-     * @should throw an exception if passed a null parameter
      * @should delete the specified schema
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
     public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema);
+
+    /**
+     * Save a <code>FacilityDataCodedOptionSet</code> to the database.
+     * @param question the <code>FacilityDataCodedOptionSet</code> to be saved
+     * @return the <code>FacilityDataCodedOptionSet</code> which was just saved.
+     * @should save and return the passed <code>FacilityDataCodedOptionSet</code>
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+
+    /**
+     * Get a <code>FacilityDataCodedOptionSet</code>
+     * @param id
+     * @return the <code>FacilityDataCodedOptionSet</code> or null if it does not exist
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should return the <code>FacilityDataCodedOptionSet</code> with the passed id or null if it does not exist
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    public FacilityDataCodedOptionSet getCodedOptionSet(Integer id);
+
+    /**
+     * Get a <code>FacilityDataCodedOptionSet</code> using its UUID
+     * @param uuid
+     * @return the <code>FacilityDataCodedOptionSet</code> pertaining to that specific UUID.
+     * @throws IllegalArgumentException if passed a null parameter or empty String
+     * @should return the <code>FacilityDataCodedOptionSet</code> with the specified uuid or null if it does not exist
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid);
+
+    /**
+     * Get all FacilityDataCodedOptionSets
+     * @return a list containing all FacilityDataCodedOptionSet
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should return a list of all FacilityDataCodedOptionSet.
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    public List<FacilityDataCodedOptionSet> getAllCodedOptionSets();
+
+    /**
+     * Retire a FacilityDataCodedOptionSet
+     * @param FacilityDataCodedOptionSet
+     * @should retire a FacilityDataCodedOptionSet then save it
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataCodedOptionSet retireCodedOptionSet(FacilityDataCodedOptionSet optionSet, String reason);
+
+    /**
+     * Un-retire a FacilityDataCodedOptionSet
+     * @param optionSet
+     * @should unretire a FacilityDataCodedOptionSet then save it
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataCodedOptionSet unretireCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+
+    /**
+     * Delete a <code>FacilityDataCodedOptionSet</code>
+     * @param question the <code>FacilityDataCodedOptionSet</code> object to be deleted
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should delete the <code>FacilityDataCodedOptionSet</code> object
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet);
     
     /**
      * Save a <code>FacilityDataQuestion</code> to the database.
      * @param question the <code>FacilityDataQuestion</code> to be saved
      * @return the <code>FacilityDataQuestion</code> which was just saved.
-     * @throws IllegalArgumentException if passed a null <code>FacilityDataQuestion</code>
-     * @should throw an exception if the <code>FacilityDataQuestion</code> passed is null or if a null parameter is passed.
-     * @should return the saved <code>FacilityDataQuestion</code>
+     * @should save and return the passed <code>FacilityDataQuestion</code>
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
@@ -124,13 +183,10 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Get a <code>FacilityDataQuestion</code>
-     *
      * @param id
      * @return the <code>FacilityDataQuestion</code> or null if it does not exist
      * @throws IllegalArgumentException if passed a null parameter
-     * @should return the <code>FacilityDataQuestion</code> with that id
-     * @should return null if a <code>FacilityDataQuestion</code> with that id does not exist
-     * @should throw an exception if passed in a null parameter
+     * @should return the <code>FacilityDataQuestion</code> with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
@@ -141,8 +197,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param uuid
      * @return the question pertaining to that specific UUID.
      * @throws IllegalArgumentException if passed a null parameter or empty String
-     * @should throw an error if passed an empty string or a null parameter
-     * @should return the question with the specified uuid or null.
+     * @should return the question with the specified uuid or null if it does not exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
@@ -160,9 +215,7 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Retire a question
-     *
      * @param question
-     * @should throw an exception if passed a null parameter
      * @should retire a question then save it
      */
     @Transactional
@@ -172,7 +225,6 @@ public interface FacilityDataService extends OpenmrsService {
     /**
      * Un-retire a question
      * @param question
-     * @should throw an exception if passed a null parameter
      * @should unretire a question then save it
      */
     @Transactional
@@ -184,7 +236,6 @@ public interface FacilityDataService extends OpenmrsService {
      * @param question the <code>FacilityDataQuestion</code> object to be deleted
      * @throws IllegalArgumentException if passed a null parameter
      * @should delete the <code>FacilityDataQuestion</code> object
-     * @should throw an exception if a null paremeter is passed
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
@@ -195,8 +246,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param value the <code>FacilityDataValue</code> object to save.
      * @return the saved object
      * @throws IllegalArgumentException if passed a null parameter
-     * @should save the object to the database
-     * @should throw an exception if passed a null parameter
+     * @should save the value to the database
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.ENTER})
@@ -207,9 +257,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param id
      * @return an object with that id or null if it does not exist
      * @throws IllegalArgumentException if passed a null parameter
-     * @should return the object if it one exists with that given id
-     * @should return null if an object with that object does not exist
-     * @should throw an exception if passed a null parameter
+     * @should return the value with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
@@ -218,8 +266,7 @@ public interface FacilityDataService extends OpenmrsService {
     /**
      * Void a FacilityDataValue
      * @param value
-     * @should throw an exception if passed a null parameter
-     * @should void then save
+     * @should void the passed value and then save it
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
@@ -228,8 +275,7 @@ public interface FacilityDataService extends OpenmrsService {
     /**
      * Un-void a FacilityDataValue
      * @param value
-     * @should throw an exception if passed a null parameter
-     * @should void then save
+     * @should unvoid the passed value and then save it
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
@@ -239,7 +285,6 @@ public interface FacilityDataService extends OpenmrsService {
     * Delete a value from the database.
     * @param value the object containing the form data entered for this report.
     * @throws IllegalArgumentException if passed a null parameter
-    * @should throw an exception if passed a null parameter
     * @should delete the given object from the database
     */
     @Transactional
@@ -255,6 +300,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param location the facility
      * @param fromDate the start of the period.
      * @param toDate the end of the period.
+     * @should save the passed report
      */
     @Transactional
     @Authorized({FacilityDataConstants.ENTER})
@@ -267,6 +313,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @param endDate
      * @param location  the location of the clinic
      * @return an instance of {@link FacilityDataReport}.
+     * @should get the report given the passed parameters
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})

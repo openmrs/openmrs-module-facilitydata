@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.openmrs.Location;
+import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
@@ -74,6 +75,49 @@ public interface FacilityDataDAO {
      * @should delete the specified schema
      */
     public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema);
+ 
+
+    /**
+     * Save a <code>FacilityDataCodedOptionSet</code> to the database.
+     * @param question the <code>FacilityDataCodedOptionSet</code> to be saved
+     * @return the <code>FacilityDataCodedOptionSet</code> which was just saved.
+     * @should save and return the passed <code>FacilityDataCodedOptionSet</code>
+     */
+    public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+
+    /**
+     * Get a <code>FacilityDataCodedOptionSet</code>
+     * @param id
+     * @return the <code>FacilityDataCodedOptionSet</code> or null if it does not exist
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should return the <code>FacilityDataCodedOptionSet</code> with the passed id or null if it does not exist
+     */
+    public FacilityDataCodedOptionSet getCodedOptionSet(Integer id);
+
+    /**
+     * Get a <code>FacilityDataCodedOptionSet</code> using its UUID
+     * @param uuid
+     * @return the <code>FacilityDataCodedOptionSet</code> pertaining to that specific UUID.
+     * @throws IllegalArgumentException if passed a null parameter or empty String
+     * @should return the <code>FacilityDataCodedOptionSet</code> with the specified uuid or null if it does not exist
+     */
+    public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid);
+
+    /**
+     * Get all FacilityDataCodedOptionSets
+     * @return a list containing all FacilityDataCodedOptionSet
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should return a list of all FacilityDataCodedOptionSet.
+     */
+    public List<FacilityDataCodedOptionSet> getAllCodedOptionSets();
+
+    /**
+     * Delete a <code>FacilityDataCodedOptionSet</code>
+     * @param question the <code>FacilityDataCodedOptionSet</code> object to be deleted
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should delete the <code>FacilityDataCodedOptionSet</code> object
+     */
+    public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet);
     
     /**
      * Save a <code>FacilityDataQuestion</code> to the database.

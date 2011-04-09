@@ -96,7 +96,7 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
 	 * @return the sections
 	 */
 	public List<FacilityDataFormSection> getSections() {
-		if (sections != null) {
+		if (sections == null) {
 			sections = new ArrayList<FacilityDataFormSection>();
 		}
 		return sections;

@@ -21,6 +21,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
+import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
@@ -73,6 +74,45 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
 		sessionFactory.getCurrentSession().delete(formSchema);
+	}
+
+	/**
+	 * @see FacilityDataDAO#saveCodedOptionSet(FacilityDataCodedOptionSet)
+	 */
+	public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
+		sessionFactory.getCurrentSession().saveOrUpdate(optionSet);
+		return optionSet;
+	}
+
+	/**
+	 * @see FacilityDataDAO#getCodedOptionSet(java.lang.Integer)
+	 */
+	public FacilityDataCodedOptionSet getCodedOptionSet(Integer id) {
+		return (FacilityDataCodedOptionSet) sessionFactory.getCurrentSession().get(FacilityDataCodedOptionSet.class, id);
+	}
+
+	/**
+	 * @see FacilityDataDAO#getCodedOptionSetByUUID(String)
+	 */
+	public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataCodedOptionSet.class);
+        return (FacilityDataCodedOptionSet) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
+	}
+
+	/**
+	 * @see FacilityDataDAO#getAllCodedOptionSets()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FacilityDataCodedOptionSet> getAllCodedOptionSets() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataCodedOptionSet.class);
+        return c.addOrder(Order.asc("name")).list();
+	}
+
+	/**
+	 * @see FacilityDataDAO#deleteCodedOptionSet(FacilityDataCodedOptionSet)
+	 */
+	public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
+		sessionFactory.getCurrentSession().delete(optionSet);
 	}
 
 	/**

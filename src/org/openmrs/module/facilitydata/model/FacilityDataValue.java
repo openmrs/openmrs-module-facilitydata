@@ -30,8 +30,8 @@ public class FacilityDataValue extends BaseOpenmrsData {
     private Date fromDate;
     private Date toDate;
     private FacilityDataFormQuestion question; // The question on the form that was answered
-    private Double valueNumeric; // Populated if this is a numeric question
-    private String valueText; // Populated if this is a non-numeric question
+    private Double valueNumeric; // Populated if this is a Numeric question
+    private FacilityDataCodedOption valueCoded; // Populated if this is a Coded question
     private String comments; // Optional comments associated with the value entered
 
     //***** CONSTRUCTORS *****
@@ -148,17 +148,17 @@ public class FacilityDataValue extends BaseOpenmrsData {
 	}
 
 	/**
-	 * @return the valueText
+	 * @return the valueCoded
 	 */
-	public String getValueText() {
-		return valueText;
+	public FacilityDataCodedOption getValueCoded() {
+		return valueCoded;
 	}
 
 	/**
-	 * @param valueText the valueText to set
+	 * @param valueCoded the valueCoded to set
 	 */
-	public void setValueText(String valueText) {
-		this.valueText = valueText;
+	public void setValueCoded(FacilityDataCodedOption valueCoded) {
+		this.valueCoded = valueCoded;
 	}
 
 	/**
