@@ -30,9 +30,9 @@
         <property name="validFrom" type="java.util.Date" not-null="false" column="valid_from"/>
         <property name="validTo" type="java.util.Date" not-null="false" column="valid_to"/>
         
-        <list name="sections" cascade="all-delete-orphan" inverse="true" batch-size="1000">
+        <list name="sections" cascade="all-delete-orphan" lazy="false" inverse="true" batch-size="1000">
             <key column="schema_id" not-null="true"/>
-            <list-index column="section_number" base="0"/>
+            <list-index column="section_number" base="1"/>
             <one-to-many class="FacilityDataFormSection" />
         </list>
     </class>

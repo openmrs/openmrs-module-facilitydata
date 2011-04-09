@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="web/src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="metadata"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="dist"/>
@@ -43,5 +44,6 @@
 	<classpathentry kind="lib" path="lib-common/openmrs-api-1.6.0.11730-alpha.jar"/>
 	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.6.0.11730-alpha.jar"/>
 	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.6.0.11730-alpha.jar"/>
+	<classpathentry kind="lib" path="lib-common/taglibs-standard-1.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

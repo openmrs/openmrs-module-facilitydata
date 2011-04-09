@@ -13,35 +13,36 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Base class for all question types that are restricted to a particular set of specific values
- * @see StockQuestion
- * @see BooleanCodedQuestion
+ * Represents a Set of options that are the answers to one or more coded questions
  */
-public class CodedFacilityDataQuestion extends FacilityDataQuestion {
+public class FacilityDataCodedOptionSet extends BaseFacilityMetaData {
 	
 	//***** PROPERTIES *****
 	
-	private FacilityDataCodedOptionSet optionSet;
+	private List<FacilityDataCodedOption> options;
 	
 	//***** CONSTRUCTORS *****
 	
-	public CodedFacilityDataQuestion() {super();}
-	
-	//***** PROPERTY ACCESS *****
+	public FacilityDataCodedOptionSet() {super();}
 
 	/**
-	 * @return the optionSet
+	 * @return the options
 	 */
-	public FacilityDataCodedOptionSet getOptionSet() {
-		return optionSet;
+	public List<FacilityDataCodedOption> getOptions() {
+		if (options == null) {
+			options = new ArrayList<FacilityDataCodedOption>();
+		}
+		return options;
 	}
 
 	/**
-	 * @param optionSet the optionSet to set
+	 * @param options the options to set
 	 */
-	public void setOptionSet(FacilityDataCodedOptionSet optionSet) {
-		this.optionSet = optionSet;
+	public void setOptions(List<FacilityDataCodedOption> options) {
+		this.options = options;
 	}
 }

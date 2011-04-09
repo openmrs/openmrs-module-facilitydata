@@ -35,16 +35,38 @@
         </subclass>
 
         <subclass name="CodedFacilityDataQuestion">
-	        <list name="options" cascade="all-delete-orphan" inverse="true" batch-size="1000">
-	            <key column="question_id" not-null="true"/>
-	            <list-index column="option_order" base="0"/>
-	            <one-to-many class="CodedFacilityDataQuestionOption" />
-	        </list>
+        	<many-to-one name="optionSet" class="FacilityDataCodedOptionSet" not-null="false" column="option_set_id"/>
         </subclass>
 
     </class>
     
-    <class name="CodedFacilityDataQuestionOption" table="facilitydata_coded_question_option">
+    <class name="FacilityDataCodedOptionSet" table="facilitydata_coded_option_set">
+
+       <id name="id" type="int" column="option_set_id"><generator class="native"/></id>
+                        
+        <!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <property name="name" column="name" not-null="true" length="255"/>
+        <property name="description" column="description" not-null="false" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->
+        
+       	<list name="options" cascade="all-delete-orphan" inverse="true" batch-size="1000">
+            <key column="option_set_id" not-null="true"/>
+            <list-index column="option_order" base="1"/>
+            <one-to-many class="FacilityDataCodedOption" />
+        </list>
+        
+    </class>
+    
+    <class name="FacilityDataCodedOption" table="facilitydata_coded_option">
 
        <id name="id" type="int" column="id"><generator class="native"/></id>
                         
@@ -63,6 +85,6 @@
         <!-- / OpenMRS Stuff -->
         
         <property name="code" type="java.lang.String" column="code" not-null="true" length="255"/>
-        <many-to-one name="question" class="CodedFacilityDataQuestion" column="question_id" not-null="false"/>
+        <many-to-one name="optionSet" class="FacilityDataCodedOptionSet" column="option_set_id" not-null="false"/>
     </class>
 </hibernate-mapping>

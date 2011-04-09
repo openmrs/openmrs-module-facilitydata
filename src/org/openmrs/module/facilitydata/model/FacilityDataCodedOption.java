@@ -16,31 +16,31 @@ package org.openmrs.module.facilitydata.model;
 /**
  * Represents one of the possible answers to a Coded Question.
  */
-public class CodedFacilityDataQuestionOption extends BaseFacilityMetaData {
+public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	
 	//***** PROPERTIES *****
 	
-	private CodedFacilityDataQuestion question;
+	private FacilityDataCodedOptionSet optionSet;
 	private String code;
 
 	//***** CONSTRUCTORS *****
 	
-	public CodedFacilityDataQuestionOption() {super();}
+	public FacilityDataCodedOption() {super();}
 	
 	//***** PROPERTY ACCESS*****
 
 	/**
-	 * @return the question
+	 * @return the optionSet
 	 */
-	public CodedFacilityDataQuestion getQuestion() {
-		return question;
+	public FacilityDataCodedOptionSet getOptionSet() {
+		return optionSet;
 	}
 
 	/**
-	 * @param question the question to set
+	 * @param optionSet the optionSet to set
 	 */
-	public void setQuestion(CodedFacilityDataQuestion question) {
-		this.question = question;
+	public void setOptionSet(FacilityDataCodedOptionSet optionSet) {
+		this.optionSet = optionSet;
 	}
 	
 	/**

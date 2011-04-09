@@ -7,6 +7,57 @@
 		<date>28 Mar 2011</date>
 		<description></description>
 		<sql>
+             create table if not exists `facilitydata_coded_option_set` (
+                 `option_set_id` int(11) not null auto_increment,
+                 `uuid` char(36) not null,
+                 `name` varchar(255) not null,                
+                 `description` varchar(1000) default null,
+                 `creator` int(11) not null,
+                 `changed_by` int(11) default null,
+                 `date_changed` datetime default null,
+                 `date_created` datetime not null,
+                 `retired` tinyint(1) default '0',
+                 `retired_by` int(11) default null,
+                 `date_retired` datetime default null,
+                 `retired_reason` varchar(255) default null,
+                  primary key (`option_set_id`),
+                  key `user who created this option set` (`creator`),
+                  key `user who changed this option set` (`changed_by`),
+                  key `user who retired this option set` (`retired_by`),
+                  constraint `user who created this option set` foreign key (`creator`) references `users` (`user_id`),
+                  constraint  `user who changed this option set` foreign key (`changed_by`) references `users` (`user_id`),
+                  constraint  `user who retired this option set` foreign key (`retired_by`) references `users` (`user_id`)
+             )
+             ENGINE=InnoDB default CHARSET=utf8;             
+             
+             create table if not exists `facilitydata_coded_option` (
+                 `id` int(11) not null auto_increment,
+                 `uuid` char(36) not null,
+                 `name` varchar(255) not null,                
+                 `description` varchar(1000) default null,
+                 `creator` int(11) not null,
+                 `changed_by` int(11) default null,
+                 `date_changed` datetime default null,
+                 `date_created` datetime not null,
+                 `retired` tinyint(1) default '0',
+                 `retired_by` int(11) default null,
+                 `date_retired` datetime default null,
+                 `retired_reason` varchar(255) default null,
+                 `option_order` int(11) not null,
+                 `code` varchar(255) not null,
+                 `option_set_id` int(11) not null,
+                  primary key (`id`),
+                  key `user who created this coded option` (`creator`),
+                  key `user who changed this coded option` (`changed_by`),
+                  key `user who retired this coded_option` (`retired_by`),
+                  key `set for this coded option` (`option_set_id`),
+                  constraint `user who created this coded option` foreign key (`creator`) references `users` (`user_id`),
+                  constraint  `user who changed this coded option` foreign key (`changed_by`) references `users` (`user_id`),
+                  constraint  `user who retired this coded option` foreign key (`retired_by`) references `users` (`user_id`),
+                  constraint  `set for this coded option` foreign key (`option_set_id`) references `facilitydata_coded_option_set` (`option_set_id`)
+             )
+             ENGINE=InnoDB default CHARSET=utf8;
+
              create table if not exists `facilitydata_form_schema` (
                 `schema_id` int(11) not null auto_increment,
                 `uuid` char(36) not null,
@@ -59,7 +110,7 @@
                  constraint  `user who retired this section` foreign key (`retired_by`) references `users` (`user_id`)
              )
              ENGINE=InnoDB default CHARSET=utf8;
-             
+                                       
              create table if not exists `facilitydata_question` (
                  `question_id` int(11) not null auto_increment,
                  `uuid` char(36) not null,
@@ -78,44 +129,19 @@
                  `min_value` double default null,
                  `max_value` double default null,
                  `allow_decimal` tinyint(1) default null,
+                 `option_set_id` int(11) default null,
                   primary key (`question_id`),
                   key `user who created this question` (`creator`),
                   key `user who changed this question` (`changed_by`),
                   key `user who retired this question` (`retired_by`),
+                  key `option set for coded question` (`option_set_id`),
                   constraint `user who created this question` foreign key (`creator`) references `users` (`user_id`),
-                  constraint  `user who changed this question` foreign key (`changed_by`) references `users` (`user_id`),
-                  constraint  `user who retired this question` foreign key (`retired_by`) references `users` (`user_id`)
+                  constraint `user who changed this question` foreign key (`changed_by`) references `users` (`user_id`),
+                  constraint `user who retired this question` foreign key (`retired_by`) references `users` (`user_id`),
+                  constraint `option set for coded question` foreign key (`option_set_id`) references `facilitydata_coded_option_set` (`option_set_id`)
              )
              ENGINE=InnoDB default CHARSET=utf8;
-             
-             create table if not exists `facilitydata_coded_question_option` (
-                 `id` int(11) not null auto_increment,
-                 `uuid` char(36) not null,
-                 `name` varchar(255) not null,                
-                 `description` varchar(1000) default null,
-                 `creator` int(11) not null,
-                 `changed_by` int(11) default null,
-                 `date_changed` datetime default null,
-                 `date_created` datetime not null,
-                 `retired` tinyint(1) default '0',
-                 `retired_by` int(11) default null,
-                 `date_retired` datetime default null,
-                 `retired_reason` varchar(255) default null,
-                 `option_order` int(11) not null,
-                 `code` varchar(255) not null,
-                 `question_id` int(11) not null,
-                  primary key (`id`),
-                  key `user who created this coded option` (`creator`),
-                  key `user who changed this coded option` (`changed_by`),
-                  key `user who retired this coded_option` (`retired_by`),
-                  key `question for this coded option` (`question_id`),
-                  constraint `user who created this coded option` foreign key (`creator`) references `users` (`user_id`),
-                  constraint  `user who changed this coded option` foreign key (`changed_by`) references `users` (`user_id`),
-                  constraint  `user who retired this coded option` foreign key (`retired_by`) references `users` (`user_id`),
-                  constraint  `question for this coded option` foreign key (`question_id`) references `facilitydata_question` (`question_id`)
-             )
-             ENGINE=InnoDB default CHARSET=utf8;
-             
+
              create table if not exists `facilitydata_form_question` (
                   `form_question_id` int(11) not null auto_increment,
                   `name` varchar(255) not null,
@@ -160,7 +186,7 @@
                   `facility` int(11) not null,
                   `from_date` datetime not null,
                   `to_date` datetime not null,
-                  `value_text` varchar(255) default null,
+                  `value_coded` int(11) default null,
                   `value_numeric` double default null,
                   `question` int(11) not null,
                   `comments` varchar(255) default null,
@@ -169,11 +195,13 @@
                    key `user who changed this record` (`changed_by`),
                    key `user who voided this record` (`voided_by`),
                    key `location of this clinic` (`facility`),
+                   key `coded value which is associated` (`value_coded`),
                    key `question which is associated` (`question`),
                    constraint  `user who created this record` foreign key (`creator`) references `users` (`user_id`),
                    constraint  `user who changed this record` foreign key (`changed_by`) references `users` (`user_id`),
                    constraint  `user who voided this record` foreign key (`voided_by`) references `users` (`user_id`),
                    constraint  `location of this clinic` foreign key (`facility`) references `location` (`location_id`),
+                   constraint  `coded value which is associated` foreign key (`value_coded`) references `facilitydata_coded_option` (`id`),
                    constraint  `question which is associated` foreign key (`question`) references `facilitydata_form_question` (`form_question_id`)
              )
              ENGINE=InnoDB default CHARSET=utf8;
