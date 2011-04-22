@@ -22,9 +22,9 @@
         <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
         <!-- / OpenMRS Stuff -->
 
-        <property name='aggregationMethod' column="aggregation_method" not-null="true">
+        <property name='periodApplicability' column="period_applicability" not-null="true">
             <type name="org.openmrs.module.facilitydata.service.db.GenericEnumUserType">
-                <param name="enumClass">org.openmrs.module.facilitydata.model.enums.AggregationMethod</param>
+                <param name="enumClass">org.openmrs.module.facilitydata.model.enums.PeriodApplicability</param>
             </type>
         </property>
                 

@@ -14,11 +14,12 @@
 package org.openmrs.module.facilitydata.model.enums;
 
 /**
- * Defines the Aggregation method
- * {@link AggregationMethod#LAST} means the last value should be used as the aggregate
- * {@link AggregationMethod#SUM} means the sum of all the values overall (this is only applicable to numeric values).
+ * Defines how a question relates to the period of the report within which it is being asked.
+ * For example, the question "Number of patients enrolled by end of period" would have a {@link PeriodApplicability.AT_END_OF_PERIOD},
+ * whereas the question "Number of patients enrolled during the period" would have a {@link PeriodApplicability.DURING_PERIOD}
  */
-public enum AggregationMethod {
-    LAST,
-    SUM
+public enum PeriodApplicability {
+    AT_START_OF_PERIOD,
+    DURING_PERIOD,
+    AT_END_OF_PERIOD
 }
