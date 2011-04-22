@@ -125,7 +125,7 @@
                  `date_retired` datetime default null,
                  `retired_reason` varchar(255) default null,
                  `data_type` varchar(255) not null,
-                 `aggregation_method` varchar(255) not null,
+                 `period_applicability` varchar(255) not null,
                  `min_value` double default null,
                  `max_value` double default null,
                  `allow_decimal` tinyint(1) default null,

@@ -13,7 +13,7 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import org.openmrs.module.facilitydata.model.enums.AggregationMethod;
+import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 
 /**
  * The base class for all question types.
@@ -22,7 +22,7 @@ public abstract class FacilityDataQuestion extends BaseFacilityMetaData {
 
 	//***** PROPERTIES *****
 	
-    private AggregationMethod aggregationMethod;
+    private PeriodApplicability periodApplicability;
 
     //***** CONSTRUCTORS *****
     
@@ -33,14 +33,14 @@ public abstract class FacilityDataQuestion extends BaseFacilityMetaData {
     /**
 	 * @return the aggregationMethod
 	 */
-	public AggregationMethod getAggregationMethod() {
-		return aggregationMethod;
+	public PeriodApplicability getPeriodApplicability() {
+		return periodApplicability;
 	}
 
 	/**
 	 * @param aggregationMethod the aggregationMethod to set
 	 */
-	public void setAggregationMethod(AggregationMethod aggregationMethod) {
-		this.aggregationMethod = aggregationMethod;
+	public void setPeriodApplicability(PeriodApplicability periodApplicability) {
+		this.periodApplicability = periodApplicability;
 	}
 }
