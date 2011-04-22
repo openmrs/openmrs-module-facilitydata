@@ -13,11 +13,10 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import org.openmrs.OpenmrsMetadata;
-
 /**
  * The base class for all question types.
  */
-public interface FacilityDataQuestionType extends OpenmrsMetadata {
+public abstract class FacilityDataQuestionType extends BaseFacilityMetaData {
 
+    public FacilityDataQuestionType() {}
 }

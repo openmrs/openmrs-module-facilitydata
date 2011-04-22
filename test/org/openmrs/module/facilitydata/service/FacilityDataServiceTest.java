@@ -25,7 +25,6 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.util.BaseFacilityDataContextSensitiveTest;
-import org.openmrs.test.TestUtil;
 
 /**
  * Test of the Facility Data Service

@@ -16,7 +16,7 @@ package org.openmrs.module.facilitydata.model;
 /**
  * Base class for all question types that are restricted to a particular set of specific values
  */
-public class CodedFacilityDataQuestionType extends BaseFacilityMetaData implements FacilityDataQuestionType {
+public class CodedFacilityDataQuestionType extends FacilityDataQuestionType {
 	
 	//***** PROPERTIES *****
 	
