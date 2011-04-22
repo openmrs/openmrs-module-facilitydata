@@ -25,7 +25,7 @@ public class FacilityDataFunctions {
     protected static final Logger log = Logger.getLogger(FacilityDataFunctions.class);
 
     public static boolean isNumericQuestion(FacilityDataQuestion question) {
-        return question.getQuestionType() instanceof NumericFacilityDataQuestionType;
+        return NumericFacilityDataQuestionType.class.isAssignableFrom(question.getQuestionType().getClass());
     }
     
     public static String getDays(String s) {
