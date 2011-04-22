@@ -18,17 +18,19 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
+import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
+import org.openmrs.module.facilitydata.util.BaseFacilityDataContextSensitiveTest;
+import org.openmrs.test.TestUtil;
 
 /**
  * Test of the Facility Data Service
  */
-public class FacilityDataServiceTest extends BaseModuleContextSensitiveTest {
+public class FacilityDataServiceTest extends BaseFacilityDataContextSensitiveTest {
 
 	public final Log log = LogFactory.getLog(this.getClass());
 	
@@ -55,12 +57,16 @@ public class FacilityDataServiceTest extends BaseModuleContextSensitiveTest {
 				log.warn("In section: " + section);
 				for (FacilityDataFormQuestion formQuestion : section.getQuestions()) {
 					log.warn("Found question: " + formQuestion);
-					if (formQuestion.getQuestion() instanceof CodedFacilityDataQuestion) {
-						CodedFacilityDataQuestion cq = (CodedFacilityDataQuestion) formQuestion.getQuestion();
+					FacilityDataQuestionType type = formQuestion.getQuestion().getQuestionType();
+					log.warn("This is of type: " + type);
+					log.warn("is this assignable to coded? " + CodedFacilityDataQuestionType.class.isAssignableFrom(type.getClass()));
+					log.warn("is this assignable to numeric? " + NumericFacilityDataQuestionType.class.isAssignableFrom(type.getClass()));
+					if (CodedFacilityDataQuestionType.class.isAssignableFrom(type.getClass())) {
+						CodedFacilityDataQuestionType cq = (CodedFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
 						log.warn("This is coded, with options: " + cq.getOptionSet().getOptions());
 					}
 					else {
-						NumericFacilityDataQuestion cq = (NumericFacilityDataQuestion) formQuestion.getQuestion();
+						NumericFacilityDataQuestionType cq = (NumericFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
 						log.warn("This is numeric, with constraints: " + cq.getMinValue() + " - " + cq.getMaxValue());
 					}
 				}

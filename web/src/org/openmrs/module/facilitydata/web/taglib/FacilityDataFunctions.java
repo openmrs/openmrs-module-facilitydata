@@ -16,15 +16,16 @@ package org.openmrs.module.facilitydata.web.taglib;
 import org.apache.log4j.Logger;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 
 public class FacilityDataFunctions {
-    private static final Logger log = Logger.getLogger(FacilityDataFunctions.class);
+	
+    protected static final Logger log = Logger.getLogger(FacilityDataFunctions.class);
 
     public static boolean isNumericQuestion(FacilityDataQuestion question) {
-        return question instanceof NumericFacilityDataQuestion;
+        return question.getQuestionType() instanceof NumericFacilityDataQuestionType;
     }
     
     public static String getDays(String s) {

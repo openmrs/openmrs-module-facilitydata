@@ -45,5 +45,6 @@
 	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.6.0.11730-alpha.jar"/>
 	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.6.0.11730-alpha.jar"/>
 	<classpathentry kind="lib" path="lib-common/taglibs-standard-1.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/commons-io-1.4.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

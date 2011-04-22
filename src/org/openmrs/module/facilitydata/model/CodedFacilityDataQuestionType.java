@@ -13,13 +13,10 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-
 /**
  * Base class for all question types that are restricted to a particular set of specific values
- * @see StockQuestion
- * @see BooleanCodedQuestion
  */
-public class CodedFacilityDataQuestion extends FacilityDataQuestion {
+public class CodedFacilityDataQuestionType extends BaseFacilityMetaData implements FacilityDataQuestionType {
 	
 	//***** PROPERTIES *****
 	
@@ -27,7 +24,7 @@ public class CodedFacilityDataQuestion extends FacilityDataQuestion {
 	
 	//***** CONSTRUCTORS *****
 	
-	public CodedFacilityDataQuestion() {super();}
+	public CodedFacilityDataQuestionType() {super();}
 	
 	//***** PROPERTY ACCESS *****
 

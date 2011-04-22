@@ -1,38 +1,43 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
 
-  <facilitydata_coded_option_set option_set_id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f00" name="Boolean Option Set" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option_set option_set_id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f01" name="Status Option Set" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_coded_option_set option_set_id="1" name="Boolean Option Set" [METADATA]/>
+  <facilitydata_coded_option_set option_set_id="2" name="Status Option Set" [METADATA]/>
 
-  <facilitydata_coded_option id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f02" name="True" option_set_id="1" option_order="1" code="t" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f03" name="False" option_set_id="1" option_order="2" code="f" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="3" uuid="d9218f76-6c39-4597-ab12-4c5c67199f04" name="Unknown" option_set_id="1" option_order="3" code="?" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="4" uuid="d9218f76-6c39-4597-ab12-4c5c67199f05" name="Excellent" option_set_id="2" option_order="1" code="excellent" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="5" uuid="d9218f76-6c39-4597-ab12-4c5c67199f06" name="Average" option_set_id="2" option_order="2" code="average" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="6" uuid="d9218f76-6c39-4597-ab12-4c5c67199f07" name="Poor" option_set_id="2" option_order="3" code="poor" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_coded_option id="7" uuid="d9218f76-6c39-4597-ab12-4c5c67199f08" name="Unavailable" option_set_id="2" option_order="4" code="unavailable" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_coded_option id="1" name="True" option_set_id="1" option_order="1" code="t" [METADATA]/>
+  <facilitydata_coded_option id="2" name="False" option_set_id="1" option_order="2" code="f" [METADATA]/>
+  <facilitydata_coded_option id="3" name="Unknown" option_set_id="1" option_order="3" code="?" [METADATA]/>
+  <facilitydata_coded_option id="4" name="Excellent" option_set_id="2" option_order="1" code="excellent" [METADATA]/>
+  <facilitydata_coded_option id="5" name="Average" option_set_id="2" option_order="2" code="average" [METADATA]/>
+  <facilitydata_coded_option id="6" name="Poor" option_set_id="2" option_order="3" code="poor" [METADATA]/>
+  <facilitydata_coded_option id="7" name="Unavailable" option_set_id="2" option_order="4" code="unavailable" [METADATA]/>
 
-  <facilitydata_question question_id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f09" name="Internet Status" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestion" period_applicability="LAST" min_value="[NULL]" max_value="[NULL]" allow_decimal="[NULL]" option_set_id="2" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_question question_id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f10" name="Any power outages" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestion" period_applicability="LAST" min_value="[NULL]" max_value="[NULL]" allow_decimal="[NULL]" option_set_id="1" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_question question_id="3" uuid="d9218f76-6c39-4597-ab12-4c5c67199f11" name="Hours without water" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion" period_applicability="SUM" min_value="0" max_value="24" allow_decimal="true" option_set_id="[NULL]" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_question question_id="4" uuid="d9218f76-6c39-4597-ab12-4c5c67199f12" name="Number of Surgeries Performed" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion" period_applicability="SUM" min_value="0" max_value="[NULL]" allow_decimal="false" option_set_id="[NULL]" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_question question_id="5" uuid="d9218f76-6c39-4597-ab12-4c5c67199f13" name="Number of Outpatient Womens Health Visits" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion" period_applicability="SUM" min_value="0" max_value="[NULL]" allow_decimal="false" option_set_id="[NULL]" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_question question_id="6" uuid="d9218f76-6c39-4597-ab12-4c5c67199f14" name="Number of Outpatient Pediatric Visits" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestion" period_applicability="SUM" min_value="0" max_value="[NULL]" allow_decimal="false" option_set_id="[NULL]" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_question_type question_type_id="1" name="Status Question Type" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType" option_set_id="2" [METADATA]/>
+  <facilitydata_question_type question_type_id="2" name="Boolean Question Type" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType" option_set_id="1" [METADATA]/>
+  <facilitydata_question_type question_type_id="3" name="Daily Hours Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" max_value="24" allow_decimal="true" [METADATA]/>
+  <facilitydata_question_type question_type_id="4" name="Positive Whole Number Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" allow_decimal="false" [METADATA]/>
 
-  <facilitydata_form_schema schema_id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f15" name="Daily Report" description="A sample daily data collection form" frequency="DAILY" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_schema schema_id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f16" name="Montly Report" description="A sample montly data collection form" frequency="MONTHLY" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_question question_id="1" name="Internet Status" period_applicability="AT_END_OF_PERIOD" question_type="1" [METADATA]/>
+  <facilitydata_question question_id="2" name="Any power outages" period_applicability="DURING_PERIOD" question_type="2" [METADATA]/>
+  <facilitydata_question question_id="3" name="Hours without water" period_applicability="DURING_PERIOD" question_type="3" [METADATA]/>
+  <facilitydata_question question_id="4" name="Number of Surgeries Performed" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
+  <facilitydata_question question_id="5" name="Number of Outpatient Womens Health Visits" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
+  <facilitydata_question question_id="6" name="Number of Outpatient Pediatric Visits" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
 
-  <facilitydata_form_section form_section_id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f17" name="Equipment Status" section_number="1" schema_id="1" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_section form_section_id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f18" name="Summary of Services" section_number="2" schema_id="1" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_section form_section_id="3" uuid="d9218f76-6c39-4597-ab12-4c5c67199f19" name="Outpatient Visits" section_number="1" schema_id="2" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_form_schema schema_id="1" name="Daily Report" description="A sample daily data collection form" frequency="DAILY" [METADATA]/>
+  <facilitydata_form_schema schema_id="2" name="Montly Report" description="A sample montly data collection form" frequency="MONTHLY" [METADATA]/>
 
-  <facilitydata_form_question form_question_id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f20" name="Internet Status" question_number="1a" section="1" question="1" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_question form_question_id="2" uuid="d9218f76-6c39-4597-ab12-4c5c67199f21" name="Any power outages" question_number="1b" section="1" question="2" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_question form_question_id="3" uuid="d9218f76-6c39-4597-ab12-4c5c67199f22" name="Hours without water" question_number="1c" section="1" question="3" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_question form_question_id="4" uuid="d9218f76-6c39-4597-ab12-4c5c67199f23" name="Number of Surgeries Performed" question_number="2a" section="2" question="4" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_question form_question_id="5" uuid="d9218f76-6c39-4597-ab12-4c5c67199f24" name="Number of Outpatient Womens Health Visits" question_number="3" section="3" question="5" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
-  <facilitydata_form_question form_question_id="6" uuid="d9218f76-6c39-4597-ab12-4c5c67199f25" name="Number of Outpatient Pediatric Visits" question_number="2" section="3" question="6" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" retired="false" retired_reason=""/>
+  <facilitydata_form_section form_section_id="1" name="Equipment Status" section_number="1" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="2" name="Summary of Services" section_number="2" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="3" name="Outpatient Visits" section_number="1" schema_id="2" [METADATA]/>
 
-  <facilitydata_value id="1" uuid="d9218f76-6c39-4597-ab12-4c5c67199f26" facility="1" from_date="2010-08-01 00:00:00.0" to_date="2010-08-01 00:00:00.0" question="1" value_coded="6" value_numeric="[NULL]" comments="" creator="1" date_created="2005-08-07 00:00:00.0" changed_by="1" date_changed="2007-10-24 14:51:53.0" voided="false" void_reason=""/>
+  <facilitydata_form_question form_question_id="1" name="Internet Status" question_number="1a" section="1" question="1" [METADATA]/>
+  <facilitydata_form_question form_question_id="2" name="Any power outages" question_number="1b" section="1" question="2" [METADATA]/>
+  <facilitydata_form_question form_question_id="3" name="Hours without water" question_number="1c" section="1" question="3" [METADATA]/>
+  <facilitydata_form_question form_question_id="4" name="Number of Surgeries Performed" question_number="2a" section="2" question="4" [METADATA]/>
+  <facilitydata_form_question form_question_id="5" name="Number of Outpatient Womens Health Visits" question_number="3" section="3" question="5" [METADATA]/>
+  <facilitydata_form_question form_question_id="6" name="Number of Outpatient Pediatric Visits" question_number="2" section="3" question="6" [METADATA]/>
+
+  <facilitydata_value id="1" facility="1" from_date="2010-08-01 00:00:00.0" to_date="2010-08-01 00:00:00.0" question="1" value_coded="6" value_numeric="[NULL]" comments="" [DATA]/>
            
 </dataset>
