@@ -18,11 +18,12 @@ import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 /**
  * The base class for all question types.
  */
-public abstract class FacilityDataQuestion extends BaseFacilityMetaData {
+public class FacilityDataQuestion extends BaseFacilityMetaData {
 
 	//***** PROPERTIES *****
 	
     private PeriodApplicability periodApplicability;
+    private FacilityDataQuestionType questionType;
 
     //***** CONSTRUCTORS *****
     
@@ -31,16 +32,30 @@ public abstract class FacilityDataQuestion extends BaseFacilityMetaData {
     //***** PROPERTY ACCESS *****
 
     /**
-	 * @return the aggregationMethod
+	 * @return the periodApplicability
 	 */
 	public PeriodApplicability getPeriodApplicability() {
 		return periodApplicability;
 	}
 
 	/**
-	 * @param aggregationMethod the aggregationMethod to set
+	 * @param periodApplicability the periodApplicability to set
 	 */
 	public void setPeriodApplicability(PeriodApplicability periodApplicability) {
 		this.periodApplicability = periodApplicability;
+	}
+
+	/**
+	 * @return the questionType
+	 */
+	public FacilityDataQuestionType getQuestionType() {
+		return questionType;
+	}
+
+	/**
+	 * @param questionType the questionType to set
+	 */
+	public void setQuestionType(FacilityDataQuestionType questionType) {
+		this.questionType = questionType;
 	}
 }

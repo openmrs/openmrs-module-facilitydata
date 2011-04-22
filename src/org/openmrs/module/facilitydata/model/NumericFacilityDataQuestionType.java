@@ -17,7 +17,7 @@ package org.openmrs.module.facilitydata.model;
  * The Numeric question type, which contains additional fields including min/max values
  * Example Numeric Question: "How many children were seen today?"
  */
-public class NumericFacilityDataQuestion extends FacilityDataQuestion {
+public class NumericFacilityDataQuestionType extends BaseFacilityMetaData implements FacilityDataQuestionType {
 
 	//***** PROPERTIES *****
 	
@@ -27,7 +27,7 @@ public class NumericFacilityDataQuestion extends FacilityDataQuestion {
 
     //***** CONSTRUCTORS *****
     
-    public NumericFacilityDataQuestion() {super();}
+    public NumericFacilityDataQuestionType() {super();}
     
     //***** PROPERTY ACCESS *****
 

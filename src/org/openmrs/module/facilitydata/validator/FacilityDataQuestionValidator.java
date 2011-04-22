@@ -31,6 +31,6 @@ public class FacilityDataQuestionValidator extends BaseFacilityMetadataValidator
     public void validate(Object o, Errors errors) {
     	super.validate(o, errors);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.null");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aggregationMethod", "error.null");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "periodApplicability", "error.null");
     }
 }
