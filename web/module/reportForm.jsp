@@ -62,7 +62,17 @@
         </tr>
     </c:forEach>
     <br/><br/>
-    <facilitydataTag:buttons editable="${param.editable}"/>
+	<c:if test="${param.editable != null && param.editable}">
+	    <table width="100%">
+	        <tr width="50%">
+	            <th align="center" colspan="2">
+	                <input type="submit" value="<spring:message code="general.submit"/>"/>
+	                <input type="button" value="<spring:message code="general.cancel"/>"
+	                onclick="document.location.href='report.form?id=${param.id}&startDate=${param.startDate}&endDate=${param.endDate}&site=${param.site}'"/>
+	            </th>
+	        </tr>
+	    </table>
+	</c:if>
 </frm:form>
 </table>
 </br></br>

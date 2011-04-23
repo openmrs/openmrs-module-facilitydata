@@ -22,7 +22,6 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.DateUtil;
 import org.openmrs.module.facilitydata.validator.FacilityDataFormSchemaValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -45,11 +44,11 @@ public class FacilityDataFormSchemaFormController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtil.getDateFormat(), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String homepage(@RequestParam(required = false) Integer id, ModelMap map,
+    public String viewForm(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("schema") FacilityDataFormSchema schema) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
         map.addAttribute("frequencies", Frequency.values());
@@ -69,8 +68,6 @@ public class FacilityDataFormSchemaFormController {
         if (result.hasErrors()) {
             return "/module/facilitydata/schemaForm";
         }
-        map.addAttribute("frequencies", Frequency.values());
-        map.addAttribute("schema", schema);
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");
         return String.format("redirect:schema.form?id=%s", svc.saveFacilityDataFormSchema(schema).getId());
     }
