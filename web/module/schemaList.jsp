@@ -4,55 +4,49 @@
 
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/schema.list"/>
 
-
-
 <script type="text/javascript">
-
     $(document).ready(function() {
         $('#schemaList').dataTable({
             "bPaginate": true,
-            "bLengthChange": true,
+            "bLengthChange": false,
             "bFilter": false,
             "bSort": false,
-            "bInfo": true,
-            "bAutoWidth": true,
+            "bInfo": false,
+            "bAutoWidth": false,
             "bSortable": true
         });
     });
 </script>
 
-<div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message
-        code="facilitydata.manage-form-schema"/></div>
+<style>
+	table.schemaForm th,td {padding:5px; white-space:nowrap;}
+</style>
+
+<b class="boxHeader"><spring:message code="facilitydata.manage-form-schema"/></b>
 <br/>
-<table cellpadding="2" cellspacing="1" id="schemaList">
+<a href="schema.form"><spring:message code="facilitydata.add-schema"/></a>
+<br/><br/>
+<table cellpadding="2" cellspacing="1" id="schemaList" class="schemaForm">
     <thead>
-    <tr>
-        <th><spring:message code="general.action"/></th>
-        <th><spring:message code="facilitydata.display-name"/></th>
-        <th><spring:message code="facilitydata.schema.frequency"/></th>
-        <th><spring:message code="facilitydata.valid-from"/></th>
-        <th><spring:message code="facilitydata.valid-to"/></th>
-        <th><spring:message code="general.description"/></th>
-    </tr>
+	    <tr>
+	        <th><spring:message code="facilitydata.display-name"/></th>
+	        <th><spring:message code="facilitydata.schema.frequency"/></th>
+	        <th><spring:message code="facilitydata.valid-from"/></th>
+	        <th><spring:message code="facilitydata.valid-to"/></th>
+	        <th style="width:100%;"><spring:message code="general.description"/></th>
+	    </tr>
     </thead>
     <tbody>
-    <c:forEach items="${schemas}" var="schema" varStatus="varstatus">
-        <tr>
-            <form method="post" action="schema.list">
-                <input type="hidden" value="${schema.id}" name="id"/>
-                <td style="vertical-align:top;width:1em;text-align:center;"><input type="image"
-                                                                                   onclick="return confirm('<spring:message code="facilitydata.schema.delete-warning"/>');"
-                    alt="<spring:message code="general.delete"/>" src="${pageContext.request.contextPath}/images/trash.gif"/>
-                </td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;"><a
-                        href="schema.form?id=${schema.id}">${schema.name}</a></td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;text-align:center;">${schema.frequency}</td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;">${schema.validFrom}</td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;">${schema.validTo}</td>
-                <td style="vertical-align:top;">${schema.description}</td>
-            </form>
-        </tr>
-    </c:forEach>
+	    <c:forEach items="${schemas}" var="schema">
+	        <tr>
+                <td><a href="schema.form?id=${schema.id}">${schema.name}</a></td>
+                <td>${schema.frequency}</td>
+                <td><openmrs:formatDate date="${schema.validFrom}"/></td>
+                <td><openmrs:formatDate date="${schema.validTo}"/></td>
+                <td>${schema.description}</td>
+	        </tr>
+	    </c:forEach>
     </tbody>
 </table>
+
 <%@ include file="/WEB-INF/template/footer.jsp" %>
