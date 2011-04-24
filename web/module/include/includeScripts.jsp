@@ -1,7 +1,6 @@
 <!-- Include css from module -->
 <openmrs:htmlInclude file='${pageContext.request.contextPath}/moduleResources/facilitydata/css/redmond/jquery-ui-1.7.2.custom.css'/>
 <openmrs:htmlInclude file='${pageContext.request.contextPath}/moduleResources/facilitydata/css/ui.multiselect.css'/>
-<openmrs:htmlInclude file='${pageContext.request.contextPath}/moduleResources/facilitydata/css/common.css'/>
 <openmrs:htmlInclude file="${pageContext.request.contextPath}/moduleResources/reporting/scripts/jquery/dataTables/css/page.css"/>
 <openmrs:htmlInclude file="${pageContext.request.contextPath}/moduleResources/reporting/scripts/jquery/dataTables/css/table.css"/>
 <openmrs:htmlInclude file="${pageContext.request.contextPath}/moduleResources/reporting/scripts/jquery/dataTables/css/custom.css"/>
