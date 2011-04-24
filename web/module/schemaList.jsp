@@ -19,7 +19,7 @@
 </script>
 
 <style>
-	table.schemaForm th,td {padding:5px; white-space:nowrap;}
+	table.schemaForm th,td {padding:5px; white-space:nowrap; font-size:small;}
 </style>
 
 <b class="boxHeader"><spring:message code="facilitydata.manage-form-schema"/></b>
