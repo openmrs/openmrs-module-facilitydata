@@ -35,6 +35,13 @@ public class FacilityDataFormSchemaController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
     }
+    
+	@RequestMapping("/module/facilitydata/schema.list")
+    public String listSchemas(ModelMap map) {
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
+        map.addAttribute("schemas",svc.getAllFacilityDataFormSchemas());
+        return "/module/facilitydata/schemaList";
+    }
 
     @RequestMapping("/module/facilitydata/schema.form")
     public String viewSchema(@RequestParam(required = false) Integer id, ModelMap map) {

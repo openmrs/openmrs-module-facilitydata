@@ -13,33 +13,20 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/module/facilitydata/question.list")
 public class FacilityDataQuestionListController {
 
     @RequestMapping(method= RequestMethod.GET)
-    public String homepage(ModelMap map) {
+    public String listQuestions(ModelMap map) {
         map.addAttribute("questions", Context.getService(FacilityDataService.class).getAllQuestions());
-        return "/module/facilitydata/questionList";
-    }
-
-    @RequestMapping(method=RequestMethod.POST)
-    public String deleteQuestion(@RequestParam Integer id,ModelMap map, HttpServletRequest request) {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        svc.deleteQuestion(svc.getQuestion(id));
-        request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.deleted-question");
-        map.addAttribute("questions",svc.getAllQuestions());        
         return "/module/facilitydata/questionList";
     }
 }
