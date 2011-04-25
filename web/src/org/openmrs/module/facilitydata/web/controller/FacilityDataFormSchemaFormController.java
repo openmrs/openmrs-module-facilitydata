@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/module/facilitydata/schema.form")
+@RequestMapping("/module/facilitydata/schemaForm.form")
 public class FacilityDataFormSchemaFormController {
 
     @InitBinder

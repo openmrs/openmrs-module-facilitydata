@@ -108,4 +108,11 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
 	public void setSections(List<FacilityDataFormSection> sections) {
 		this.sections = sections;
 	}
+	
+	/**
+	 * @param section the section to add
+	 */
+	public void addSection(FacilityDataFormSection section) {
+		getSections().add(section);
+	}
 }

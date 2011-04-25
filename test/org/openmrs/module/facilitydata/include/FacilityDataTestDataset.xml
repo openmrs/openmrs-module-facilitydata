@@ -27,9 +27,9 @@
   <facilitydata_form_schema schema_id="1" name="Daily Report" description="A sample daily data collection form" frequency="DAILY" [METADATA]/>
   <facilitydata_form_schema schema_id="2" name="Montly Report" description="A sample montly data collection form" frequency="MONTHLY" [METADATA]/>
 
-  <facilitydata_form_section form_section_id="1" name="Equipment Status" section_number="1" schema_id="1" [METADATA]/>
-  <facilitydata_form_section form_section_id="2" name="Summary of Services" section_number="2" schema_id="1" [METADATA]/>
-  <facilitydata_form_section form_section_id="3" name="Outpatient Visits" section_number="1" schema_id="2" [METADATA]/>
+  <facilitydata_form_section form_section_id="1" name="Equipment Status" section_number="0" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="2" name="Summary of Services" section_number="1" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="3" name="Outpatient Visits" section_number="0" schema_id="2" [METADATA]/>
 
   <facilitydata_form_question form_question_id="1" name="Internet Status" question_number="1a" section="1" question="1" [METADATA]/>
   <facilitydata_form_question form_question_id="2" name="Any power outages" question_number="1b" section="1" question="2" [METADATA]/>

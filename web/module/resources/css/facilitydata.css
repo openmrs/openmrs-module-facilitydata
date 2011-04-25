@@ -1,3 +1,6 @@
-.text td {
-    width:3.25em;
+
+.actionImage {
+	cursor: pointer;	
 }
+
+.facilityDataTable td,th {font-size:small; text-align:left;}

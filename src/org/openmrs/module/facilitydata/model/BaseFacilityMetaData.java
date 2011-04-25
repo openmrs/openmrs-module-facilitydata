@@ -60,7 +60,7 @@ public abstract class BaseFacilityMetaData extends BaseOpenmrsMetadata {
         if (this == o) return true;
         if (this.getClass().isAssignableFrom(o.getClass())) {
         	BaseFacilityMetaData that = (BaseFacilityMetaData)o;
-        	return this.getId().equals(that.getId());
+        	return this.getId() != null && this.getId().equals(that.getId());
         }
         return false;
     }
