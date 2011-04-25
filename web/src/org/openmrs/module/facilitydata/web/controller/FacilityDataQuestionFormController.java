@@ -15,28 +15,61 @@ package org.openmrs.module.facilitydata.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionEditor;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.validator.FacilityDataQuestionValidator;
+import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller("question")
-@RequestMapping("/module/facilitydata/question.form")
+@Controller
+@RequestMapping("/module/facilitydata/questionForm.form")
 public class FacilityDataQuestionFormController {
+	
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String homepage(ModelMap map, @RequestParam(required = false) Integer id, @ModelAttribute("question") FacilityDataQuestion question) {
-    	// TODO
-        return "/module/facilitydata/questionForm";
+    public void viewForm(@RequestParam(required = false) Integer id, ModelMap map,
+                           @ModelAttribute("question") FacilityDataQuestion question) {
+        FacilityDataService svc = Context.getService(FacilityDataService.class);
+        map.addAttribute("periodApplicabilities", PeriodApplicability.values());
+        if (id != null) {
+            question = svc.getQuestion(id);
+            map.addAttribute("question", question);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    public String saveQuestion(@RequestParam(required = false) Integer id,
+                             @ModelAttribute("question") FacilityDataQuestion question, BindingResult result,
+                             HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
+        new FacilityDataQuestionValidator().validate(question, result);
+        if (result.hasErrors()) {
+            return "/module/facilitydata/questionForm";
+        }
+        Context.getService(FacilityDataService.class).saveQuestion(question);
+        request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.question.saved");
+        return String.format("redirect:question.form?id=%s", question.getId());
+    }
+
+    /*
+    @RequestMapping(method = RequestMethod.POST)
     public String saveQuestion(@RequestParam(required = false) Integer id, @ModelAttribute("command") FacilityDataQuestion question, BindingResult result, HttpServletRequest request) {
-/*
+
         Map<String, String> questionTypes = new HashMap<String, String>();
         questionTypes.put("NumericQuestion", "org.openmrs.module.facilitydata.model.NumericQuestion");
         questionTypes.put("StockQuestion", "org.openmrs.module.facilitydata.model.StockQuestion");
@@ -110,7 +143,8 @@ public class FacilityDataQuestionFormController {
         } else {
             request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage("facilitydata.error.saved"));
         }
-        */
+        
         return String.format("redirect:question.form?id=%s", id);
     }
+    */
 }

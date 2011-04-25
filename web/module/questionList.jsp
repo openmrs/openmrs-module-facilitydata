@@ -2,52 +2,46 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-<openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formQuestion.list"/>
+<openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/question.list"/>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
         $('#questionList').dataTable({
             "bPaginate": true,
-            "bLengthChange": true,
+            "bLengthChange": false,
             "bFilter": false,
             "bSort": false,
-            "bInfo": true,
-            "bAutoWidth": true,
+            "bInfo": false,
+            "bAutoWidth": false,
             "bSortable": true
         });
     });
 </script>
 
-<div class="boxHeader" style="font-weight:bold;text-align:center;"><spring:message
-        code="facilitydata.question-form"/></div>
-<br/><br/>
-<table cellpadding="2" cellspacing="1" id="questionList">
-    <thead>
-    <tr>
-        <th><spring:message code="general.action"/></th>
-        <th><spring:message code="general.name"/></th>
-        <th><spring:message code="facilitydata.type"/></th>
-        <th><spring:message code="general.description"/></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${questions}" var="question" varStatus="varstatus">
-        <tr>
-            <form method="post" action="question.list">
-                <input type="hidden" value="${question.id}" name="id"/>
-                <td style="vertical-align:top;width:1em;text-align:center;"><input type="image"
-                                                                                   onclick="return confirm('<spring:message code="
-                                                                                   facilitydata.question.delete-warning"/>');"
-                    alt="<spring:message code="general.delete"/>" src="${pageContext.request.contextPath}/images/trash.gif"/>
-                </td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;"><a
-                        href="question.form?id=${question.id}">${question.name}</a></td>
-                <td style="vertical-align:top;overflow:hidden;width:1em;">${facilitydata:getDataType(question)}</td>
-                <td style="vertical-align:top;">${question.description}</td>
-            </form>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+<b class="boxHeader"><spring:message code="facilitydata.manage-questions"/></b>
+<div class="box">
+	<a href="questionForm.form"><spring:message code="facilitydata.add-question"/></a>
+	<br/><br/>
+	<table cellpadding="2" cellspacing="1" id="questionList" class="schemaForm">
+	    <thead>
+		    <tr>
+		        <th style="white-space:nowrap;"><spring:message code="facilitydata.display-name"/></th>
+		        <th style="white-space:nowrap;"><spring:message code="facilitydata.question-type"/></th>
+		        <th style="white-space:nowrap;"><spring:message code="facilitydata.period-applicability"/></th>
+		        <th style="width:100%;"><spring:message code="general.description"/></th>
+		    </tr>
+	    </thead>
+	    <tbody>
+		    <c:forEach items="${questions}" var="question">
+		        <tr>
+	                <td style="white-space:nowrap;"><a href="question.form?id=${question.id}">${question.name}</a></td>
+	                <td style="white-space:nowrap;">${question.questionType}</td>
+	                <td style="white-space:nowrap;">${question.periodApplicability}</td>
+	                <td>${question.description}</td>
+		        </tr>
+		    </c:forEach>
+	    </tbody>
+	</table>
+</div>
+
 <%@ include file="/WEB-INF/template/footer.jsp" %>
