@@ -14,6 +14,7 @@
 package org.openmrs.module.facilitydata.model;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Represents a single report section with a specified number of questions
@@ -48,6 +49,9 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
 	 * @return the questions
 	 */
 	public Set<FacilityDataFormQuestion> getQuestions() {
+		if (questions == null) {
+			questions = new TreeSet<FacilityDataFormQuestion>();
+		}
 		return questions;
 	}
 

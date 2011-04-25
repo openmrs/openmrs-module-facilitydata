@@ -55,19 +55,19 @@
 }
 
 .paginate_disabled_previous {
-	background-image: url("'../../js/dataTables/images/back_disabled.jpg'");
+	background-image: url('../images/back_disabled.jpg');
 }
 
 .paginate_enabled_previous {
-	background-image: url("'../../js/dataTables/images/back_enabled.jpg'");
+	background-image: url('../images/back_enabled.jpg');
 }
 
 .paginate_disabled_next {
-	background-image: url("'../../js/dataTables/images/forward_disabled.jpg'");
+	background-image: url('../images/forward_disabled.jpg');
 }
 
 .paginate_enabled_next {
-	background-image: url("'../../js/dataTables/images/forward_enabled.jpg'");
+	background-image: url('../images/forward_enabled.jpg');
 }
 
 
@@ -116,15 +116,15 @@ table.display td.center {
  */
 
 .sorting_asc {
-	background: url("'../../js/dataTables/images/sort_asc.jpg'") no-repeat center right;
+	background: url('../images/sort_asc.jpg') no-repeat center right;
 }
 
 .sorting_desc {
-	background: url("'../../js/dataTables/images/sort_desc.jpg'") no-repeat center right;
+	background: url('../images/sort_desc.jpg') no-repeat center right;
 }
 
 .sorting {
-	background: url("'../../js/dataTables/images/sort_both.jpg'") no-repeat center right;
+	background: url('../images/sort_both.jpg') no-repeat center right;
 }
 
 

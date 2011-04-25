@@ -16,6 +16,20 @@ $(document).ready(function() {
 		position: [150,150],
 		zIndex:990
 	});
+	
+	<c:forEach items="${schema.sections}" var="section">
+		$('#deleteSection${section.id}').dialog({
+			autoOpen: false,
+			modal: true,
+			draggable: false,
+			closeOnEscape: false,
+			title: '<spring:message code="facilitydata.delete-section"/>: ${section.name}',
+			width: '75%',
+			height: $(window).height()/2,
+			position: [150,150],
+			zIndex:990
+		});
+	</c:forEach>
 
 	$('#saveSectionButton').click(function(event){
 		var sectionId = $('#sectionIdField').val();
@@ -40,7 +54,11 @@ $(document).ready(function() {
 function editSection(existingId, existingName) {
 	$('#sectionIdField').val(existingId);
 	$('#sectionNameField').val(existingName);
-	$('#editSectionDiv').dialog('open');
+	$('#editSectionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-section"/>: ' + existingName).dialog('open');
+}
+
+function deleteSection(id) {
+	$('#deleteSection'+id).dialog('open');
 }
 
 function moveSection(existingIndex, newIndex) {
@@ -114,9 +132,35 @@ function moveSection(existingIndex, newIndex) {
 												</c:when>
 												<c:otherwise>&nbsp;&nbsp;&nbsp;&nbsp;</c:otherwise>
 											</c:choose>
+											<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteSection('${section.id}');"/>
 										</c:if>
 									</td>
 								</tr>
+								
+								<div id="deleteSection${section.id}" style="display:none;">
+									
+									<form action="deleteSection.form">
+										<input type="hidden" name="schema" value="${schema.id}"/>
+										<input type="hidden" name="sectionId" value="${section.id}"/>
+										
+										<c:if test="${fn:length(section.questions) > 0}">
+											<spring:message code="facilitydata.section.delete-with-questions-warning"/>
+											<br/>
+											<select name="newQuestionSectionId">
+												<option value=""><spring:message code="facilitydata.choose-section"/></option>
+												<c:forEach items="${schema.sections}" var="s">
+													<c:if test="${s != section}">
+														<option value="${s.id}">${s.name}</option>
+													</c:if>
+												</c:forEach>
+											</select>
+										</c:if>
+										
+										<spring:message code="facilitydata.section.delete-warning"/>
+										<input type="submit" value="<spring:message code="general.delete"/>"/>
+									</form>
+								</div>
+								
 							</c:forEach>
 						</tbody>
 					</table>
@@ -137,6 +181,7 @@ function moveSection(existingIndex, newIndex) {
 							</tr>
 						</table>
 					</div>
+
 				</fieldset>
 			</td>
 			<td style="width:67%; vertical-align:top;">
@@ -148,11 +193,7 @@ function moveSection(existingIndex, newIndex) {
 					<c:if test="${empty schema.sections}">
 						<i><spring:message code="facilitydata.add-section-to-add-question-message"/></i>
 					</c:if>
-					<c:forEach items="${schema.sections}" var="section">
-						${section.name}
-						<br/>
-						<a href=""><spring:message code="facilitydata.formQuestion.create"/></a>
-					</c:forEach>
+					TODO...
 				</fieldset>
 			</td>
 		</tr>
