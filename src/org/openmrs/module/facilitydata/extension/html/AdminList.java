@@ -51,6 +51,7 @@ public class AdminList extends AdministrationSectionExt {
         map.put("module/facilitydata/manage.form", "facilitydata.view-enter");
         map.put("module/facilitydata/schema.list", "facilitydata.manage-form-schema");
         map.put("module/facilitydata/question.list", "facilitydata.manage-question");
+        map.put("module/facilitydata/questionType.list", "facilitydata.manage-question-type");
         return Collections.unmodifiableMap(map);
     }
 }

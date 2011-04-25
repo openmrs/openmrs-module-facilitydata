@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
@@ -92,57 +92,57 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#saveCodedOptionSet(FacilityDataCodedOptionSet)
+	 * @see FacilityDataService#saveCodedQuestionType(FacilityDataQuestionType)
 	 */
-	public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
-		return dao.saveCodedOptionSet(optionSet);
+	public FacilityDataQuestionType saveQuestionType(FacilityDataQuestionType questionType) {
+		return dao.saveQuestionType(questionType);
 	}
 
 	/**
-	 * @see FacilityDataService#getCodedOptionSet(java.lang.Integer)
+	 * @see FacilityDataService#getQuestionType(java.lang.Integer)
 	 */
-	public FacilityDataCodedOptionSet getCodedOptionSet(Integer id) {
-		return dao.getCodedOptionSet(id);
+	public FacilityDataQuestionType getQuestionType(Integer id) {
+		return dao.getQuestionType(id);
 	}
 
 	/**
-	 * @see FacilityDataService#getCodedOptionSetByUUID(String)
+	 * @see FacilityDataService#getQuestionTypeByUUID(String)
 	 */
-	public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid) {
-		return dao.getCodedOptionSetByUUID(uuid);
+	public FacilityDataQuestionType getQuestionTypeByUUID(String uuid) {
+		return dao.getQuestionTypeByUUID(uuid);
 	}
 
 	/**
-	 * @see FacilityDataService#getAllCodedOptionSets()
+	 * @see FacilityDataService#getAllQuestionTypes()
 	 */
-	public List<FacilityDataCodedOptionSet> getAllCodedOptionSets() {
-		return dao.getAllCodedOptionSets();
+	public List<FacilityDataQuestionType> getAllQuestionTypes() {
+		return dao.getAllQuestionTypes();
 	}
 
 	/**
-	 * @see FacilityDataService#retireCodedOptionSet(FacilityDataCodedOptionSet, String)
+	 * @see FacilityDataService#retireQuestionType(FacilityDataQuestionType, String)
 	 */
-	public FacilityDataCodedOptionSet retireCodedOptionSet(FacilityDataCodedOptionSet optionSet, String reason) {
-		optionSet.setRetired(true);
-		optionSet.setRetireReason(reason);
-		return saveCodedOptionSet(optionSet);
+	public FacilityDataQuestionType retireQuestionType(FacilityDataQuestionType questionType, String reason) {
+		questionType.setRetired(true);
+		questionType.setRetireReason(reason);
+		return saveQuestionType(questionType);
 	}
 
 	/**
-	 * @see FacilityDataService#unretireQuestion(FacilityDataCodedOptionSet)
+	 * @see FacilityDataService#unretireQuestion(FacilityDataQuestionType)
 	 */
-	public FacilityDataCodedOptionSet unretireCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
-		optionSet.setRetired(false);
-		optionSet.setDateRetired(new Date());
-		optionSet.setRetireReason(null);
-		return saveCodedOptionSet(optionSet);
+	public FacilityDataQuestionType unretireQuestionType(FacilityDataQuestionType questionType) {
+		questionType.setRetired(false);
+		questionType.setDateRetired(new Date());
+		questionType.setRetireReason(null);
+		return saveQuestionType(questionType);
 	}
 
 	/**
-	 * @see FacilityDataService#deleteCodedOptionSet(FacilityDataCodedOptionSet)
+	 * @see FacilityDataService#deleteQuestionType(FacilityDataQuestionType)
 	 */
-	public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
-		dao.deleteCodedOptionSet(optionSet);
+	public void deleteQuestionType(FacilityDataQuestionType questionType) {
+		dao.deleteQuestionType(questionType);
 	}
 
 	/**

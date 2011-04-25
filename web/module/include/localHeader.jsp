@@ -8,9 +8,14 @@
 			<spring:message code="facilitydata.manage-form-schema"/>
 		</a>
 	</li>
-	<li <c:if test='<%= request.getRequestURI().contains("question") %>'>class="active"</c:if>>
+	<li <c:if test='<%= request.getRequestURI().contains("question") && !request.getRequestURI().contains("questionType") %>'>class="active"</c:if>>
 		<a href="${pageContext.request.contextPath}/module/facilitydata/question.list">
 			<spring:message code="facilitydata.manage-question"/>
+		</a>
+	</li>
+	<li <c:if test='<%= request.getRequestURI().contains("questionType") %>'>class="active"</c:if>>
+		<a href="${pageContext.request.contextPath}/module/facilitydata/questionType.list">
+			<spring:message code="facilitydata.manage-question-type"/>
 		</a>
 	</li>
 	<li <c:if test='<%= request.getRequestURI().contains("manage") %>'>class="active"</c:if>>
