@@ -13,11 +13,6 @@
 			<spring:message code="facilitydata.manage-question"/>
 		</a>
 	</li>
-	<li <c:if test='<%= request.getRequestURI().contains("section") %>'>class="active"</c:if>>
-		<a href="${pageContext.request.contextPath}/module/facilitydata/section.list">
-			<spring:message code="facilitydata.manage-sections"/>
-		</a>
-	</li>
 	<li <c:if test='<%= request.getRequestURI().contains("manage") %>'>class="active"</c:if>>
 		<a href="${pageContext.request.contextPath}/module/facilitydata/manage.form">
 			<spring:message code="facilitydata.view-enter"/>

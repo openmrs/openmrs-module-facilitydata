@@ -60,11 +60,7 @@ public class FacilityDataFormSchemaController {
         	schema.addSection(section);
         }
         else {
-        	for (FacilityDataFormSection s : schema.getSections()) {
-        		if (s.getId().equals(id)) {
-        			section = s;
-        		}
-        	}
+        	section = schema.getSectionById(id);
         }
     	section.setName(name);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
@@ -78,6 +74,22 @@ public class FacilityDataFormSchemaController {
     						 @RequestParam(required=true) Integer newIndex) throws Exception {
 
     	Collections.swap(schema.getSections(), existingIndex, newIndex);
+    	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
+        return String.format("redirect:schema.form?id=%s", schema.getId());
+    }
+    
+    @RequestMapping("/module/facilitydata/deleteSection.form")
+    public String deleteSection(ModelMap map,
+								 @RequestParam(required=true) FacilityDataFormSchema schema, 
+								 @RequestParam(required=true) Integer sectionId, 
+								 @RequestParam(required=false) Integer newQuestionSectionId) throws Exception {
+
+    	FacilityDataFormSection section = schema.getSectionById(sectionId);
+    	FacilityDataFormSection newSection = schema.getSectionById(newQuestionSectionId);
+    	if (!section.getQuestions().isEmpty()) {
+    		newSection.getQuestions().addAll(section.getQuestions());
+    	}
+    	schema.getSections().remove(section);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
         return String.format("redirect:schema.form?id=%s", schema.getId());
     }

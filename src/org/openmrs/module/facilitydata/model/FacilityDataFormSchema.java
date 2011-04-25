@@ -47,6 +47,18 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
         }
         return cnt;
     }
+    
+    /**
+     * @return the section with the passed id
+     */
+    public FacilityDataFormSection getSectionById(Integer sectionId) {
+    	for (FacilityDataFormSection section : getSections()) {
+    		if (section.getId().equals(sectionId)) {
+    			return section;
+    		}
+    	}
+    	return null;
+    }
 
     //***** PROPERTY ACCESS *****
 
