@@ -20,7 +20,7 @@ import java.util.UUID;
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
@@ -102,74 +102,74 @@ public interface FacilityDataService extends OpenmrsService {
     public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema);
 
     /**
-     * Save a <code>FacilityDataCodedOptionSet</code> to the database.
-     * @param question the <code>FacilityDataCodedOptionSet</code> to be saved
-     * @return the <code>FacilityDataCodedOptionSet</code> which was just saved.
-     * @should save and return the passed <code>FacilityDataCodedOptionSet</code>
+     * Save a <code>FacilityDataQuestionType</code> to the database.
+     * @param question the <code>FacilityDataQuestionType</code> to be saved
+     * @return the <code>FacilityDataQuestionType</code> which was just saved.
+     * @should save and return the passed <code>FacilityDataQuestionType</code>
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
-    public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+    public FacilityDataQuestionType saveQuestionType(FacilityDataQuestionType questionType);
 
     /**
-     * Get a <code>FacilityDataCodedOptionSet</code>
+     * Get a <code>FacilityDataQuestionType</code>
      * @param id
-     * @return the <code>FacilityDataCodedOptionSet</code> or null if it does not exist
+     * @return the <code>FacilityDataQuestionType</code> or null if it does not exist
      * @throws IllegalArgumentException if passed a null parameter
-     * @should return the <code>FacilityDataCodedOptionSet</code> with the passed id or null if it does not exist
+     * @should return the <code>FacilityDataQuestionType</code> with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
-    public FacilityDataCodedOptionSet getCodedOptionSet(Integer id);
+    public FacilityDataQuestionType getQuestionType(Integer id);
 
     /**
-     * Get a <code>FacilityDataCodedOptionSet</code> using its UUID
+     * Get a <code>FacilityDataQuestionType</code> using its UUID
      * @param uuid
-     * @return the <code>FacilityDataCodedOptionSet</code> pertaining to that specific UUID.
+     * @return the <code>FacilityDataQuestionType</code> pertaining to that specific UUID.
      * @throws IllegalArgumentException if passed a null parameter or empty String
-     * @should return the <code>FacilityDataCodedOptionSet</code> with the specified uuid or null if it does not exist
+     * @should return the <code>FacilityDataQuestionType</code> with the specified uuid or null if it does not exist
      */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
-    public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid);
+    public FacilityDataQuestionType getQuestionTypeByUUID(String uuid);
 
     /**
-     * Get all FacilityDataCodedOptionSets
-     * @return a list containing all FacilityDataCodedOptionSet
+     * Get all FacilityDataQuestionTypes
+     * @return a list containing all FacilityDataQuestionType
      * @throws IllegalArgumentException if passed a null parameter
-     * @should return a list of all FacilityDataCodedOptionSet.
+     * @should return a list of all FacilityDataQuestionType.
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
-    public List<FacilityDataCodedOptionSet> getAllCodedOptionSets();
+    public List<FacilityDataQuestionType> getAllQuestionTypes();
 
     /**
-     * Retire a FacilityDataCodedOptionSet
-     * @param FacilityDataCodedOptionSet
-     * @should retire a FacilityDataCodedOptionSet then save it
+     * Retire a FacilityDataQuestionType
+     * @param FacilityDataQuestionType
+     * @should retire a FacilityDataQuestionType then save it
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
-    public FacilityDataCodedOptionSet retireCodedOptionSet(FacilityDataCodedOptionSet optionSet, String reason);
+    public FacilityDataQuestionType retireQuestionType(FacilityDataQuestionType questionType, String reason);
 
     /**
-     * Un-retire a FacilityDataCodedOptionSet
-     * @param optionSet
-     * @should unretire a FacilityDataCodedOptionSet then save it
+     * Un-retire a FacilityDataQuestionType
+     * @param questionType
+     * @should unretire a FacilityDataQuestionType then save it
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
-    public FacilityDataCodedOptionSet unretireCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+    public FacilityDataQuestionType unretireQuestionType(FacilityDataQuestionType questionType);
 
     /**
-     * Delete a <code>FacilityDataCodedOptionSet</code>
-     * @param question the <code>FacilityDataCodedOptionSet</code> object to be deleted
+     * Delete a <code>FacilityDataQuestionType</code>
+     * @param question the <code>FacilityDataQuestionType</code> object to be deleted
      * @throws IllegalArgumentException if passed a null parameter
-     * @should delete the <code>FacilityDataCodedOptionSet</code> object
+     * @should delete the <code>FacilityDataQuestionType</code> object
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
-    public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet);
+    public void deleteQuestionType(FacilityDataQuestionType questionType);
     
     /**
      * Save a <code>FacilityDataQuestion</code> to the database.

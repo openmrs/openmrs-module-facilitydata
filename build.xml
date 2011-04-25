@@ -195,7 +195,7 @@
 	</target>
 	
 	<target name="deploy-web-jetty" depends="package-module" description="Copy web files to webapp">
-		<copy todir="/home/djazayeri/workspace35/openmrs-trunk/webapp/src/main/webapp/WEB-INF/view/module/${module.id}">
+		<copy todir="/home/dupuy/workspace/openmrs-trunk/webapp/src/main/webapp/WEB-INF/view/module/${module.id}">
 			<fileset dir="web/module" includes="**/*" />
 		</copy>
 	</target>

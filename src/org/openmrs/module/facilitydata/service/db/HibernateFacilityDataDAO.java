@@ -21,7 +21,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOptionSet;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
@@ -77,42 +77,42 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 
 	/**
-	 * @see FacilityDataDAO#saveCodedOptionSet(FacilityDataCodedOptionSet)
+	 * @see FacilityDataDAO#saveQuestionType(FacilityDataQuestionType)
 	 */
-	public FacilityDataCodedOptionSet saveCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
-		sessionFactory.getCurrentSession().saveOrUpdate(optionSet);
-		return optionSet;
+	public FacilityDataQuestionType saveQuestionType(FacilityDataQuestionType questionType) {
+		sessionFactory.getCurrentSession().saveOrUpdate(questionType);
+		return questionType;
 	}
 
 	/**
-	 * @see FacilityDataDAO#getCodedOptionSet(java.lang.Integer)
+	 * @see FacilityDataDAO#getQuestionType(java.lang.Integer)
 	 */
-	public FacilityDataCodedOptionSet getCodedOptionSet(Integer id) {
-		return (FacilityDataCodedOptionSet) sessionFactory.getCurrentSession().get(FacilityDataCodedOptionSet.class, id);
+	public FacilityDataQuestionType getQuestionType(Integer id) {
+		return (FacilityDataQuestionType) sessionFactory.getCurrentSession().get(FacilityDataQuestionType.class, id);
 	}
 
 	/**
-	 * @see FacilityDataDAO#getCodedOptionSetByUUID(String)
+	 * @see FacilityDataDAO#getQuestionTypeByUUID(String)
 	 */
-	public FacilityDataCodedOptionSet getCodedOptionSetByUUID(String uuid) {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataCodedOptionSet.class);
-        return (FacilityDataCodedOptionSet) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
+	public FacilityDataQuestionType getQuestionTypeByUUID(String uuid) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestionType.class);
+        return (FacilityDataQuestionType) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 
 	/**
-	 * @see FacilityDataDAO#getAllCodedOptionSets()
+	 * @see FacilityDataDAO#getAllQuestionTypes()
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FacilityDataCodedOptionSet> getAllCodedOptionSets() {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataCodedOptionSet.class);
+	public List<FacilityDataQuestionType> getAllQuestionTypes() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestionType.class);
         return c.addOrder(Order.asc("name")).list();
 	}
 
 	/**
-	 * @see FacilityDataDAO#deleteCodedOptionSet(FacilityDataCodedOptionSet)
+	 * @see FacilityDataDAO#deleteQuestionType(FacilityDataQuestionType)
 	 */
-	public void deleteCodedOptionSet(FacilityDataCodedOptionSet optionSet) {
-		sessionFactory.getCurrentSession().delete(optionSet);
+	public void deleteQuestionType(FacilityDataQuestionType questionType) {
+		sessionFactory.getCurrentSession().delete(questionType);
 	}
 
 	/**
