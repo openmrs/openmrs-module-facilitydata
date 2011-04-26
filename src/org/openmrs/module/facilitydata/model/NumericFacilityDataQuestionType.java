@@ -28,7 +28,7 @@ public class NumericFacilityDataQuestionType extends FacilityDataQuestionType {
     //***** CONSTRUCTORS *****
     
     public NumericFacilityDataQuestionType() {super();}
-    
+
     //***** PROPERTY ACCESS *****
 
 	/**
