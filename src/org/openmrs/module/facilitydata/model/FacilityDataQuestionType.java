@@ -19,4 +19,5 @@ package org.openmrs.module.facilitydata.model;
 public abstract class FacilityDataQuestionType extends BaseFacilityMetaData {
 
     public FacilityDataQuestionType() {}
+
 }

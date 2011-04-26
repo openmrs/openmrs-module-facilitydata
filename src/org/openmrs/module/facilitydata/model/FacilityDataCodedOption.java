@@ -20,7 +20,7 @@ public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	
 	//***** PROPERTIES *****
 	
-	private FacilityDataCodedOptionSet optionSet;
+	private CodedFacilityDataQuestionType questionType;
 	private String code;
 
 	//***** CONSTRUCTORS *****
@@ -30,17 +30,17 @@ public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	//***** PROPERTY ACCESS*****
 
 	/**
-	 * @return the optionSet
+	 * @return the questionType
 	 */
-	public FacilityDataCodedOptionSet getOptionSet() {
-		return optionSet;
+	public CodedFacilityDataQuestionType getQuestionType() {
+		return questionType;
 	}
 
 	/**
-	 * @param optionSet the optionSet to set
+	 * @param questionType the questionType to set
 	 */
-	public void setOptionSet(FacilityDataCodedOptionSet optionSet) {
-		this.optionSet = optionSet;
+	public void setQuestionType(CodedFacilityDataQuestionType questionType) {
+		this.questionType = questionType;
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public class FacilityDataServiceTest extends BaseFacilityDataContextSensitiveTes
 					log.warn("is this assignable to numeric? " + NumericFacilityDataQuestionType.class.isAssignableFrom(type.getClass()));
 					if (CodedFacilityDataQuestionType.class.isAssignableFrom(type.getClass())) {
 						CodedFacilityDataQuestionType cq = (CodedFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
-						log.warn("This is coded, with options: " + cq.getOptionSet().getOptions());
+						log.warn("This is coded, with options: " + cq.getOptions());
 					}
 					else {
 						NumericFacilityDataQuestionType cq = (NumericFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
