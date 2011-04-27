@@ -58,7 +58,7 @@
         <subclass name="CodedFacilityDataQuestionType">
 	       	<list name="options" cascade="all-delete-orphan" inverse="false" lazy="false" batch-size="1000">
 	            <key column="question_type_id" not-null="true"/>
-	            <list-index column="option_order" base="1"/>
+	            <list-index column="option_order" base="0"/>
 	            <one-to-many class="FacilityDataCodedOption" />
 	        </list>
         </subclass>

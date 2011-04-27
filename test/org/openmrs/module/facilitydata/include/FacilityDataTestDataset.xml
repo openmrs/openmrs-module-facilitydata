@@ -6,13 +6,13 @@
   <facilitydata_question_type question_type_id="3" name="Daily Hours Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" max_value="24" allow_decimal="true" [METADATA]/>
   <facilitydata_question_type question_type_id="4" name="Positive Whole Number Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" allow_decimal="false" [METADATA]/>
   
-  <facilitydata_coded_option id="1" name="True" question_type_id="2" option_order="1" code="t" [METADATA]/>
-  <facilitydata_coded_option id="2" name="False" question_type_id="2" option_order="2" code="f" [METADATA]/>
-  <facilitydata_coded_option id="3" name="Unknown" question_type_id="2" option_order="3" code="?" [METADATA]/>
-  <facilitydata_coded_option id="4" name="Excellent" question_type_id="1" option_order="1" code="excellent" [METADATA]/>
-  <facilitydata_coded_option id="5" name="Average" question_type_id="1" option_order="2" code="average" [METADATA]/>
-  <facilitydata_coded_option id="6" name="Poor" question_type_id="1" option_order="3" code="poor" [METADATA]/>
-  <facilitydata_coded_option id="7" name="Unavailable" question_type_id="1" option_order="4" code="unavailable" [METADATA]/>
+  <facilitydata_coded_option id="1" name="True" question_type_id="2" option_order="0" code="t" [METADATA]/>
+  <facilitydata_coded_option id="2" name="False" question_type_id="2" option_order="1" code="f" [METADATA]/>
+  <facilitydata_coded_option id="3" name="Unknown" question_type_id="2" option_order="2" code="?" [METADATA]/>
+  <facilitydata_coded_option id="4" name="Excellent" question_type_id="1" option_order="0" code="excellent" [METADATA]/>
+  <facilitydata_coded_option id="5" name="Average" question_type_id="1" option_order="1" code="average" [METADATA]/>
+  <facilitydata_coded_option id="6" name="Poor" question_type_id="1" option_order="2" code="poor" [METADATA]/>
+  <facilitydata_coded_option id="7" name="Unavailable" question_type_id="1" option_order="3" code="unavailable" [METADATA]/>
 
   <facilitydata_question question_id="1" name="Internet Status" period_applicability="AT_END_OF_PERIOD" question_type="1" [METADATA]/>
   <facilitydata_question question_id="2" name="Any power outages" period_applicability="DURING_PERIOD" question_type="2" [METADATA]/>
