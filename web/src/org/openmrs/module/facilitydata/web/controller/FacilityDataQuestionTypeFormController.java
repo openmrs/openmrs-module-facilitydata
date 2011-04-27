@@ -13,9 +13,8 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
@@ -78,13 +77,28 @@ public class FacilityDataQuestionTypeFormController {
                              @RequestParam(required = false) String[] optionName,
                              @RequestParam(required = false) String[] optionCode,
                              @RequestParam(required = false) String[] optionDescription) throws ServletRequestBindingException {
-
-    	// TODO: Make sure options are saved
-        new FacilityDataQuestionTypeValidator().validate(questionType, result);
-        if (result.hasErrors()) {
-            return "/module/facilitydata/questionTypeForm";
-        }
-        Context.getService(FacilityDataService.class).saveQuestionType(questionType);
-        return "redirect:questionType.list";
+    	if(optionId.length > 0 ) {
+        	ArrayList<FacilityDataCodedOption> listCodedOptions = new ArrayList<FacilityDataCodedOption>();
+        	for(int i=0; i < optionId.length; i++) {
+        		if (optionCode[i].length() > 0 && optionName[i].length() > 0) {
+            		FacilityDataCodedOption codedOption = new FacilityDataCodedOption();
+        			codedOption.setId(optionId[i]);
+        	    	codedOption.setName(optionName[i]);
+        	    	codedOption.setCode(optionCode[i]);
+        	    	codedOption.setDescription(optionDescription[i]);
+        	    	listCodedOptions.add(codedOption);
+        		}
+        	}
+        	if (listCodedOptions.size() > 0) {
+            	questionType.setOptions(listCodedOptions);
+            	new FacilityDataQuestionTypeValidator().validate(questionType, result);
+            	if (result.hasErrors()) {
+                    return "/module/facilitydata/questionTypeForm";
+                }
+                Context.getService(FacilityDataService.class).saveQuestionType(questionType);
+                return "redirect:questionType.list";
+        	}
+    	}
+    	return "/module/facilitydata/questionTypeForm";
     }
 }
