@@ -67,7 +67,7 @@ public abstract class BaseFacilityMetaData extends BaseOpenmrsMetadata {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : super.hashCode();
         return result;
     }
 }
