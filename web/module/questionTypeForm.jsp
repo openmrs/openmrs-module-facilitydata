@@ -54,8 +54,8 @@
 							<table class="questionForm">
 								<thead>
 									<tr>
-										<th><spring:message code="facilitydata.display-name"/></th>
-										<th><spring:message code="facilitydata.option-code"/></th>
+										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required"/></th>
+										<th><spring:message code="facilitydata.option-code"/><spring:message code="facilitydata.required"/></th>
 										<th><spring:message code="general.description"/></th>
 									</tr>
 								</thead>
