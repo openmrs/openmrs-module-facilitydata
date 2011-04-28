@@ -15,12 +15,13 @@ package org.openmrs.module.facilitydata.service.db;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.openmrs.Location;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 
 /**
@@ -202,5 +203,10 @@ public interface FacilityDataDAO {
     * @should delete the given object from the database
     */
     public void deleteFacilityDataValue(FacilityDataValue value);
+    
+    /**
+     * @return a Map from FacilityDataCodedOption id to a count of answers for that option
+     */
+    public Map<Integer, Integer> getCodedOptionBreakdown();
 }
 

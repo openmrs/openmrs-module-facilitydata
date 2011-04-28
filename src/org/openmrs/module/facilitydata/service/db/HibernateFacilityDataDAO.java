@@ -14,17 +14,21 @@
 package org.openmrs.module.facilitydata.service.db;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.service.FacilityDataService;
 
 /**
  * Core implementation of the DAO
@@ -180,6 +184,20 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		c.add(Restrictions.eq("endDate", endDate));
 		c.add(Restrictions.eq("location", location));
 		return c.list();
+	}
+	
+	/**
+	 * @see FacilityDataService#getCodedOptionBreakdown()
+	 */
+	public Map<Integer, Integer> getCodedOptionBreakdown() {
+		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		String s = "select value_coded, count(*) from facilitydata_value where value_coded is not null group by value_coded";
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		for (Object entry : query.list()) {
+			Object[] row = (Object[]) entry;
+			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
+		}
+		return m;
 	}
 
 	/**

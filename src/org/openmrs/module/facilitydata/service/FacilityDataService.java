@@ -15,14 +15,15 @@ package org.openmrs.module.facilitydata.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.util.FacilityDataConstants;
@@ -318,4 +319,11 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataReport getReport(FacilityDataFormSchema schema, Date startDate, Date endDate, Location location);
+    
+    /**
+     * @return a Map from FacilityDataCodedOption id to a count of answers for that option
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    public Map<Integer, Integer> getCodedOptionBreakdown();
 }

@@ -59,4 +59,30 @@ public class CodedFacilityDataQuestionType extends FacilityDataQuestionType {
 		}
 		return null;
 	}
+	
+	/**
+	 * @returns the non-retired options
+	 */
+	public List<FacilityDataCodedOption> getActiveOptions() {
+		List<FacilityDataCodedOption> ret = new ArrayList<FacilityDataCodedOption>();
+		for (FacilityDataCodedOption option : getOptions()) {
+			if (option.getRetired() != Boolean.TRUE) {
+				ret.add(option);
+			}
+		}
+		return ret;
+	}
+	
+	/**
+	 * @returns the retired options
+	 */
+	public List<FacilityDataCodedOption> getRetiredOptions() {
+		List<FacilityDataCodedOption> ret = new ArrayList<FacilityDataCodedOption>();
+		for (FacilityDataCodedOption option : getOptions()) {
+			if (option.getRetired() == Boolean.TRUE) {
+				ret.add(option);
+			}
+		}
+		return ret;
+	}
 }
