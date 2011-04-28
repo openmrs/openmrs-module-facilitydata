@@ -128,7 +128,6 @@
                  `retired_by` int(11) default null,
                  `date_retired` datetime default null,
                  `retired_reason` varchar(255) default null,
-                 `data_type` varchar(255) not null,
                  `period_applicability` varchar(255) not null,
                  `question_type` int(11) not null,
                   primary key (`question_id`),

@@ -13,8 +13,16 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
@@ -25,11 +33,10 @@ import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.validator.FacilityDataQuestionTypeValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,21 +53,83 @@ public class FacilityDataQuestionTypeFormController {
     @RequestMapping(method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap map,
     		             @RequestParam(required = false) Class<? extends FacilityDataQuestionType> dataType) throws Exception {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        FacilityDataQuestionType questionType = null;
-        if (id != null) {
-            questionType = svc.getQuestionType(id);
-        } 
-        else {
-        	questionType = dataType.newInstance();
-        }
-        map.addAttribute("questionType", questionType);
+
+        map.addAttribute("questionType", getQuestionType(id, dataType));
+        map.addAttribute("optionBreakdown", getService().getCodedOptionBreakdown());
     }
 
-    @RequestMapping(method = RequestMethod.POST, params={"dataType=org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType"})
-    public String saveNumericQuestionType(@RequestParam(required = false) Integer id,
-                             @ModelAttribute("questionType") NumericFacilityDataQuestionType questionType, BindingResult result,
-                             HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveQuestionType(HttpServletRequest request, ModelMap map,
+    						 @RequestParam(required = false) Integer id,
+    						 @RequestParam(required = true) String name,
+    						 @RequestParam(required = false) String description,
+    						 @RequestParam(required = true) Class<? extends FacilityDataQuestionType> dataType,
+    						 @RequestParam(required = false) Double minValue,
+    						 @RequestParam(required = false) Double maxValue,
+    						 @RequestParam(required = false) Boolean allowDecimals,
+                             @RequestParam(required = false) Integer[] optionId,
+                             @RequestParam(required = false) String[] optionName,
+                             @RequestParam(required = false) String[] optionCode,
+                             @RequestParam(required = false) String[] optionDescription) throws Exception {
+    	
+    	FacilityDataQuestionType questionType = getQuestionType(id, dataType);
+    	questionType.setName(name);
+    	questionType.setDescription(description);
+    	
+    	if (dataType == NumericFacilityDataQuestionType.class) {
+    		NumericFacilityDataQuestionType numericType = (NumericFacilityDataQuestionType) questionType;
+    		numericType.setMinValue(minValue);
+    		numericType.setMaxValue(maxValue);
+    		numericType.setAllowDecimals(allowDecimals != null && allowDecimals == Boolean.TRUE);
+    	}
+    	else if (dataType == CodedFacilityDataQuestionType.class) {
+    		CodedFacilityDataQuestionType codedType = (CodedFacilityDataQuestionType) questionType;
+
+        	Map<Integer, Integer> codedOptionBreakdown = getService().getCodedOptionBreakdown();
+        	Date now = new Date();
+        	List<Integer> passedOptionIds = Arrays.asList(optionId);
+        	Set<Integer> removedOptionIds = new HashSet<Integer>();
+        	
+        	// First we need to go through existing options, and delete or retire as needed
+        	for (Iterator<FacilityDataCodedOption> i = codedType.getOptions().iterator(); i.hasNext();) {
+        		FacilityDataCodedOption option = i.next();
+        		if (!passedOptionIds.contains(option.getId())) { // In this case we need to delete or retire
+        			Integer numValues = codedOptionBreakdown.get(option.getId());
+        			if (numValues == null || numValues.intValue() == 0) { // If no values are saved for it, we can delete
+        				i.remove();
+        				removedOptionIds.add(option.getId());
+        			}
+        			else { // If values exist for it, we have to retire
+            			option.setRetired(true);
+            			option.setRetiredBy(Context.getAuthenticatedUser());
+            			option.setDateRetired(now);
+        			}
+        		}
+        	}
+        	
+        	// Now we go through passed options and update or add as needed
+        	for (int i=0; i < optionId.length; i++) {
+        		if (optionCode[i].length() > 0 && optionName[i].length() > 0 && !removedOptionIds.contains(optionId[i])) {
+            		FacilityDataCodedOption codedOption = null;
+            		if (optionId[i] != null) {
+            			codedOption = codedType.getOptionById(optionId[i]);
+            		}
+            		else {
+            			codedOption = new FacilityDataCodedOption();
+            			codedType.getOptions().add(codedOption);
+            		}
+        	    	codedOption.setName(optionName[i]);
+        	    	codedOption.setCode(optionCode[i]);
+        	    	codedOption.setDescription(optionDescription[i]);
+        	    	codedOption.setRetired(false);
+        	    	codedOption.setRetiredBy(null);
+        	    	codedOption.setDateRetired(null);
+        		}
+        	}
+    		
+    	}
+    	
+    	BindingResult result = new BeanPropertyBindingResult(questionType, "questionType");
         new FacilityDataQuestionTypeValidator().validate(questionType, result);
         if (result.hasErrors()) {
             return "/module/facilitydata/questionTypeForm";
@@ -68,37 +137,16 @@ public class FacilityDataQuestionTypeFormController {
         Context.getService(FacilityDataService.class).saveQuestionType(questionType);
         return "redirect:questionType.list";
     }
+
+    public FacilityDataService getService() {
+    	return Context.getService(FacilityDataService.class);
+    }
     
-    @RequestMapping(method = RequestMethod.POST, params={"dataType=org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType"})
-    public String saveCodedQuestionType(@RequestParam(required = false) Integer id,
-                             @ModelAttribute("questionType") CodedFacilityDataQuestionType questionType, BindingResult result,
-                             HttpServletRequest request, ModelMap map,
-                             @RequestParam(required = false) Integer[] optionId,
-                             @RequestParam(required = false) String[] optionName,
-                             @RequestParam(required = false) String[] optionCode,
-                             @RequestParam(required = false) String[] optionDescription) throws ServletRequestBindingException {
-    	if(optionId.length > 0 ) {
-        	ArrayList<FacilityDataCodedOption> listCodedOptions = new ArrayList<FacilityDataCodedOption>();
-        	for(int i=0; i < optionId.length; i++) {
-        		if (optionCode[i].length() > 0 && optionName[i].length() > 0) {
-            		FacilityDataCodedOption codedOption = new FacilityDataCodedOption();
-        			codedOption.setId(optionId[i]);
-        	    	codedOption.setName(optionName[i]);
-        	    	codedOption.setCode(optionCode[i]);
-        	    	codedOption.setDescription(optionDescription[i]);
-        	    	listCodedOptions.add(codedOption);
-        		}
-        	}
-        	if (listCodedOptions.size() > 0) {
-            	questionType.setOptions(listCodedOptions);
-            	new FacilityDataQuestionTypeValidator().validate(questionType, result);
-            	if (result.hasErrors()) {
-                    return "/module/facilitydata/questionTypeForm";
-                }
-                Context.getService(FacilityDataService.class).saveQuestionType(questionType);
-                return "redirect:questionType.list";
-        	}
-    	}
-    	return "/module/facilitydata/questionTypeForm";
+    public FacilityDataQuestionType getQuestionType(Integer id, Class<? extends FacilityDataQuestionType> type) throws Exception {
+        if (id == null) {
+        	return type.newInstance();
+            
+        }
+        return getService().getQuestionType(id);
     }
 }

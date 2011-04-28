@@ -58,7 +58,7 @@
 			                </c:when>
 			                <c:when test="${questionType.class.name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 			                	<spring:message code="facilitydata.possible-values"/>:
-			                	<c:forEach items="${questionType.options}" var="option" varStatus="optionStatus">
+			                	<c:forEach items="${questionType.activeOptions}" var="option" varStatus="optionStatus">
 			                		${option.name}<c:if test="${!optionStatus.last}">, </c:if>
 			                	</c:forEach>
 			                </c:when>

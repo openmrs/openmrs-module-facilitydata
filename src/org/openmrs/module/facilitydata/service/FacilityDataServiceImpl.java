@@ -16,6 +16,7 @@ package org.openmrs.module.facilitydata.service;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -264,8 +265,15 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
         return r;
 	}
 	
-	//***** PROPERTY ACCESS *****
+	/**
+	 * @see FacilityDataService#getCodedOptionBreakdown()
+	 */
+	public Map<Integer, Integer> getCodedOptionBreakdown() {
+		return dao.getCodedOptionBreakdown();
+	}
 	
+	//***** PROPERTY ACCESS *****
+
 	/**
 	 * dao the dao to set
 	 */
