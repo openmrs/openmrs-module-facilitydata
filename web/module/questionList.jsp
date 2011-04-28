@@ -34,7 +34,7 @@
 	    <tbody>
 		    <c:forEach items="${questions}" var="question">
 		        <tr>
-	                <td style="white-space:nowrap;"><a href="question.form?id=${question.id}">${question.name}</a></td>
+	                <td style="white-space:nowrap;"><a href="questionForm.form?id=${question.id}">${question.name}</a></td>
 	                <td style="white-space:nowrap;">${question.questionType}</td>
 	                <td style="white-space:nowrap;">${question.periodApplicability}</td>
 	                <td>${question.description}</td>

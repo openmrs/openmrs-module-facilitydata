@@ -24,7 +24,7 @@
 	            </td>
 	        </tr>
 	        <tr>
-	            <td>
+	            <td width="20%">
 	            	<spring:message code="facilitydata.period-applicability"/>
 	            	<spring:message code="facilitydata.required"/>
 	            </td>
@@ -35,6 +35,19 @@
 	                </frm:select>
 	                <frm:errors cssClass="error" path="periodApplicability"/>
 	            </td>
+	        </tr>
+	        <tr>
+	        	<td>
+	        		<spring:message code="facilitydata.question-type"/>
+	        		<spring:message code="facilitydata.required"/>
+	        	</td>
+	        	<td>
+	        		<frm:select path="questionType" multiple="false">
+	                    <frm:option value=""><spring:message code="facilitydata.choose"/>...</frm:option>
+	                    <frm:options items="${allQuestionTypes}" itemValue="id" itemLabel="name" />
+	                </frm:select>
+	                <frm:errors cssClass="error" path="questionType"/>
+	        	</td>
 	        </tr>
 	        <tr>
 	            <td><spring:message code="general.description"/></td>
