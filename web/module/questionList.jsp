@@ -22,7 +22,7 @@
 <div class="box">
 	<a href="questionForm.form"><spring:message code="facilitydata.add-question"/></a>
 	<br/><br/>
-	<table cellpadding="2" cellspacing="1" id="questionList" class="schemaForm">
+	<table cellpadding="2" cellspacing="1" id="questionList" class="facilityDataTable">
 	    <thead>
 		    <tr>
 		        <th style="white-space:nowrap;"><spring:message code="facilitydata.display-name"/></th>
