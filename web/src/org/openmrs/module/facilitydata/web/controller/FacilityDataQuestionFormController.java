@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionEditor;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionTypeEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.validator.FacilityDataQuestionValidator;
 import org.openmrs.web.WebConstants;
@@ -40,12 +42,14 @@ public class FacilityDataQuestionFormController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
+        binder.registerCustomEditor(FacilityDataQuestionType.class, new FacilityDataQuestionTypeEditor());
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("question") FacilityDataQuestion question) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
+        map.addAttribute("allQuestionTypes", svc.getAllQuestionTypes());
         map.addAttribute("periodApplicabilities", PeriodApplicability.values());
         if (id != null) {
             question = svc.getQuestion(id);
@@ -56,13 +60,13 @@ public class FacilityDataQuestionFormController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveQuestion(@RequestParam(required = false) Integer id,
                              @ModelAttribute("question") FacilityDataQuestion question, BindingResult result,
-                             HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
-        new FacilityDataQuestionValidator().validate(question, result);
+                             HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {   	
+    	new FacilityDataQuestionValidator().validate(question, result);
         if (result.hasErrors()) {
             return "/module/facilitydata/questionForm";
         }
         Context.getService(FacilityDataService.class).saveQuestion(question);
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.question.saved");
-        return String.format("redirect:question.form?id=%s", question.getId());
+        return String.format("redirect:questionForm.form?id=%s", question.getId());
     }
 }
