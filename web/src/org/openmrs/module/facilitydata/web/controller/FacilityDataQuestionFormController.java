@@ -67,6 +67,6 @@ public class FacilityDataQuestionFormController {
         }
         Context.getService(FacilityDataService.class).saveQuestion(question);
         request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.question.saved");
-        return String.format("redirect:questionForm.form?id=%s", question.getId());
+        return "redirect:question.list";
     }
 }
