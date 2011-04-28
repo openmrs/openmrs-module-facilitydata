@@ -42,7 +42,6 @@
 <div class="box">
 	<spring:message code="facilitydata.question-type.info"/><br/><br/>
 	<form method="post">
-		<input type="hidden" name="dataType" value="${questionType.class.name}"/>
 	    <table class="questionForm">
 	        <tr>
 	            <td>

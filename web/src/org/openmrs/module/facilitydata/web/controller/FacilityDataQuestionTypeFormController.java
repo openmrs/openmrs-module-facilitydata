@@ -63,7 +63,7 @@ public class FacilityDataQuestionTypeFormController {
     						 @RequestParam(required = false) Integer id,
     						 @RequestParam(required = true) String name,
     						 @RequestParam(required = false) String description,
-    						 @RequestParam(required = true) Class<? extends FacilityDataQuestionType> dataType,
+    						 @RequestParam(required = false) Class<? extends FacilityDataQuestionType> dataType,
     						 @RequestParam(required = false) Double minValue,
     						 @RequestParam(required = false) Double maxValue,
     						 @RequestParam(required = false) Boolean allowDecimals,
@@ -76,13 +76,13 @@ public class FacilityDataQuestionTypeFormController {
     	questionType.setName(name);
     	questionType.setDescription(description);
     	
-    	if (dataType == NumericFacilityDataQuestionType.class) {
+    	if (questionType instanceof NumericFacilityDataQuestionType) {
     		NumericFacilityDataQuestionType numericType = (NumericFacilityDataQuestionType) questionType;
     		numericType.setMinValue(minValue);
     		numericType.setMaxValue(maxValue);
     		numericType.setAllowDecimals(allowDecimals != null && allowDecimals == Boolean.TRUE);
     	}
-    	else if (dataType == CodedFacilityDataQuestionType.class) {
+    	else if (questionType instanceof CodedFacilityDataQuestionType) {
     		CodedFacilityDataQuestionType codedType = (CodedFacilityDataQuestionType) questionType;
 
         	Map<Integer, Integer> codedOptionBreakdown = getService().getCodedOptionBreakdown();
