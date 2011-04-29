@@ -56,6 +56,7 @@ public class FacilityDataFormSchemaController {
         FacilityDataFormSchema schema = svc.getFacilityDataFormSchema(id);
         map.addAttribute("schema", schema);
         map.addAttribute("questions", svc.getAllQuestions());
+        map.addAttribute("questionBreakdown", svc.getFormQuestionBreakdown());
         return "/module/facilitydata/schema";
     }
     
@@ -144,6 +145,19 @@ public class FacilityDataFormSchemaController {
     	FacilityDataFormSection toSection = schema.getSectionById(toSectionId);
     	FacilityDataFormQuestion question = fromSection.getQuestionById(formQuestionId);
     	question.setSection(toSection);
+    	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
+        return String.format("redirect:schema.form?id=%s", schema.getId());
+    }
+    
+    @RequestMapping("/module/facilitydata/deleteFormQuestion.form")
+    public String deleteFormQuestion(ModelMap map,
+    						 @RequestParam(required=true) FacilityDataFormSchema schema, 
+    						 @RequestParam(required=true) Integer questionId, 
+    						 @RequestParam(required=true) Integer sectionId) throws Exception {
+
+    	FacilityDataFormSection section = schema.getSectionById(sectionId);
+    	FacilityDataFormQuestion question = section.getQuestionById(questionId);
+    	section.getQuestions().remove(question);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
         return String.format("redirect:schema.form?id=%s", schema.getId());
     }

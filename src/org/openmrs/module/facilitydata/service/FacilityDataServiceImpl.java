@@ -272,6 +272,13 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 		return dao.getCodedOptionBreakdown();
 	}
 	
+	/**
+	 * @see FacilityDataService#getFormQuestionBreakdown()
+	 */
+	public Map<Integer, Integer> getFormQuestionBreakdown() {
+		return dao.getFormQuestionBreakdown();
+	}
+	
 	//***** PROPERTY ACCESS *****
 
 	/**

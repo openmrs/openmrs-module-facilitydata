@@ -326,4 +326,11 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getCodedOptionBreakdown();
+    
+    /**
+     * @return a Map from FacilityDataFormQuestion id to a count of values for that FormQuestion
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    public Map<Integer, Integer> getFormQuestionBreakdown();
 }
