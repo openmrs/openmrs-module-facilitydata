@@ -29,6 +29,18 @@ $(document).ready(function() {
 		zIndex:990
 	});
 	
+	$('#moveQuestionDiv').dialog({
+		autoOpen: false,
+		modal: true,
+		draggable: false,
+		closeOnEscape: false,
+		title: '<spring:message code="facilitydata.move-question"/>',
+		width: '75%',
+		height: $(window).height()/2,
+		position: [150,150],
+		zIndex:990
+	});
+	
 	<c:forEach items="${schema.sections}" var="section">
 		$('#deleteSection${section.id}').dialog({
 			autoOpen: false,
@@ -62,6 +74,14 @@ $(document).ready(function() {
 		window.location.href=url;
 	});
 	
+	$('#moveQuestionButton').click(function(event){
+		var url = 'moveFormQuestion.form?schema=${schema.id}';
+		url += '&formQuestionId=' + $('#moveQuestionIdField').val();
+		url += '&fromSectionId=' + $('#moveFromSectionIdField').val();
+		url += '&toSectionId=' + $('#moveToSectionIdField').val();
+		window.location.href = url;
+	});
+	
 	$('#sectionList').dataTable({
 	    "bPaginate": false,
 	    "bLengthChange": false,
@@ -87,7 +107,13 @@ $(document).ready(function() {
 		$('.questionRow').hide();
 		$('.questionRow'+sectionId).show();
 		$('#sectionIdField').val(sectionId);
+		$.cookie("facilitydata_lastSchemaSection", sectionId);
 	});
+	
+	var savedSection = $.cookie("facilitydata_lastSchemaSection");
+	if (savedSection != null && savedSection != '') {
+		$('#sectionChooser').val(savedSection).change();
+	}
 	$('#sectionIdField').val($('#sectionChooser').val());
 	
 	$('#questionField').change(function(event){
@@ -95,7 +121,7 @@ $(document).ready(function() {
 			$('#questionNameField').val($(this).find('option:selected').text());
 		}
 	});
-	
+
 });
 
 function editSection(existingId, existingName) {
@@ -118,6 +144,12 @@ function editQuestion(id, name, questionNumber, question) {
 	$('#questionNumberField').val(questionNumber);
 	$('#questionField').val(question);
 	$('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + name).dialog('open');
+}
+
+function moveQuestion(questionId, sectionId) {
+	$('#moveQuestionIdField').val(questionId);
+	$('#moveFromSectionIdField').val(sectionId);
+	$('#moveQuestionDiv').dialog('open');
 }
 
 </script>
@@ -171,7 +203,7 @@ function editQuestion(id, name, questionNumber, question) {
 						<tbody>
 							<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
 								<tr>
-									<td>${section.name}</td>
+									<td>${section.name} (${fn:length(section.questions)})</td>
 									<td style="white-space:nowrap; text-align:center;">
 										<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editSection('${section.id}','${section.name}');"/>
 										<c:if test="${fn:length(schema.sections) > 1}">
@@ -275,10 +307,11 @@ function editQuestion(id, name, questionNumber, question) {
 									<c:otherwise>
 										<c:forEach items="${section.questions}" var="question">
 											<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
-												<td>${question.questionNumber}</td>
-												<td>${question.name}</td>
-												<td>
+												<td style="white-space:nowrap;">${question.questionNumber}</td>
+												<td width="100%">${question.name}</td>
+												<td style="white-space:nowrap;">
 													<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
+													<img class="actionImage" src='<c:url value="/images/lookup.gif"/>' border="0" onclick="moveQuestion('${question.id}','${section.id}');"/>
 													<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${section.id}');"/>
 												</td>
 											</tr>
@@ -315,6 +348,26 @@ function editQuestion(id, name, questionNumber, question) {
 							</tr>
 							<tr>
 								<th colspan="2"><input id="saveQuestionButton" type="button" value="<spring:message code="general.save"/>"/></th>
+							</tr>
+						</table>
+					</div>
+					<div id="moveQuestionDiv" style="display:none;">
+						<input id="moveQuestionIdField" type="hidden" value=""/>
+						<input id="moveFromSectionIdField" type="hidden" value=""/>
+						<table>
+							<tr>
+								<th><spring:message code="facilitydata.new-section-for-question"/></th>
+								<td>
+									<select id="moveToSectionIdField" style="font-size:small;">
+										<option value=""><spring:message code="facilitydata.choose"/>...</option>
+										<c:forEach items="${schema.sections}" var="section">
+											<option value="${section.id}">${section.name}</option>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th colspan="2"><input id="moveQuestionButton" type="button" value="<spring:message code="general.save"/>"/></th>
 							</tr>
 						</table>
 					</div>

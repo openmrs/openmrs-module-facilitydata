@@ -12,3 +12,4 @@
 <!-- Include javascript from module -->
 <openmrs:htmlInclude file="${pageContext.request.contextPath}/moduleResources/facilitydata/jquery-ui/js/jquery-ui-1.7.2.custom.min.js"/>
 <openmrs:htmlInclude file='${pageContext.request.contextPath}/moduleResources/facilitydata/dataTables/jquery.dataTables.min.js'/>
+<openmrs:htmlInclude file="${pageContext.request.contextPath}//moduleResources/facilitydata/jquery.cookie.js" />
