@@ -36,11 +36,13 @@
 	        </tr>
 	        <tr>
 	            <td><spring:message code="facilitydata.valid-from"/></td>
-	            <td><frm:input path="validFrom" id="validFrom" onclick="showCalendar(this);"/></td>
+	            <td><frm:input path="validFrom" id="validFrom" onclick="showCalendar(this);"/>
+	            <frm:errors cssClass="error" path="validFrom"/></td>
 	        </tr>
 	        <tr>
 	            <td><spring:message code="facilitydata.valid-to"/></td>
-	            <td><frm:input path="validTo" id="validTo" onclick="showCalendar(this);"/></td>
+	            <td><frm:input path="validTo" id="validTo" onclick="showCalendar(this);"/>
+	            <frm:errors cssClass="error" path="validTo"/></td>
 	        </tr>
 	        <tr>
 	            <td><spring:message code="general.description"/></td>
@@ -49,7 +51,7 @@
 		    <tr id="buttonsAtBottom">
 		        <td colspan="2">
 		        	<input name="action" type="submit" value="<spring:message code="facilitydata.save-schema"/>"/>
-		        	<input type="button" value="<spring:message code="general.cancel"/>" onclick="document.location.href='schema.form?id=${schema.id}';"/>
+		        	<input type="button" value="<spring:message code="general.cancel"/>" onclick="document.location.href='schema.list'"/>
 		        </td>
 		    </tr>     
 	    </table>

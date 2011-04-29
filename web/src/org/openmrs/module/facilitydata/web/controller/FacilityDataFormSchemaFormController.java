@@ -60,6 +60,7 @@ public class FacilityDataFormSchemaFormController {
             schema = svc.getFacilityDataFormSchema(id);
             map.addAttribute("schema", schema);
         }
+        map.addAttribute("frequencies", Frequency.values());
         return "/module/facilitydata/schemaForm";
     }
 

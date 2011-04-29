@@ -13,8 +13,8 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 @RequestMapping("/module/facilitydata/questionForm.form")
 public class FacilityDataQuestionFormController {
@@ -45,12 +46,20 @@ public class FacilityDataQuestionFormController {
         binder.registerCustomEditor(FacilityDataQuestionType.class, new FacilityDataQuestionTypeEditor());
     }
 
+    @ModelAttribute("periodApplicabilities")
+    public PeriodApplicability[] periodApplicabilities() {
+		return PeriodApplicability.values();
+    }
+    
+    @ModelAttribute("allQuestionTypes")
+    public List<FacilityDataQuestionType> allQuestionTypes() {
+    	return Context.getService(FacilityDataService.class).getAllQuestionTypes();
+    }
+    
     @RequestMapping(method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("question") FacilityDataQuestion question) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("allQuestionTypes", svc.getAllQuestionTypes());
-        map.addAttribute("periodApplicabilities", PeriodApplicability.values());
         if (id != null) {
             question = svc.getQuestion(id);
             map.addAttribute("question", question);
