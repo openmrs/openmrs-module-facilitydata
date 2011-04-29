@@ -199,6 +199,20 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		}
 		return m;
 	}
+	
+	/**
+	 * @see FacilityDataService#getFormQuestionBreakdown()
+	 */
+	public Map<Integer, Integer> getFormQuestionBreakdown() {
+		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		String s = "select question, count(*) from facilitydata_value group by question";
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		for (Object entry : query.list()) {
+			Object[] row = (Object[]) entry;
+			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
+		}
+		return m;
+	}
 
 	/**
 	 * @see FacilityDataDAO#deleteFacilityDataValue(FacilityDataValue)

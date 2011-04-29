@@ -152,6 +152,12 @@ function moveQuestion(questionId, sectionId) {
 	$('#moveQuestionDiv').dialog('open');
 }
 
+function deleteQuestion(questionId, sectionId) {
+	if (confirm('<spring:message code="facilitydata.confirm-delete-form-question"/>')) {
+		window.location.href='deleteFormQuestion.form?schema=${schema.id}&questionId='+ questionId + '&sectionId='+sectionId;
+	}
+}
+
 </script>
 
 <b class="boxHeader">${schema.name}</b>
@@ -312,7 +318,9 @@ function moveQuestion(questionId, sectionId) {
 												<td style="white-space:nowrap;">
 													<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
 													<img class="actionImage" src='<c:url value="/images/lookup.gif"/>' border="0" onclick="moveQuestion('${question.id}','${section.id}');"/>
-													<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${section.id}');"/>
+													<c:if test="${questionBreakdown[question.id] == null || questionBreakdown[question.id] == 0}">
+														<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${question.id}','${section.id}');"/>
+													</c:if>
 												</td>
 											</tr>
 										</c:forEach>

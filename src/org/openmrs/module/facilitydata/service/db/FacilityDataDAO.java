@@ -208,5 +208,11 @@ public interface FacilityDataDAO {
      * @return a Map from FacilityDataCodedOption id to a count of answers for that option
      */
     public Map<Integer, Integer> getCodedOptionBreakdown();
+    
+    /**
+     * @return a Map from FacilityDataFormQuestion id to a count of values for that question
+     */
+    public Map<Integer, Integer> getFormQuestionBreakdown();
+
 }
 
