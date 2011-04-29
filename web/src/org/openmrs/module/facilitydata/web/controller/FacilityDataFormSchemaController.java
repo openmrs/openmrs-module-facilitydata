@@ -16,9 +16,12 @@ package org.openmrs.module.facilitydata.web.controller;
 import java.util.Collections;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,12 +37,13 @@ public class FacilityDataFormSchemaController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
+        binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
     }
     
 	@RequestMapping("/module/facilitydata/schema.list")
     public String listSchemas(ModelMap map) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("schemas",svc.getAllFacilityDataFormSchemas());
+        map.addAttribute("schemas", svc.getAllFacilityDataFormSchemas());
         return "/module/facilitydata/schemaList";
     }
 
@@ -51,6 +55,7 @@ public class FacilityDataFormSchemaController {
         }
         FacilityDataFormSchema schema = svc.getFacilityDataFormSchema(id);
         map.addAttribute("schema", schema);
+        map.addAttribute("questions", svc.getAllQuestions());
         return "/module/facilitydata/schema";
     }
     
@@ -97,6 +102,33 @@ public class FacilityDataFormSchemaController {
     		newSection.getQuestions().addAll(section.getQuestions());
     	}
     	schema.getSections().remove(section);
+    	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
+        return String.format("redirect:schema.form?id=%s", schema.getId());
+    }
+    
+    @RequestMapping("/module/facilitydata/saveFormQuestion.form")
+    public String saveFormQuestion(ModelMap map,
+    						 @RequestParam(required=true) FacilityDataFormSchema schema, 
+    						 @RequestParam(required=true) Integer sectionId, 
+    						 @RequestParam(required=true) Integer formQuestionId, 
+    						 @RequestParam(required=true) String name, 
+    						 @RequestParam(required=true) String questionNumber,
+    						 @RequestParam(required=true) FacilityDataQuestion question) throws Exception {
+
+    	FacilityDataFormSection section = schema.getSectionById(sectionId);
+    	
+        FacilityDataFormQuestion q = null;
+        if (formQuestionId == null) {
+        	q = new FacilityDataFormQuestion();
+        	q.setSection(section);
+        	section.getQuestions().add(q);
+        }
+        else {
+        	q = section.getQuestionById(formQuestionId);
+        }
+    	q.setName(name);
+    	q.setQuestionNumber(questionNumber);
+    	q.setQuestion(question);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
         return String.format("redirect:schema.form?id=%s", schema.getId());
     }
