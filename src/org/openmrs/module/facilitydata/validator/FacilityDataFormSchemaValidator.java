@@ -1,9 +1,6 @@
 package org.openmrs.module.facilitydata.validator;
 
-import java.text.SimpleDateFormat;
-
 import org.openmrs.annotation.Handler;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -31,45 +28,5 @@ public class FacilityDataFormSchemaValidator extends BaseFacilityMetadataValidat
         		}
         	}
         }
-    }
-    
-    
+    } 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
