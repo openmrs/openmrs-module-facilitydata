@@ -29,6 +29,20 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
     //***** CONSTRUCTORS *****
     
     public FacilityDataFormSection() {}
+    
+    //***** INSTANCE METHODS *****
+    
+    /**
+     * @return the question with the passed id
+     */
+    public FacilityDataFormQuestion getQuestionById(Integer questionId) {
+    	for (FacilityDataFormQuestion question : getQuestions()) {
+    		if (question.getId().equals(questionId)) {
+    			return question;
+    		}
+    	}
+    	return null;
+    }
 
     //***** PROPERTY ACCESS *****
 	/**

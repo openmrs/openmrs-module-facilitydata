@@ -17,6 +17,18 @@ $(document).ready(function() {
 		zIndex:990
 	});
 	
+	$('#editQuestionDiv').dialog({
+		autoOpen: false,
+		modal: true,
+		draggable: false,
+		closeOnEscape: false,
+		title: '<spring:message code="facilitydata.question-details"/>',
+		width: '75%',
+		height: $(window).height()/2,
+		position: [150,150],
+		zIndex:990
+	});
+	
 	<c:forEach items="${schema.sections}" var="section">
 		$('#deleteSection${section.id}').dialog({
 			autoOpen: false,
@@ -40,6 +52,16 @@ $(document).ready(function() {
 		window.location.href='saveSection.form?schema=${schema.id}&id='+ sectionId + '&name='+sectionName;
 	});
 	
+	$('#saveQuestionButton').click(function(event){
+		var url = 'saveFormQuestion.form?schema=${schema.id}'
+		url += '&sectionId=' + $('#sectionIdField').val();
+		url += '&formQuestionId=' + $('#questionIdField').val();
+		url += '&name=' + $('#questionNameField').val();
+		url += '&questionNumber=' + $('#questionNumberField').val();
+		url += '&question=' + $('#questionField').val();
+		window.location.href=url;
+	});
+	
 	$('#sectionList').dataTable({
 	    "bPaginate": false,
 	    "bLengthChange": false,
@@ -49,6 +71,31 @@ $(document).ready(function() {
 	    "bAutoWidth": false,
 	    "bSortable": false
 	});
+	
+	$('#questionTable').dataTable({
+	    "bPaginate": false,
+	    "bLengthChange": false,
+	    "bFilter": false,
+	    "bSort": false,
+	    "bInfo": false,
+	    "bAutoWidth": false,
+	    "bSortable": false
+	});		
+	
+	$('#sectionChooser').change(function(event){
+		var sectionId = $(this).val();
+		$('.questionRow').hide();
+		$('.questionRow'+sectionId).show();
+		$('#sectionIdField').val(sectionId);
+	});
+	$('#sectionIdField').val($('#sectionChooser').val());
+	
+	$('#questionField').change(function(event){
+		if ($('#questionNameField').val() == '') {
+			$('#questionNameField').val($(this).find('option:selected').text());
+		}
+	});
+	
 });
 
 function editSection(existingId, existingName) {
@@ -65,13 +112,21 @@ function moveSection(existingIndex, newIndex) {
 	window.location.href='moveSection.form?schema=${schema.id}&existingIndex='+ existingIndex + '&newIndex='+newIndex;
 }
 
+function editQuestion(id, name, questionNumber, question) {
+	$('#questionIdField').val(id);
+	$('#questionNameField').val(name);
+	$('#questionNumberField').val(questionNumber);
+	$('#questionField').val(question);
+	$('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + name).dialog('open');
+}
+
 </script>
 
 <b class="boxHeader">${schema.name}</b>
 <div class="box">
 	<table width="100%">
 		<tr>
-			<td width="33%">
+			<td width="33%" style="vertical-align:top;">
 				<fieldset>
 					<legend>
 						<a href="schemaForm.form?id=${schema.id}">
@@ -132,8 +187,8 @@ function moveSection(existingIndex, newIndex) {
 												</c:when>
 												<c:otherwise>&nbsp;&nbsp;&nbsp;&nbsp;</c:otherwise>
 											</c:choose>
-											<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteSection('${section.id}');"/>
 										</c:if>
+										<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteSection('${section.id}');"/>
 									</td>
 								</tr>
 								
@@ -193,7 +248,76 @@ function moveSection(existingIndex, newIndex) {
 					<c:if test="${empty schema.sections}">
 						<i><spring:message code="facilitydata.add-section-to-add-question-message"/></i>
 					</c:if>
-					TODO...
+					<spring:message code="facilitydata.questions-in-section"/>
+					<select id="sectionChooser">
+						<c:forEach items="${schema.sections}" var="section">
+							<option value="${section.id}">${section.name}</option>
+						</c:forEach>
+					</select>
+					<table width="100%" class="facilityDataTable" id="questionTable">
+						<thead>
+							<tr>
+								<th style="text-decoration:nowrap;">#</th>
+								<th style="width:100%"><spring:message code="facilitydata.question"/></th>
+								<th style="text-decoration:nowrap;"><spring:message code="facilitydata.actions"/></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
+								<c:choose>
+									<c:when test="${empty section.questions}">
+										<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
+											<td colspan="2" style="background-color:#E2E4FF;">
+												<spring:message code="facilitydata.no-questions-defined-in-section"/>
+											</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${section.questions}" var="question">
+											<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
+												<td>${question.questionNumber}</td>
+												<td>${question.name}</td>
+												<td>
+													<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
+													<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${section.id}');"/>
+												</td>
+											</tr>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</tbody>
+					</table>
+					<a href="javascript:editQuestion('','','','');"><spring:message code="facilitydata.add-form-question"/></a>
+					
+					<div id="editQuestionDiv" style="display:none;">
+						<input id="questionIdField" type="hidden" value=""/>
+						<input id="sectionIdField" type="hidden" value=""/>
+						<table>
+							<tr>
+								<th><spring:message code="facilitydata.question.number"/></th>
+								<td><input id="questionNumberField" type="text" name="questionNumber" size="15" style="font-size:small;"/></td>
+							</tr>
+							<tr>
+								<th><spring:message code="facilitydata.question"/></th>
+								<td>
+									<select id="questionField" name="question" style="font-size:small;">
+										<option value=""><spring:message code="facilitydata.choose"/>...</option>
+										<c:forEach items="${questions}" var="q">
+											<option value="${q.id}">${q.name}</option>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th><spring:message code="facilitydata.question.display-name"/></th>
+								<td><input id="questionNameField" type="text" name="name" size="75" style="font-size:small;"/></td>
+							</tr>
+							<tr>
+								<th colspan="2"><input id="saveQuestionButton" type="button" value="<spring:message code="general.save"/>"/></th>
+							</tr>
+						</table>
+					</div>
 				</fieldset>
 			</td>
 		</tr>
