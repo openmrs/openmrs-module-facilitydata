@@ -46,12 +46,16 @@ public class FacilityDataFormSchemaFormController {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
         binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), true));
     }
+    
+    @ModelAttribute("frequencies")
+    public Frequency[] getFrequencies() {
+    	return Frequency.values();
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String viewForm(@RequestParam(required = false) Integer id, ModelMap map,
                            @ModelAttribute("schema") FacilityDataFormSchema schema) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("frequencies", Frequency.values());
         if (id != null) {
             schema = svc.getFacilityDataFormSchema(id);
             map.addAttribute("schema", schema);
