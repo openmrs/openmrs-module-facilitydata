@@ -132,4 +132,19 @@ public class FacilityDataFormSchemaController {
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
         return String.format("redirect:schema.form?id=%s", schema.getId());
     }
+    
+    @RequestMapping("/module/facilitydata/moveFormQuestion.form")
+    public String moveFormQuestion(ModelMap map,
+    						 @RequestParam(required=true) FacilityDataFormSchema schema, 
+    						 @RequestParam(required=true) Integer formQuestionId, 
+    						 @RequestParam(required=true) Integer fromSectionId, 
+    						 @RequestParam(required=true) Integer toSectionId) throws Exception {
+
+    	FacilityDataFormSection fromSection = schema.getSectionById(fromSectionId);
+    	FacilityDataFormSection toSection = schema.getSectionById(toSectionId);
+    	FacilityDataFormQuestion question = fromSection.getQuestionById(formQuestionId);
+    	question.setSection(toSection);
+    	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
+        return String.format("redirect:schema.form?id=%s", schema.getId());
+    }
 }
