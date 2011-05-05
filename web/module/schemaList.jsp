@@ -22,6 +22,13 @@
 	table.schemaForm th,td {padding:5px; white-space:nowrap; font-size:small;}
 </style>
 
+<div class="facilityDataHeader">
+	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
+	-&gt;
+	<spring:message code="facilitydata.manage-form-schema"/>
+	<hr/>
+</div>
+
 <b class="boxHeader"><spring:message code="facilitydata.manage-form-schema"/></b>
 <div class="box">
 	<a href="schema.form"><spring:message code="facilitydata.add-schema"/></a>

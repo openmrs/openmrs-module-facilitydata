@@ -2,7 +2,6 @@
 
 <%@ attribute name="question" required="true" type="org.openmrs.module.facilitydata.model.FacilityDataFormQuestion" %>
 <%@ attribute name="value" required="false" type="org.openmrs.module.facilitydata.model.FacilityDataValue" %>
-<%@ attribute name="format" required="false" type="java.lang.String" description="Format for the input field" %>
 <%@ attribute name="editable" type="java.lang.Boolean" required="false" description="Denotes whether or not the report should be editable." %>
 
 <tr align="left">

@@ -6,6 +6,18 @@
 	table.schemaForm td {padding:5px; font-size:small;}
 </style>
 
+<div class="facilityDataHeader">
+	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
+	-&gt;
+	<a href="schema.list"><spring:message code="facilitydata.manage-form-schema"/></a>
+	-&gt;
+	<c:choose>
+		<c:when test="${schema.id == null}"><spring:message code="facilitydata.new-schema"/></c:when>
+		<c:otherwise>${schema.name}</c:otherwise>
+	</c:choose>
+	<hr/>
+</div>
+
 <b class="boxHeader"><spring:message code="facilitydata.schema.form"/></b>
 <div class="box">
 	<spring:message code="facilitydata.schema.info"/><br/><br/>

@@ -160,6 +160,15 @@ function deleteQuestion(questionId, sectionId) {
 
 </script>
 
+<div class="facilityDataHeader">
+	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
+	-&gt;
+	<a href="schema.list"><spring:message code="facilitydata.manage-form-schema"/></a>
+	-&gt;
+	${schema.name}
+	<hr/>
+</div>
+
 <b class="boxHeader">${schema.name}</b>
 <div class="box">
 	<table width="100%">

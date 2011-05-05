@@ -38,6 +38,18 @@
 
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/question.form"/>
 
+<div class="facilityDataHeader">
+	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
+	-&gt;
+	<a href="questionType.list"><spring:message code="facilitydata.manage-question-type"/></a>
+	-&gt;
+	<c:choose>
+		<c:when test="${questionType.id == null}"><spring:message code="facilitydata.new-question-type"/></c:when>
+		<c:otherwise>${questionType.name}</c:otherwise>
+	</c:choose>
+	<hr/>
+</div>
+
 <b class="boxHeader"><spring:message code="facilitydata.question-type-form"/></b>
 <div class="box">
 	<spring:message code="facilitydata.question-type.info"/><br/><br/>
