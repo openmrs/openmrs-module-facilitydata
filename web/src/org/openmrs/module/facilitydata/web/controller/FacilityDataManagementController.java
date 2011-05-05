@@ -15,6 +15,7 @@ package org.openmrs.module.facilitydata.web.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,7 +51,7 @@ public class FacilityDataManagementController {
 
     @ModelAttribute("today")
     public String getToday() {
-        return DateUtil.today();
+        return Context.getDateFormat().format(new Date());
     }
 
     @RequestMapping(method = RequestMethod.GET)

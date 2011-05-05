@@ -177,12 +177,12 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getFacilityDataValues(FacilityDataFormSchema, Date, Date, Location)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FacilityDataValue> getFacilityDataValues(FacilityDataFormSchema schema, Date startDate, Date endDate, Location location) {
+	public List<FacilityDataValue> getFacilityDataValues(FacilityDataFormSchema schema, Date fromDate, Date toDate, Location facility) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataValue.class);
-		c.add(Restrictions.eq("question.section.schema", schema));
-		c.add(Restrictions.eq("startDate", startDate));
-		c.add(Restrictions.eq("endDate", endDate));
-		c.add(Restrictions.eq("location", location));
+		c.createCriteria("question").createCriteria("section").add(Restrictions.eq("schema", schema));
+		c.add(Restrictions.eq("fromDate", fromDate));
+		c.add(Restrictions.eq("toDate", toDate));
+		c.add(Restrictions.eq("facility", facility));
 		return c.list();
 	}
 	

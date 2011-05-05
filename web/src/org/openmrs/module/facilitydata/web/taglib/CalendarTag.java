@@ -55,9 +55,9 @@ public class CalendarTag extends TagSupport {
         startDate = String.format("%s/%s/%s", year, month, "01");
         try {
             endDate = String.format("%s/%s/%s", year, month,
-                    DateUtil.getDateFormat().format(DateUtil.getLastOfMonthDate(DateUtil.getDateFormat().parse(startDate))));
-            startCal.setTime(DateUtil.getDateFormat().parse(startDate));
-            endCal.setTime(DateUtil.getDateFormat().parse(endDate));
+                    Context.getDateFormat().format(DateUtil.getEndOfMonth(Context.getDateFormat().parse(startDate))));
+            startCal.setTime(Context.getDateFormat().parse(startDate));
+            endCal.setTime(Context.getDateFormat().parse(endDate));
         } catch (ParseException e) {
             throw new JspException(e);
         }
@@ -140,13 +140,13 @@ public class CalendarTag extends TagSupport {
                 if (showEdit) {
                     sb.append("<br/>").append("&nbsp;&nbsp;&nbsp;&nbsp;");
                     sb.append(String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d&editable=true\">%s</a>", fontColor, schemaId,
-                            DateUtil.getDateFormat().format(iterCal.getTime()), DateUtil.getDateFormat().format(iterCal.getTime()), locationId,
+                            Context.getDateFormat().format(iterCal.getTime()), Context.getDateFormat().format(iterCal.getTime()), locationId,
                             Context.getMessageSourceService().getMessage("general.edit")));
                 }
                 if (showView) {
                     sb.append("<br/>").append("&nbsp;&nbsp;&nbsp;&nbsp;");
                     sb.append(String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d\">%s</a>", fontColor, schemaId,
-                            DateUtil.getDateFormat().format(iterCal.getTime()), DateUtil.getDateFormat().format(iterCal.getTime()), locationId,
+                            Context.getDateFormat().format(iterCal.getTime()), Context.getDateFormat().format(iterCal.getTime()), locationId,
                             Context.getMessageSourceService().getMessage("general.view")));
                 }
             } else {
@@ -176,8 +176,8 @@ public class CalendarTag extends TagSupport {
                 .append(getNextYearLink(startCal));
         for (int i = 1; i <= 12; ++i) {
             String ymd = String.format("%s/%s/%s", year, (i < 10 ? "0" + i : i), "01");
-            Date firstOfMonth = DateUtil.getDateFormat().parse(ymd);
-            Date lastOfMonth = DateUtil.getLastOfMonthDate(firstOfMonth);
+            Date firstOfMonth = Context.getDateFormat().parse(ymd);
+            Date lastOfMonth = DateUtil.getEndOfMonth(firstOfMonth);
             boolean inFuture = lastOfMonth.after(new Date());
             boolean showEdit = true;
             boolean showView = true;
@@ -208,10 +208,10 @@ public class CalendarTag extends TagSupport {
             sb.append(String.format("<tr style=\" background:%s;color:%s\">", bgColor, fontColor)).append("<td>");
             sb.append(inFuture ? months[i-1] : String.format("<b>%s</b>",months[i-1]));
             sb.append("<td>").append(showEdit ? String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d&editable=true\">%s</a>", fontColor, schemaId,
-                        DateUtil.getDateFormat().format(firstOfMonth), DateUtil.getDateFormat().format(lastOfMonth), locationId,
+                        Context.getDateFormat().format(firstOfMonth), Context.getDateFormat().format(lastOfMonth), locationId,
                         Context.getMessageSourceService().getMessage("general.edit")) : "").append("</td>");
             sb.append("<td>").append(showView ? String.format("<a style=\"color:%s\" href=\"report.form?id=%d&startDate=%s&endDate=%s&site=%d\">%s</a>", fontColor, schemaId,
-                    DateUtil.getDateFormat().format(firstOfMonth), DateUtil.getDateFormat().format(lastOfMonth), locationId,
+                    Context.getDateFormat().format(firstOfMonth), Context.getDateFormat().format(lastOfMonth), locationId,
                     Context.getMessageSourceService().getMessage("general.view")) : "").append("</td>");
             sb.append("</tr>");
         }
@@ -227,13 +227,12 @@ public class CalendarTag extends TagSupport {
     private String getNextLink(Calendar c) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("<a href=\"manage.form?schema=%s&site=%s&", schemaId, locationId));
-        if (c.get(Calendar.MONTH) == 11) {
-            String month = DateUtil.incrementMonth(c,1);
-            sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>", month,year+1));
-        } else {
-            sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>",DateUtil.incrementMonth(c,1),year));
+        int month = c.get(Calendar.MONTH) + 1;
+        if (month == 12) {
+        	month = 1;
+        	year++;
         }
-
+        sb.append(String.format("month=%s&year=%s\">&gt;&gt;&gt;</a>", month,year));
         return sb.toString();
     }
 
@@ -245,13 +244,12 @@ public class CalendarTag extends TagSupport {
     private String getPrevLink(Calendar c) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("<a href=\"manage.form?schema=%s&site=%s&", schemaId, locationId));
-        if (c.get(Calendar.MONTH) == 0) {
-            String month = DateUtil.incrementMonth(c, -1);
-            sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", month, year-1));
-        } else {
-            sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", DateUtil.incrementMonth(c, -1), year));
+        int month = c.get(Calendar.MONTH) - 1;
+        if (month == -1) {
+        	month = 11;
+        	year--;
         }
-
+        sb.append(String.format("month=%s&year=%s\">&lt;&lt;&lt;</a>", month, year));
         return sb.toString();
     }
 
