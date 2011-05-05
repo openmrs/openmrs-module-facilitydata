@@ -48,10 +48,7 @@ public class AdminList extends AdministrationSectionExt {
     @Override
     public Map<String, String> getLinks() {
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put("module/facilitydata/manage.form", "facilitydata.view-enter");
-        map.put("module/facilitydata/schema.list", "facilitydata.manage-form-schema");
-        map.put("module/facilitydata/question.list", "facilitydata.manage-question");
-        map.put("module/facilitydata/questionType.list", "facilitydata.manage-question-type");
+        map.put("module/facilitydata/dashboard.list", "facilitydata.dashboard");
         return Collections.unmodifiableMap(map);
     }
 }

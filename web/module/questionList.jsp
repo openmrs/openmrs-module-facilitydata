@@ -18,6 +18,13 @@
     });
 </script>
 
+<div class="facilityDataHeader">
+	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
+	-&gt;
+	<spring:message code="facilitydata.manage-question"/>
+	<hr/>
+</div>
+
 <b class="boxHeader"><spring:message code="facilitydata.manage-questions"/></b>
 <div class="box">
 	<a href="questionForm.form"><spring:message code="facilitydata.add-question"/></a>

@@ -4,3 +4,5 @@
 }
 
 .facilityDataTable td,th {font-size:small; text-align:left;}
+
+.facilityDataHeader {font-size:large; padding-left:10px;}
