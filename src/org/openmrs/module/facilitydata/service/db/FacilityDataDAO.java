@@ -193,7 +193,7 @@ public interface FacilityDataDAO {
     /**
      * @return all {@link FacilityDataValue}s that match the passed parameters
      */
-    public List<FacilityDataValue> getFacilityDataValues(FacilityDataFormSchema schema, Date startDate, Date endDate, Location location);
+    public List<FacilityDataValue> getFacilityDataValues(FacilityDataFormSchema schema, Date fromDate, Date toDate, Location facility);
 
     /** 
     * Delete a value from the database.

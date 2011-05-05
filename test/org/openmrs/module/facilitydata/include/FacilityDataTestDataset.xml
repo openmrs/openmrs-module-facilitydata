@@ -36,5 +36,5 @@
   <facilitydata_form_question form_question_id="6" name="Number of Outpatient Pediatric Visits" question_number="2" section="3" question="6" [METADATA]/>
 
   <facilitydata_value id="1" facility="1" from_date="2010-08-01 00:00:00.0" to_date="2010-08-01 00:00:00.0" question="1" value_coded="6" value_numeric="[NULL]" comments="" [DATA]/>
-           
+
 </dataset>

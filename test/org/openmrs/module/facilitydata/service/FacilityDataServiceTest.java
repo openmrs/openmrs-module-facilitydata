@@ -13,18 +13,25 @@
  */
 package org.openmrs.module.facilitydata.service;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
+import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.util.BaseFacilityDataContextSensitiveTest;
+import org.openmrs.module.facilitydata.util.DateUtil;
 
 /**
  * Test of the Facility Data Service
@@ -49,27 +56,35 @@ public class FacilityDataServiceTest extends BaseFacilityDataContextSensitiveTes
 	 * General Test
 	 */
 	@Test
-	public void generalTest() throws Exception {
-		for (FacilityDataFormSchema schema : getService().getAllFacilityDataFormSchemas()) {
-			log.warn("In schema: " + schema);
-			for (FacilityDataFormSection section : schema.getSections()) {
-				log.warn("In section: " + section);
-				for (FacilityDataFormQuestion formQuestion : section.getQuestions()) {
-					log.warn("Found question: " + formQuestion);
-					FacilityDataQuestionType type = formQuestion.getQuestion().getQuestionType();
-					log.warn("This is of type: " + type);
-					log.warn("is this assignable to coded? " + CodedFacilityDataQuestionType.class.isAssignableFrom(type.getClass()));
-					log.warn("is this assignable to numeric? " + NumericFacilityDataQuestionType.class.isAssignableFrom(type.getClass()));
-					if (CodedFacilityDataQuestionType.class.isAssignableFrom(type.getClass())) {
-						CodedFacilityDataQuestionType cq = (CodedFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
-						log.warn("This is coded, with options: " + cq.getOptions());
-					}
-					else {
-						NumericFacilityDataQuestionType cq = (NumericFacilityDataQuestionType) formQuestion.getQuestion().getQuestionType();
-						log.warn("This is numeric, with constraints: " + cq.getMinValue() + " - " + cq.getMaxValue());
-					}
-				}
-			}
-		}
+	public void testThatSchemasAreLoaded() throws Exception {
+		List<FacilityDataFormSchema> schemas = getService().getAllFacilityDataFormSchemas();
+		FacilityDataFormSchema schema = schemas.get(0);
+		Assert.assertEquals("Daily Report", schema.getName());
+		Assert.assertEquals(2, schema.getSections().size());
+		FacilityDataFormSection s1 = schema.getSections().get(0);
+		Assert.assertEquals("Equipment Status", s1.getName());
+		Assert.assertEquals(3, s1.getQuestions().size());
+		Iterator<FacilityDataFormQuestion> iterator = s1.getQuestions().iterator();
+		FacilityDataFormQuestion q = iterator.next();
+		Assert.assertEquals("Internet Status", q.getName());
+		Assert.assertEquals(4, ((CodedFacilityDataQuestionType)q.getQuestion().getQuestionType()).getOptions().size());
+		q = iterator.next();
+		Assert.assertEquals("Any power outages", q.getName());
+		Assert.assertEquals(3, ((CodedFacilityDataQuestionType)q.getQuestion().getQuestionType()).getOptions().size());
+		q = iterator.next();
+		Assert.assertEquals("Hours without water", q.getName());
+		Assert.assertEquals(24, ((NumericFacilityDataQuestionType)q.getQuestion().getQuestionType()).getMaxValue().intValue());
+	}
+	
+	/**
+	 * General Test
+	 */
+	@Test
+	public void testSavingAndLoadingValues() throws Exception {
+		FacilityDataFormSchema schema = getService().getFacilityDataFormSchema(1);
+		Location l = new Location(1);
+		Date d1 = DateUtil.getDateTime(2010, 8, 1);
+		FacilityDataReport report = getService().getReport(schema, d1, d1, l);
+		Assert.assertEquals(1, report.getValues().size());
 	}
 }

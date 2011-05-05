@@ -47,9 +47,7 @@ public class FacilityDataReportFormController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        DateFormat dateFormat = DateUtil.getDateFormat();
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), false));
     }
     // a map with the UUID for the corresponding as the key and the FacilityDataValue instance as the value.
     public Map<String,FacilityDataValue> getValues(FacilityDataFormSchema schema, FacilityDataReport formData) {
@@ -68,8 +66,8 @@ public class FacilityDataReportFormController {
         if(Context.isAuthenticated()) {
             FacilityDataFormSchema schema = Context.getService(FacilityDataService.class).getFacilityDataFormSchema(id);
             map.addAttribute("schema", schema);
-            Date startDate = DateUtil.getDateFormat().parse(request.getParameter("startDate"));
-            Date endDate = DateUtil.getDateFormat().parse(request.getParameter("endDate"));
+            Date startDate = Context.getDateFormat().parse(request.getParameter("startDate"));
+            Date endDate = Context.getDateFormat().parse(request.getParameter("endDate"));
             Location location = Context.getLocationService().getLocation(Integer.parseInt(request.getParameter("site")));
             FacilityDataReport formData = Context.getService(FacilityDataService.class).getReport(schema,startDate,endDate, location);
             map.addAttribute("values",getValues(schema,formData));
@@ -102,7 +100,7 @@ public class FacilityDataReportFormController {
             map.addAttribute("values", getValues(schema, formData));
         }
         return String.format("redirect:report.form?id=%d&startDate=%s&endDate=%s&site=%s",
-                schema.getId(), DateUtil.getDateFormat().format(startDate),
-                DateUtil.getDateFormat().format(endDate),request.getParameter("site"));
+                schema.getId(), Context.getDateFormat().format(startDate),
+                Context.getDateFormat().format(endDate),request.getParameter("site"));
     }
 }
