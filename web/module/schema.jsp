@@ -56,8 +56,8 @@ $(document).ready(function() {
 	</c:forEach>
 
 	$('#saveSectionButton').click(function(event){
-		var sectionId = $('#sectionIdField').val();
-		var sectionName = $('#sectionNameField').val();
+		var sectionId = $('#editSectionIdField').val();
+		var sectionName = $('#editSectionNameField').val();
 		if (sectionName == '') {
 			$('#sectionErrorSpan').html('<spring:message code="facilitydata.required-field"/>').show();
 		}
@@ -125,8 +125,8 @@ $(document).ready(function() {
 });
 
 function editSection(existingId, existingName) {
-	$('#sectionIdField').val(existingId);
-	$('#sectionNameField').val(existingName);
+	$('#editSectionIdField').val(existingId);
+	$('#editSectionNameField').val(existingName);
 	$('#editSectionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-section"/>: ' + existingName).dialog('open');
 }
 
@@ -265,8 +265,8 @@ function deleteQuestion(questionId, sectionId) {
 							<tr>
 								<th><spring:message code="facilitydata.display-name"/></th>
 								<td>
-									<input id="sectionIdField" type="hidden"/>
-									<input id="sectionNameField" type="text" name="name" size="50"/> <span class="error" id="sectionErrorSpan" style="display:none;"></span>
+									<input id="editSectionIdField" type="hidden"/>
+									<input id="editSectionNameField" type="text" name="name" size="50"/> <span class="error" id="sectionErrorSpan" style="display:none;"></span>
 								</td>
 							</tr>
 							<tr>
