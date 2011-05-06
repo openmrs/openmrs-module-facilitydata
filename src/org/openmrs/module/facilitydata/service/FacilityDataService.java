@@ -333,4 +333,12 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getFormQuestionBreakdown();
+    
+	/**
+	 * @return a Map from Location Id to a Map of Date to Integer, where Date is the start date of a value, and Integer is the count of values
+	 */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate);
+
 }

@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.facilitydata.service.db;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -212,6 +214,37 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
 		}
 		return m;
+	}
+	
+	/**
+	 * @see FacilityDataDAO#getNumberOfQuestionsAnswered(FacilityDataFormSchema, Date, Date)
+	 */
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate) {
+		Map<Integer, Map<String, Integer>> ret = new HashMap<Integer, Map<String, Integer>>();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String s = "select facility, from_date, count(*) " +
+				   "from facilitydata_value " +
+				   "where from_date >= :fromDate and to_date <= :toDate " +
+				   "group by facility, from_date";
+		
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		for (Object entry : query.list()) {
+			
+			Object[] row = (Object[]) entry;
+			Integer locationId = new Integer(row[0].toString());
+			Map<String, Integer> locationRow = ret.get(locationId);
+			if (locationRow == null) {
+				locationRow = new HashMap<String, Integer>();
+				ret.put(locationId, locationRow);
+			}
+			locationRow.put(df.format((Date)row[1]), new Integer(row[2].toString()));
+		}
+		
+		return ret;
 	}
 
 	/**

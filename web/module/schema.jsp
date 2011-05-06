@@ -313,11 +313,6 @@ function deleteQuestion(questionId, sectionId) {
 							<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
 								<c:choose>
 									<c:when test="${empty section.questions}">
-										<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
-											<td colspan="2" style="background-color:#E2E4FF;">
-												<spring:message code="facilitydata.no-questions-defined-in-section"/>
-											</td>
-										</tr>
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${section.questions}" var="question">
