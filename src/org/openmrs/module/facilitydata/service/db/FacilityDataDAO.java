@@ -14,10 +14,12 @@
 package org.openmrs.module.facilitydata.service.db;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.hibernate.Query;
 import org.openmrs.Location;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
@@ -213,6 +215,11 @@ public interface FacilityDataDAO {
      * @return a Map from FacilityDataFormQuestion id to a count of values for that question
      */
     public Map<Integer, Integer> getFormQuestionBreakdown();
+    
+	/**
+	 * @return a Map from Location Id to a Map of Date to Integer, where Date is the start date of a value, and Integer is the count of values
+	 */
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate);
 
 }
 

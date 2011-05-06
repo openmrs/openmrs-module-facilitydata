@@ -45,7 +45,7 @@
 				    <tbody>
 					    <c:forEach items="${schemas}" var="schema">
 					        <tr>
-				                <td><a href="formEntryOverview?id=${schema.id}">${schema.name}</a></td>
+				                <td><a href="formEntryOverview.form?schema=${schema.id}">${schema.name}</a></td>
 				                <td>${schema.frequency}</td>
 				                <td><openmrs:formatDate date="${schema.validFrom}"/></td>
 				                <td><openmrs:formatDate date="${schema.validTo}"/></td>

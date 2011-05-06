@@ -20,9 +20,9 @@ import java.util.Map;
 
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.db.FacilityDataDAO;
@@ -277,6 +277,13 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	 */
 	public Map<Integer, Integer> getFormQuestionBreakdown() {
 		return dao.getFormQuestionBreakdown();
+	}
+	
+	/**
+	 * @see FacilityDataService#getNumberOfQuestionsAnswered(FacilityDataFormSchema, Date, Date)
+	 */
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate) {
+		return dao.getNumberOfQuestionsAnswered(schema, fromDate, toDate);
 	}
 	
 	//***** PROPERTY ACCESS *****
