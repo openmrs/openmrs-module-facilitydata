@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.module.facilitydata.model.enums.Frequency;
-
 /**
  * This represents a collection of questions that are asked together on a Form, in one or more sections
  */
@@ -26,7 +24,7 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
 
 	//***** PROPERTIES *****
 
-    private Frequency frequency;
+	private FacilityDataForm form;
     private Date validFrom;
     private Date validTo;
     private List<FacilityDataFormSection> sections;
@@ -36,6 +34,26 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
     public FacilityDataFormSchema() {}
     
     //***** INSTANCE METHODS *****
+    
+    /**
+     * @return true if this schema is active on the current date
+     */
+    public boolean isActive() {
+    	return isActive(null);
+    }
+    
+    /**
+     * @return true if this schema is active on the passed date
+     */
+    public boolean isActive(Date d) {
+    	d = (d == null ? new Date() : d);
+		if (getValidFrom() == null || getValidFrom().compareTo(d) <= 0) {
+			if (getValidTo() == null || getValidTo().compareTo(d) >= 0) {
+				return true;
+			}
+		}
+		return false;
+    }
     
     /**
      * @return the number of questions in the schema
@@ -63,19 +81,19 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
     //***** PROPERTY ACCESS *****
 
 	/**
-	 * @return the frequency
+	 * @return the form
 	 */
-	public Frequency getFrequency() {
-		return frequency;
+	public FacilityDataForm getForm() {
+		return form;
 	}
 
 	/**
-	 * @param frequency the frequency to set
+	 * @param form the form to set
 	 */
-	public void setFrequency(Frequency frequency) {
-		this.frequency = frequency;
+	public void setForm(FacilityDataForm form) {
+		this.form = form;
 	}
-
+	
 	/**
 	 * @return the validFrom
 	 */

@@ -9,14 +9,13 @@
 	.missing { background-color:red; color:white; }
 	.partial { background-color:yellow; color:black; }
 	.complete { background-color:green; color:white; }
+	.notApplicable { background-color:grey; color:white; }
 </style>
 
 <div class="facilityDataHeader">
 	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
 	-&gt;
-	<spring:message code="facilitydata.enter-data"/>
-	-&gt;
-	${schema.name}
+	${form.name}
 	<hr/>
 </div>
 
@@ -27,13 +26,13 @@
 			<c:forEach items="${yearCols}" var="yearEntry" varStatus="yearStatus">
 				<th colspan="${yearEntry.value}">
 					<c:if test="${yearStatus.first}">
-						<a href="formEntryOverview.form?schema=${schema.id}&yearIncrement=${yearIncrement == null ? -1 : yearIncrement-1}&monthIncrement=${monthIncrement}">
+						<a href="formEntryOverview.form?form=${form.id}&yearIncrement=${yearIncrement == null ? -1 : yearIncrement-1}&monthIncrement=${monthIncrement}">
 							&lt;&lt;
 						</a>
 					</c:if>
 					&nbsp;${yearEntry.key}&nbsp;
 					<c:if test="${yearStatus.last}">
-						<a href="formEntryOverview.form?schema=${schema.id}&yearIncrement=${yearIncrement == null ? 1 : yearIncrement+1}&monthIncrement=${monthIncrement}">
+						<a href="formEntryOverview.form?form=${form.id}&yearIncrement=${yearIncrement == null ? 1 : yearIncrement+1}&monthIncrement=${monthIncrement}">
 							&gt;&gt;
 						</a>
 					</c:if>
@@ -44,21 +43,21 @@
 			<th></th>
 			<c:forEach items="${monthCols}" var="monthEntry" varStatus="monthStatus">
 				<th colspan="${monthEntry.value}">
-					<c:if test="${monthStatus.first && schema.frequency == 'DAILY'}">
-						<a href="formEntryOverview.form?schema=${schema.id}&monthIncrement=${monthIncrement == null ? -1 : monthIncrement-1}&yearIncrement=${yearIncrement}">
+					<c:if test="${monthStatus.first && form.frequency == 'DAILY'}">
+						<a href="formEntryOverview.form?form=${form.id}&monthIncrement=${monthIncrement == null ? -1 : monthIncrement-1}&yearIncrement=${yearIncrement}">
 							&lt;&lt;
 						</a>
 					</c:if>
 					&nbsp;${displayKeys[monthEntry.key]}&nbsp;
-					<c:if test="${monthStatus.last && schema.frequency == 'DAILY'}">
-						<a href="formEntryOverview.form?schema=${schema.id}&monthIncrement=${monthIncrement == null ? 1 : monthIncrement+1}&yearIncrement=${yearIncrement}">
+					<c:if test="${monthStatus.last && form.frequency == 'DAILY'}">
+						<a href="formEntryOverview.form?form=${form.id}&monthIncrement=${monthIncrement == null ? 1 : monthIncrement+1}&yearIncrement=${yearIncrement}">
 							&gt;&gt;
 						</a>
 					</c:if>
 				</th>
 			</c:forEach>
 		</tr>
-		<c:if test="${schema.frequency == 'DAILY'}">
+		<c:if test="${form.frequency == 'DAILY'}">
 			<tr>
 				<th></th>
 				<c:forEach items="${dayCols}" var="day">
@@ -72,11 +71,27 @@
 				<th>${location.name}</th>
 				<c:forEach items="${dayCols}" var="dayEntry">
 					<c:set var="numEntries" value="${locationEntry[dayEntry.key]}"/>
-					<c:set var="cellStyle" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
-					<td class="${cellStyle}" style="text-align:center;">
-						<a href="#" style="color:white;">
-							<spring:message code="facilitydata.enter.short"/>
-						</a>
+					<c:set var="dayStatus" value="notApplicable"/>
+					<c:forEach items="${form.schemas}" var="schema">
+						<c:if test="${facilitydata:isDateInRange(dayEntry.value, schema.validFrom, schema.validTo)}">
+							<c:set var="numQuestions" value="${numQuestionsBySchem[schema]}"/>
+							<c:set var="dayStatus" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
+						</c:if>
+					</c:forEach>
+					<td class="${dayStatus}" style="text-align:center;">
+						<c:choose>
+							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
+							<c:when test="${dayStatus == 'missing'}">
+								<a href="#" style="color:white;">
+									<spring:message code="facilitydata.enter-short"/>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="#">
+									<spring:message code="facilitydata.view-short"/>
+								</a>
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</c:forEach>
 			</tr>	

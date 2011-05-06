@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +30,6 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
-import org.openmrs.module.facilitydata.util.DateUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

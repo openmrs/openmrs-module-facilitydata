@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
@@ -33,6 +34,74 @@ import org.springframework.transaction.annotation.Transactional;
  * Core Service for FacilityData
  */
 public interface FacilityDataService extends OpenmrsService {
+	
+    /**
+     * Saves a form
+     * @param form
+     * @return the saved form
+     * @should save and return the specified form
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataForm saveFacilityDataForm(FacilityDataForm form);
+
+    /**
+     * Get a specified form
+     * @param id the id of the form to retrieve
+     * @return the form or null if it does not exist.
+     * @should return the form with the passed id or null if it doesn't exist
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+    public FacilityDataForm getFacilityDataForm(Integer id);
+
+    /**
+     * Gets a specified form using its {@link UUID}.
+     * @param uuid the UUID of the form to retrieve.
+     * @return the form or null if it does exist.
+     * @should return the form with the specified uuid or null if it doesn't exist
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+    public FacilityDataForm getFacilityDataFormByUUID(String uuid);
+
+    /**
+     * Get all Form Schemas in the system.
+     * @return a {@link List} containing all forms.
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should get all forms
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+    public List<FacilityDataForm> getAllFacilityDataForms();
+
+    /**
+     * Retire a form
+     * @param form the form
+     * @should retire the given form then save it.
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataForm retireFacilityDataForm(FacilityDataForm form, String reason);
+
+    /**
+     * Un-retire a form
+     * @param form the form
+     * @should unretire the given form then save it
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public FacilityDataForm unretireFacilityDataForm(FacilityDataForm form);
+
+    /**
+     * Delete a form
+     * @param form the form to delete.
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should delete the specified form
+     */
+    @Transactional
+    @Authorized({FacilityDataConstants.MANAGE})
+    public void deleteFacilityDataForm(FacilityDataForm form);
 
     /**
      * Saves a form schema
@@ -51,7 +120,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the schema with the passed id or null if it doesn't exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataFormSchema getFacilityDataFormSchema(Integer id);
 
     /**
@@ -61,7 +130,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the schema with the specified uuid or null if it doesn't exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataFormSchema getFacilityDataFormSchemaByUUID(String uuid);
 
     /**
@@ -71,7 +140,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should get all schemas
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public List<FacilityDataFormSchema> getAllFacilityDataFormSchemas();
 
     /**
@@ -120,7 +189,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the <code>FacilityDataQuestionType</code> with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataQuestionType getQuestionType(Integer id);
 
     /**
@@ -131,7 +200,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the <code>FacilityDataQuestionType</code> with the specified uuid or null if it does not exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataQuestionType getQuestionTypeByUUID(String uuid);
 
     /**
@@ -141,7 +210,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return a list of all FacilityDataQuestionType.
      */
     @Transactional
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public List<FacilityDataQuestionType> getAllQuestionTypes();
 
     /**
@@ -190,7 +259,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the <code>FacilityDataQuestion</code> with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataQuestion getQuestion(Integer id);
 
     /**
@@ -201,7 +270,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the question with the specified uuid or null if it does not exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataQuestion getQuestionByUUID(String uuid);
 
     /**
@@ -211,7 +280,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return a list of all sections.
      */
     @Transactional
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public List<FacilityDataQuestion> getAllQuestions();
 
     /**
@@ -250,7 +319,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should save the value to the database
      */
     @Transactional
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.ENTER})
+    @Authorized({FacilityDataConstants.ENTER})
     public FacilityDataValue saveFacilityDataValue(FacilityDataValue value);
 
     /**
@@ -261,7 +330,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should return the value with the passed id or null if it does not exist
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public FacilityDataValue getFacilityDataValue(Integer id);
 
     /**
@@ -270,7 +339,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should void the passed value and then save it
      */
     @Transactional
-    @Authorized({FacilityDataConstants.MANAGE})
+    @Authorized({FacilityDataConstants.ENTER})
     public FacilityDataValue voidFacilityDataValue(FacilityDataValue value, String reason);
 
     /**
@@ -279,7 +348,7 @@ public interface FacilityDataService extends OpenmrsService {
      * @should unvoid the passed value and then save it
      */
     @Transactional
-    @Authorized({FacilityDataConstants.MANAGE})
+    @Authorized({FacilityDataConstants.ENTER})
     public FacilityDataValue unvoidFacilityDataValue(FacilityDataValue value);
 
     /** 
@@ -324,21 +393,22 @@ public interface FacilityDataService extends OpenmrsService {
      * @return a Map from FacilityDataCodedOption id to a count of answers for that option
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getCodedOptionBreakdown();
     
     /**
      * @return a Map from FacilityDataFormQuestion id to a count of values for that FormQuestion
      */
     @Transactional(readOnly = true)
-    @Authorized({FacilityDataConstants.MANAGE, FacilityDataConstants.VIEW})
+    @Authorized({FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getFormQuestionBreakdown();
     
 	/**
-	 * @return a Map from Location Id to a Map of Date to Integer, where Date is the start date of a value, and Integer is the count of values
+	 * @return a Map from Location Id to a Map of Date String to Integer, 
+	 * where Date String is the start date of a value, and Integer is the count of values
 	 */
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})
-	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate);
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate);
 
 }

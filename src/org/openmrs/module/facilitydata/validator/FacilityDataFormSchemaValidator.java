@@ -19,7 +19,6 @@ public class FacilityDataFormSchemaValidator extends BaseFacilityMetadataValidat
     public void validate(Object obj, Errors errors) {
     	FacilityDataFormSchema schema = (FacilityDataFormSchema) obj; 
     	super.validate(obj, errors);
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "frequency", "error.null");
         /* Valid from, to validation */
         if ( schema.getValidFrom() != null ) {
         	if ( schema.getValidTo() != null ) {

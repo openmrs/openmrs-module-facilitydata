@@ -17,13 +17,14 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.validator.FacilityDataFormSchemaValidator;
-import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @Controller
 @RequestMapping("/module/facilitydata/schemaForm.form")
@@ -51,29 +51,37 @@ public class FacilityDataFormSchemaFormController {
     public Frequency[] getFrequencies() {
     	return Frequency.values();
     }
+    
+    @ModelAttribute("schema")
+    public FacilityDataFormSchema getSchema(@RequestParam(value="schema", required=false) FacilityDataFormSchema schema) {
+    	if (schema == null) {
+    		schema = new FacilityDataFormSchema();
+    		schema.setForm(new FacilityDataForm());
+    	}
+    	return schema;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String viewForm(@RequestParam(required = false) Integer id, ModelMap map,
+    public String viewForm(ModelMap map,
                            @ModelAttribute("schema") FacilityDataFormSchema schema) {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        if (id != null) {
-            schema = svc.getFacilityDataFormSchema(id);
-            map.addAttribute("schema", schema);
-        }
-        map.addAttribute("frequencies", Frequency.values());
         return "/module/facilitydata/schemaForm";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveSchema(@RequestParam(required = false) Integer id,
-                             @ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result,
-                             HttpServletRequest request, ModelMap map) throws ServletRequestBindingException {
+    public String saveSchema(@ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result, 
+    						 ModelMap map, HttpServletRequest request) throws ServletRequestBindingException {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
         new FacilityDataFormSchemaValidator().validate(schema, result);
         if (result.hasErrors()) {
             return "/module/facilitydata/schemaForm";
         }
-        request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "facilitydata.schema.saved");
-        return String.format("redirect:schema.form?id=%s", svc.saveFacilityDataFormSchema(schema).getId());
+        
+        FacilityDataForm form = schema.getForm();
+        if (StringUtils.isBlank(schema.getName())) {
+        	schema.setName(form.getName());
+        }
+
+        svc.saveFacilityDataForm(form);
+        return String.format("redirect:schema.form?id=%s", schema.getId());
     }
 }

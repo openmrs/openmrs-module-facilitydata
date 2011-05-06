@@ -2,11 +2,11 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-<openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/schema.list"/>
+<openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/form.list"/>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#schemaList').dataTable({
+        $('#formList').dataTable({
             "bPaginate": true,
             "bLengthChange": false,
             "bFilter": false,
@@ -33,22 +33,20 @@
 		<td>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.enterData"/></b>
 			<div class="box">
-				<table cellpadding="2" cellspacing="1" id="schemaList" class="schemaForm">
+				<table cellpadding="2" cellspacing="1" id="formList" class="schemaForm">
 				    <thead>
 					    <tr>
 					        <th><spring:message code="facilitydata.display-name"/></th>
 					        <th><spring:message code="facilitydata.schema.frequency"/></th>
-					        <th><spring:message code="facilitydata.valid-from"/></th>
-					        <th><spring:message code="facilitydata.valid-to"/></th>
+					        <th><spring:message code="general.description"/></th>
 					    </tr>
 				    </thead>
 				    <tbody>
-					    <c:forEach items="${schemas}" var="schema">
+					    <c:forEach items="${forms}" var="form">
 					        <tr>
-				                <td><a href="formEntryOverview.form?schema=${schema.id}">${schema.name}</a></td>
-				                <td>${schema.frequency}</td>
-				                <td><openmrs:formatDate date="${schema.validFrom}"/></td>
-				                <td><openmrs:formatDate date="${schema.validTo}"/></td>
+				                <td><a href="formEntryOverview.form?form=${form.id}">${form.name}</a></td>
+				                <td>${form.frequency}</td>
+				                <td>${form.description}</td>
 					        </tr>
 					    </c:forEach>
 				    </tbody>
@@ -59,24 +57,20 @@
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.manageData"/></b>
 			<div class="box">
 				<a href="dataEntryActivity.form"><spring:message code="facilitydata.view-data-entry-activity"/></a>
-			</div>		
-		</td>
-	</tr>
-	<tr>
-		<td>
+			</div>
+			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.analyzeData"/></b>
 			<div class="box">
 				<a href="exportValues.form"><spring:message code="facilitydata.export-values-to-excel"/></a><br/>
 				<a href="analyzeValues.form"><spring:message code="facilitydata.analyze-values"/></a>
-			</div>		
-		</td>
-		<td>
+			</div>
+			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.administerData"/></b>
 			<div class="box">
-				<a href="schema.list"><spring:message code="facilitydata.manage-form-schema"/></a><br/>
+				<a href="form.list"><spring:message code="facilitydata.manage-form"/></a><br/>
 				<a href="question.list"><spring:message code="facilitydata.manage-question"/></a><br/>
 				<a href="questionType.list"><spring:message code="facilitydata.manage-question-type"/></a>
-			</div>		
+			</div>	
 		</td>
 	</tr>
 </table>

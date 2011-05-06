@@ -14,13 +14,12 @@
 package org.openmrs.module.facilitydata.service.db;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hibernate.Query;
 import org.openmrs.Location;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
@@ -30,6 +29,46 @@ import org.openmrs.module.facilitydata.model.FacilityDataValue;
  * Core Facility Data DB Layer
  */
 public interface FacilityDataDAO {
+	
+    /**
+     * Saves a form
+     * @param form
+     * @return the saved form
+     * @should save and return the specified form
+     */
+    public FacilityDataForm saveFacilityDataForm(FacilityDataForm form);
+
+    /**
+     * Get a specified form
+     * @param id the id of the form to retrieve
+     * @return the form or null if it does not exist.
+     * @should return the form with the passed id or null if it doesn't exist
+     */
+    public FacilityDataForm getFacilityDataForm(Integer id);
+
+    /**
+     * Gets a specified form using its {@link UUID}.
+     * @param uuid the UUID of the form to retrieve.
+     * @return the form or null if it does exist.
+     * @should return the form with the specified uuid or null if it doesn't exist
+     */
+    public FacilityDataForm getFacilityDataFormByUUID(String uuid);
+
+    /**
+     * Get all Forms in the system.
+     * @return a {@link List} containing all forms.
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should get all forms
+     */
+    public List<FacilityDataForm> getAllFacilityDataForms();
+
+    /**
+     * Delete a form
+     * @param form the form to delete.
+     * @throws IllegalArgumentException if passed a null parameter
+     * @should delete the specified form
+     */
+    public void deleteFacilityDataForm(FacilityDataForm form);
 
     /**
      * Saves a form schema
@@ -217,9 +256,10 @@ public interface FacilityDataDAO {
     public Map<Integer, Integer> getFormQuestionBreakdown();
     
 	/**
-	 * @return a Map from Location Id to a Map of Date to Integer, where Date is the start date of a value, and Integer is the count of values
+	 * @return a Map from Location Id to a Map of Date String to Integer, 
+	 * where Date String is the start date of a value, and Integer is the count of values
 	 */
-	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate);
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate);
 
 }
 

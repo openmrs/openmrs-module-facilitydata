@@ -13,22 +13,29 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.List;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 @Controller
-public class FacilityDataDashboardController {
+public class FacilityDataFormListController {
+	
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(FacilityDataForm.class, new FacilityDataFormEditor());
+    }
     
-	@RequestMapping("/module/facilitydata/dashboard.list")
-    public void listSchemas(ModelMap map) {
+	@RequestMapping("/module/facilitydata/form.list")
+    public String listForms(ModelMap map) {
         FacilityDataService svc = Context.getService(FacilityDataService.class);
-        List<FacilityDataForm> forms = svc.getAllFacilityDataForms();
-        map.addAttribute("forms", forms);
+        map.addAttribute("forms", svc.getAllFacilityDataForms());
+        return "/module/facilitydata/formList";
     }
 }
