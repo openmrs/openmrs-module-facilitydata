@@ -24,14 +24,38 @@
 	<table border="1" class="reportSummaryTable">
 		<tr>
 			<th></th>
-			<c:forEach items="${yearCols}" var="yearEntry">
-				<th colspan="${yearEntry.value}">${yearEntry.key}</th>
+			<c:forEach items="${yearCols}" var="yearEntry" varStatus="yearStatus">
+				<th colspan="${yearEntry.value}">
+					<c:if test="${yearStatus.first}">
+						<a href="formEntryOverview.form?schema=${schema.id}&yearIncrement=${yearIncrement == null ? -1 : yearIncrement-1}&monthIncrement=${monthIncrement}">
+							&lt;&lt;
+						</a>
+					</c:if>
+					&nbsp;${yearEntry.key}&nbsp;
+					<c:if test="${yearStatus.last}">
+						<a href="formEntryOverview.form?schema=${schema.id}&yearIncrement=${yearIncrement == null ? 1 : yearIncrement+1}&monthIncrement=${monthIncrement}">
+							&gt;&gt;
+						</a>
+					</c:if>
+				</th>
 			</c:forEach>
 		</tr>
 		<tr>
 			<th></th>
-			<c:forEach items="${monthCols}" var="monthEntry">
-				<th colspan="${monthEntry.value}">${displayKeys[monthEntry.key]}</th>
+			<c:forEach items="${monthCols}" var="monthEntry" varStatus="monthStatus">
+				<th colspan="${monthEntry.value}">
+					<c:if test="${monthStatus.first && schema.frequency == 'DAILY'}">
+						<a href="formEntryOverview.form?schema=${schema.id}&monthIncrement=${monthIncrement == null ? -1 : monthIncrement-1}&yearIncrement=${yearIncrement}">
+							&lt;&lt;
+						</a>
+					</c:if>
+					&nbsp;${displayKeys[monthEntry.key]}&nbsp;
+					<c:if test="${monthStatus.last && schema.frequency == 'DAILY'}">
+						<a href="formEntryOverview.form?schema=${schema.id}&monthIncrement=${monthIncrement == null ? 1 : monthIncrement+1}&yearIncrement=${yearIncrement}">
+							&gt;&gt;
+						</a>
+					</c:if>
+				</th>
 			</c:forEach>
 		</tr>
 		<c:if test="${schema.frequency == 'DAILY'}">
