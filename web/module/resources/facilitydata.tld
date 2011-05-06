@@ -9,93 +9,16 @@
     <tlib-version>1.0</tlib-version>
     <short-name>facilitydata</short-name>
 
-    <tag>
-        <description>
-           Render the calendar for use to manage reports.
-        </description>
-        <name>calendar</name>
-        <tag-class>org.openmrs.module.facilitydata.web.taglib.CalendarTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>month</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>year</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>locationId</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>schemaId</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-    
     <function>
-        <name>isNumericQuestion</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>boolean isNumericQuestion(org.openmrs.module.facilitydata.model.FacilityDataQuestion)</function-signature>
+        <name>formatDate</name>
+        <function-class>org.openmrs.module.facilitydata.util.FacilityDataUtil</function-class>
+        <function-signature>java.lang.String formatDate(java.util.Date, java.lang.String, java.lang.String)</function-signature>
+    </function>
+  
+    <function>
+        <name>isDateInRange</name>
+        <function-class>org.openmrs.module.facilitydata.util.FacilityDataUtil</function-class>
+        <function-signature>java.lang.Boolean isDateInRange(java.util.Date, java.util.Date, java.util.Date)</function-signature>
     </function>
 
-    <function>
-        <name>isStockQuestion</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>boolean isStockQuestion(org.openmrs.module.facilitydata.model.FacilityDataQuestion)</function-signature>
-    </function>
-
-    <function>
-        <name>isBooleanCodedQuestion</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>boolean isBooleanCodedQuestion(org.openmrs.module.facilitydata.model.FacilityDataQuestion)</function-signature>
-    </function>
-
-
-    <function>
-        <name>getDays</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>java.lang.String getDays(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <name>getReason</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>java.lang.String getReason(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <name>getYear</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>java.lang.String getYear(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <name>getMonth</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>java.lang.String getMonth(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <name>hasText</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>boolean hasText(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <name>getDataType</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>java.lang.String getDataType(org.openmrs.module.facilitydata.model.FacilityDataQuestion)</function-signature>
-    </function>
-
-    <function>
-        <name>isMonthly</name>
-        <function-class>org.openmrs.module.facilitydata.web.taglib.FacilityDataFunctions</function-class>
-        <function-signature>boolean isMonthly(int)</function-signature>
-    </function>
 </taglib>

@@ -13,10 +13,37 @@
  */
 package org.openmrs.module.facilitydata.model.enums;
 
+import java.util.Calendar;
+
 /**
- * This enum specifies the frequency to which the report will be filled out.
+ * Represents the available Frequencies for which a Form may be completed
  */
 public enum Frequency {
-    DAILY,
-    MONTHLY
+	
+    DAILY(Calendar.DATE, 1),
+    MONTHLY(Calendar.MONTH, 1);
+    
+	/**
+	 * Constructor
+	 */
+    Frequency(Integer calendarField, Integer calendarIncrement) {
+		this.calendarField = calendarField;
+		this.calendarIncrement = calendarIncrement;
+	}
+	
+	private final Integer calendarField;
+	private final Integer calendarIncrement;
+	
+	/**
+	 * @return the calendarField
+	 */
+	public Integer getCalendarField() {
+		return calendarField;
+	}
+	/**
+	 * @return the calendarIncrement
+	 */
+	public Integer getCalendarIncrement() {
+		return calendarIncrement;
+	}
 }

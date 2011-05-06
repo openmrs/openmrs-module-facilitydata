@@ -3,6 +3,6 @@
 	cursor: pointer;	
 }
 
-.facilityDataTable td,th {font-size:small; text-align:left;}
+.facilityDataTable td,th {font-size:small; text-align:left; vertical-align:top;}
 
 .facilityDataHeader {font-size:large; padding-left:10px;}

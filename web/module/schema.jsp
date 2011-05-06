@@ -122,6 +122,10 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#cloneSchemaButton').click(function(event){
+		document.location.href='cloneSchema.form?schema=${schema.id}';
+	});
+	
 });
 
 function editSection(existingId, existingName) {
@@ -163,7 +167,7 @@ function deleteQuestion(questionId, sectionId) {
 <div class="facilityDataHeader">
 	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
 	-&gt;
-	<a href="schema.list"><spring:message code="facilitydata.manage-form-schema"/></a>
+	<a href="form.list"><spring:message code="facilitydata.manage-form-schema"/></a>
 	-&gt;
 	${schema.name}
 	<hr/>
@@ -176,7 +180,7 @@ function deleteQuestion(questionId, sectionId) {
 			<td width="33%" style="vertical-align:top;">
 				<fieldset>
 					<legend>
-						<a href="schemaForm.form?id=${schema.id}">
+						<a href="schemaForm.form?schema=${schema.id}">
 							<spring:message code="facilitydata.schema-details"/>
 						</a>
 					</legend>
@@ -187,7 +191,7 @@ function deleteQuestion(questionId, sectionId) {
 						</tr>
 						<tr>
 							<th><spring:message code="facilitydata.schema.frequency"/></th>
-							<td>${schema.frequency}</td>				
+							<td>${schema.form.frequency}</td>				
 						</tr>
 						<tr>
 							<th><spring:message code="facilitydata.valid-from"/></th>
@@ -295,45 +299,47 @@ function deleteQuestion(questionId, sectionId) {
 					<c:if test="${empty schema.sections}">
 						<i><spring:message code="facilitydata.add-section-to-add-question-message"/></i>
 					</c:if>
-					<spring:message code="facilitydata.questions-in-section"/>
-					<select id="sectionChooser">
-						<c:forEach items="${schema.sections}" var="section">
-							<option value="${section.id}">${section.name}</option>
-						</c:forEach>
-					</select>
-					<table width="100%" class="facilityDataTable" id="questionTable">
-						<thead>
-							<tr>
-								<th style="text-decoration:nowrap;">#</th>
-								<th style="width:100%"><spring:message code="facilitydata.question"/></th>
-								<th style="text-decoration:nowrap;"><spring:message code="facilitydata.actions"/></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
-								<c:choose>
-									<c:when test="${empty section.questions}">
-									</c:when>
-									<c:otherwise>
-										<c:forEach items="${section.questions}" var="question">
-											<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
-												<td style="white-space:nowrap;">${question.questionNumber}</td>
-												<td width="100%">${question.name}</td>
-												<td style="white-space:nowrap;">
-													<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
-													<img class="actionImage" src='<c:url value="/images/lookup.gif"/>' border="0" onclick="moveQuestion('${question.id}','${section.id}');"/>
-													<c:if test="${questionBreakdown[question.id] == null || questionBreakdown[question.id] == 0}">
-														<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${question.id}','${section.id}');"/>
-													</c:if>
-												</td>
-											</tr>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
+					<div id="questionsInSectionDiv" style="${empty schema.sections ? 'display:none;' : ''}">
+						<spring:message code="facilitydata.questions-in-section"/>
+						<select id="sectionChooser">
+							<c:forEach items="${schema.sections}" var="section">
+								<option value="${section.id}">${section.name}</option>
 							</c:forEach>
-						</tbody>
-					</table>
-					<a href="javascript:editQuestion('','','','');"><spring:message code="facilitydata.add-form-question"/></a>
+						</select>
+						<table width="100%" class="facilityDataTable" id="questionTable">
+							<thead>
+								<tr>
+									<th style="text-decoration:nowrap;">#</th>
+									<th style="width:100%"><spring:message code="facilitydata.question"/></th>
+									<th style="text-decoration:nowrap;"><spring:message code="facilitydata.actions"/></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
+									<c:choose>
+										<c:when test="${empty section.questions}">
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${section.questions}" var="question">
+												<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
+													<td style="white-space:nowrap;">${question.questionNumber}</td>
+													<td width="100%">${question.name}</td>
+													<td style="white-space:nowrap;">
+														<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
+														<img class="actionImage" src='<c:url value="/images/lookup.gif"/>' border="0" onclick="moveQuestion('${question.id}','${section.id}');"/>
+														<c:if test="${questionBreakdown[question.id] == null || questionBreakdown[question.id] == 0}">
+															<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${question.id}','${section.id}');"/>
+														</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</tbody>
+						</table>
+						<a href="javascript:editQuestion('','','','');"><spring:message code="facilitydata.add-form-question"/></a>
+					</div>
 					
 					<div id="editQuestionDiv" style="display:none;">
 						<input id="questionIdField" type="hidden" value=""/>
@@ -388,5 +394,7 @@ function deleteQuestion(questionId, sectionId) {
 		</tr>
 	</table>
 </div>
-
+<br/>
+<input type="button" id="cloneSchemaButton" value="<spring:message code="facilitydata.clone-schema"/>"/>
+<br/>
 <%@ include file="/WEB-INF/template/footer.jsp" %>

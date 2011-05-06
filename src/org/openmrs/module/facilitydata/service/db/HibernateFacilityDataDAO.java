@@ -26,6 +26,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
@@ -42,6 +43,45 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
     private SessionFactory sessionFactory;
 
     //***** INSTANCE METHODS *****
+    
+	/**
+	 * @see FacilityDataDAO#saveFacilityDataForm(FacilityDataForm)
+	 */
+	public FacilityDataForm saveFacilityDataForm(FacilityDataForm form) {
+        sessionFactory.getCurrentSession().saveOrUpdate(form);
+        return form;
+	}
+
+	/**
+	 * @see FacilityDataDAO#getFacilityDataForm(Integer)
+	 */
+	public FacilityDataForm getFacilityDataForm(Integer id) {
+		return (FacilityDataForm) sessionFactory.getCurrentSession().get(FacilityDataForm.class, id);
+	}
+
+	/**
+	 * @see FacilityDataDAO#getFacilityDataFormByUUID(String)
+	 */
+	public FacilityDataForm getFacilityDataFormByUUID(String uuid) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataForm.class);
+        return (FacilityDataForm) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
+	}
+
+	/**
+	 * @see FacilityDataDAO#getAllFacilityDataForms()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FacilityDataForm> getAllFacilityDataForms() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataForm.class);
+        return c.addOrder(Order.asc("name")).list();
+	}
+
+	/**
+	 * @see FacilityDataDAO#deleteFacilityDataForm(FacilityDataForm)
+	 */
+	public void deleteFacilityDataForm(FacilityDataForm form) {
+		sessionFactory.getCurrentSession().delete(form);
+	}
 
 	/**
 	 * @see FacilityDataDAO#saveFacilityDataFormSchema(FacilityDataFormSchema)
@@ -217,19 +257,25 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 	
 	/**
-	 * @see FacilityDataDAO#getNumberOfQuestionsAnswered(FacilityDataFormSchema, Date, Date)
+	 * @see FacilityDataDAO#getNumberOfQuestionsAnswered(FacilityDataForm, Date, Date)
 	 */
-	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate) {
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate) {
 		Map<Integer, Map<String, Integer>> ret = new HashMap<Integer, Map<String, Integer>>();
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
-		String s = "select facility, from_date, count(*) " +
-				   "from facilitydata_value " +
-				   "where from_date >= :fromDate and to_date <= :toDate " +
-				   "group by facility, from_date";
+		String s = "select v.facility, v.from_date, count(*) " +
+				   "from facilitydata_value v, facilitydata_form_question q, facilitydata_form_section s, facilitydata_form_schema f " +
+				   "where v.question = q.form_question_id " +
+				   "and q.section = s.form_section_id " +
+				   "and s.schema_id = f.schema_id " +
+				   "and f.form = :formId " +
+				   "and v.from_date >= :fromDate " +
+				   "and v.to_date <= :toDate " +
+				   "group by v.facility, v.from_date";
 		
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		query.setParameter("formId", form.getId());
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);
 		for (Object entry : query.list()) {

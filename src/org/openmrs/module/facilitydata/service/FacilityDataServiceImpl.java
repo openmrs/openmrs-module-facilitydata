@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
@@ -37,6 +38,60 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
     private FacilityDataDAO dao;
 
     //***** INSTANCE METHODS *****
+    
+    /**
+     * @see FacilityDataService#saveFacilityDataForm(FacilityDataForm)
+     */
+    public FacilityDataForm saveFacilityDataForm(FacilityDataForm formSchema) {
+        return dao.saveFacilityDataForm(formSchema);
+    }
+
+	/**
+	 * @see FacilityDataService#getFacilityDataForm(Integer)
+	 */
+	public FacilityDataForm getFacilityDataForm(Integer id) {
+		return dao.getFacilityDataForm(id);
+	}
+
+	/**
+	 * @see FacilityDataService#getFacilityDataFormByUUID(String)
+	 */
+	public FacilityDataForm getFacilityDataFormByUUID(String uuid) {
+		return getFacilityDataFormByUUID(uuid);
+	}
+
+	/**
+	 * @see FacilityDataService#getAllFacilityDataForms()
+	 */
+	public List<FacilityDataForm> getAllFacilityDataForms() {
+		return dao.getAllFacilityDataForms();
+	}
+
+	/**
+	 * @see FacilityDataService#retireFacilityDataForm(FacilityDataForm, String)
+	 */
+	public FacilityDataForm retireFacilityDataForm(FacilityDataForm schema, String reason) {
+		schema.setRetired(true);
+		schema.setRetireReason(reason);
+		return saveFacilityDataForm(schema);
+	}
+
+	/**
+	 * @see FacilityDataService#unretireFacilityDataForm(FacilityDataForm)
+	 */
+	public FacilityDataForm unretireFacilityDataForm(FacilityDataForm schema) {
+		schema.setRetired(false);
+		schema.setDateRetired(new Date());
+		schema.setRetireReason(null);
+		return saveFacilityDataForm(schema);
+	}
+
+	/**
+	 * @see FacilityDataService#deleteFacilityDataForm(FacilityDataForm)
+	 */
+	public void deleteFacilityDataForm(FacilityDataForm formSchema) {
+		dao.deleteFacilityDataForm(formSchema);
+	}
     
     /**
      * @see FacilityDataService#saveFacilityDataFormSchema(FacilityDataFormSchema)
@@ -280,9 +335,9 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 	
 	/**
-	 * @see FacilityDataService#getNumberOfQuestionsAnswered(FacilityDataFormSchema, Date, Date)
+	 * @see FacilityDataService#getNumberOfQuestionsAnswered(FacilityDataForm, Date, Date)
 	 */
-	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataFormSchema schema, Date fromDate, Date toDate) {
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm schema, Date fromDate, Date toDate) {
 		return dao.getNumberOfQuestionsAnswered(schema, fromDate, toDate);
 	}
 	

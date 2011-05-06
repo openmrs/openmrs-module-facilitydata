@@ -39,13 +39,6 @@ public class FacilityDataFormSchemaController {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
         binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
     }
-    
-	@RequestMapping("/module/facilitydata/schema.list")
-    public String listSchemas(ModelMap map) {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        map.addAttribute("schemas", svc.getAllFacilityDataFormSchemas());
-        return "/module/facilitydata/schemaList";
-    }
 
     @RequestMapping("/module/facilitydata/schema.form")
     public String viewSchema(@RequestParam(required = false) Integer id, ModelMap map) {
@@ -61,7 +54,7 @@ public class FacilityDataFormSchemaController {
     }
     
     @RequestMapping("/module/facilitydata/saveSection.form")
-    public String saveSchema(ModelMap map,
+    public String saveSection(ModelMap map,
     						 @RequestParam(required=true) FacilityDataFormSchema schema, 
     						 @RequestParam(required=false) Integer id, 
     						 @RequestParam(required=true) String name) throws Exception {

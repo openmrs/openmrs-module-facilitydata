@@ -22,9 +22,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
-import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -39,13 +40,13 @@ public class FacilityDataFormEntryOverviewController {
 	
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
+        binder.registerCustomEditor(FacilityDataForm.class, new FacilityDataFormEditor());
         binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), true));
     }
 
     @RequestMapping("/module/facilitydata/formEntryOverview.form")
     public void formEntryOverview(ModelMap map, 
-    								@RequestParam(required = true) FacilityDataFormSchema schema,
+    								@RequestParam(required = true) FacilityDataForm form,
     								@RequestParam(required = false) Integer yearIncrement,
     								@RequestParam(required = false) Integer monthIncrement) throws Exception {
     	
@@ -57,23 +58,23 @@ public class FacilityDataFormEntryOverviewController {
     		cal.add(Calendar.YEAR, yearIncrement);
     	}
     	if (monthIncrement != null) {
-    		cal.add(Calendar.MONTH, monthIncrement);
+    		cal.add(Calendar.DATE, monthIncrement*21);
     	}
 
     	Date endDate = cal.getTime();
-    	if (schema.getFrequency() == Frequency.MONTHLY) {  // For monthly reports, display last year
+    	if (form.getFrequency() == Frequency.MONTHLY) {  // For monthly reports, display last year
     		cal.set(Calendar.DATE, 1);
     		cal.add(Calendar.YEAR, -1);
     	}
-    	else if (schema.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 3 weeks
+    	else if (form.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 3 weeks
     		cal.add(Calendar.DATE, -21);
     	}
     	else {
-    		throw new RuntimeException("Unable to handle a report with frequency: " + schema.getFrequency());
+    		throw new RuntimeException("Unable to handle a report with frequency: " + form.getFrequency());
     	}
     	Date startDate = cal.getTime();
     	
-    	Map<Integer, Map<String, Integer>> questionsAnswered = service.getNumberOfQuestionsAnswered(schema, startDate, endDate);
+    	Map<Integer, Map<String, Integer>> questionsAnswered = service.getNumberOfQuestionsAnswered(form, startDate, endDate);
     	
     	DateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
     	DateFormat monthFormat = new SimpleDateFormat("MMM");
@@ -110,26 +111,23 @@ public class FacilityDataFormEntryOverviewController {
     		displayKeys.put(month+year, month);
     		displayKeys.put(day+month+year, day.toString());
     		
-    		if (schema.getFrequency() == Frequency.MONTHLY) {
-    			cal.add(Calendar.MONTH, 1);
-    		}
-    		else if (schema.getFrequency() == Frequency.DAILY) {
-    			cal.add(Calendar.DATE, 1);
-    		}
-    		else {
-    			throw new RuntimeException("Unable to handle a report with frequency: " + schema.getFrequency());
-    		}
+    		cal.add(form.getFrequency().getCalendarField(), form.getFrequency().getCalendarIncrement());
     	}
     	
-    	map.addAttribute("schema", schema);
+    	Map<FacilityDataFormSchema, Integer> numQuestionsBySchema = new HashMap<FacilityDataFormSchema, Integer>();
+    	for (FacilityDataFormSchema schema : form.getSchemas()) {
+    		numQuestionsBySchema.put(schema, schema.getTotalNumberOfQuestions());
+    	}
+    	
+    	map.addAttribute("form", form);
     	map.addAttribute("yearIncrement", yearIncrement);
     	map.addAttribute("monthIncrement", monthIncrement);
-    	map.addAttribute("numQuestions", schema.getTotalNumberOfQuestions());
     	map.addAttribute("yearCols", yearCols);
     	map.addAttribute("monthCols", monthCols);
     	map.addAttribute("dayCols", dayCols);
     	map.addAttribute("dayData", dayData);
     	map.addAttribute("displayKeys", displayKeys);
+    	map.addAttribute("numQuestionsBySchema", numQuestionsBySchema);
     	map.addAttribute("questionsAnswered", questionsAnswered);
     	map.addAttribute("locations", Context.getLocationService().getAllLocations());
     }

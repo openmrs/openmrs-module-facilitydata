@@ -31,7 +31,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.util.BaseFacilityDataContextSensitiveTest;
-import org.openmrs.module.facilitydata.util.DateUtil;
+import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 
 /**
  * Test of the Facility Data Service
@@ -83,7 +83,7 @@ public class FacilityDataServiceTest extends BaseFacilityDataContextSensitiveTes
 	public void testSavingAndLoadingValues() throws Exception {
 		FacilityDataFormSchema schema = getService().getFacilityDataFormSchema(1);
 		Location l = new Location(1);
-		Date d1 = DateUtil.getDateTime(2010, 8, 1);
+		Date d1 = FacilityDataUtil.parseYmd("2010-08-01");
 		FacilityDataReport report = getService().getReport(schema, d1, d1, l);
 		Assert.assertEquals(1, report.getValues().size());
 	}
