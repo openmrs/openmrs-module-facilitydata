@@ -1,7 +1,8 @@
 package org.openmrs.module.facilitydata.model;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openmrs.Location;
 
@@ -16,7 +17,7 @@ public class FacilityDataReport {
     private Location location;
     private Date startDate;
     private Date endDate;
-    private Set<FacilityDataValue> values;
+    private Map<FacilityDataFormQuestion, FacilityDataValue> values;
     
     //***** CONSTRUCTORS *****
     
@@ -112,18 +113,35 @@ public class FacilityDataReport {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+    /**
+     * @param the value to add
+     */
+	public void addValue(FacilityDataValue value) {
+		getValues().put(value.getQuestion(), value);
+	}
+	
+	/**
+	 * @return the value for the passed question
+	 */
+	public FacilityDataValue getValue(FacilityDataFormQuestion question) {
+		return getValues().get(question);
+	}
 
 	/**
 	 * @return the values
 	 */
-	public Set<FacilityDataValue> getValues() {
+	public Map<FacilityDataFormQuestion, FacilityDataValue> getValues() {
+		if (values == null) {
+			values = new HashMap<FacilityDataFormQuestion, FacilityDataValue>();
+		}
 		return values;
 	}
 
 	/**
 	 * @param values the values to set
 	 */
-	public void setValues(Set<FacilityDataValue> values) {
+	public void setValues(Map<FacilityDataFormQuestion, FacilityDataValue> values) {
 		this.values = values;
 	}
 }

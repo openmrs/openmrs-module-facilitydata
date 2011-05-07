@@ -2,6 +2,7 @@ package org.openmrs.module.facilitydata.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -84,4 +85,14 @@ public class FacilityDataUtil {
 			throw new RuntimeException("Cannot parse " + s + " into a date using format " + format);
 		}
 	}
+	
+	/**
+	 * @return the date that is the end of the period that the passed date is in
+	 */
+	public static Date getEndOfCalendarPeriod(Date currentDate, int field) { 
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(currentDate);
+		calendar.set(field, calendar.getActualMaximum(field));
+		return calendar.getTime();
+	}	
 }

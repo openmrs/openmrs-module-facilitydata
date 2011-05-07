@@ -225,6 +225,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		c.add(Restrictions.eq("fromDate", fromDate));
 		c.add(Restrictions.eq("toDate", toDate));
 		c.add(Restrictions.eq("facility", facility));
+		c.add(Restrictions.eq("voided", Boolean.FALSE));
 		return c.list();
 	}
 	
@@ -272,6 +273,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 				   "and f.form = :formId " +
 				   "and v.from_date >= :fromDate " +
 				   "and v.to_date <= :toDate " +
+				   "and v.voided = 0 " +
 				   "group by v.facility, v.from_date";
 		
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);

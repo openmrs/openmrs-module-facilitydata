@@ -14,11 +14,11 @@
 package org.openmrs.module.facilitydata.service;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.openmrs.Location;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
@@ -300,8 +300,8 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	 * @see FacilityDataService#saveReport(FacilityDataReport)
 	 */
 	public FacilityDataReport saveReport(FacilityDataReport report) {
-		for (FacilityDataValue v : report.getValues()) {
-			v = dao.saveFacilityDataValue(v);
+		for (FacilityDataValue v : report.getValues().values()) {
+			 v = Context.getService(FacilityDataService.class).saveFacilityDataValue(v);
 		}
         return report;
 	}
@@ -316,7 +316,9 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
         r.setEndDate(endDate);
         r.setLocation(location);
         List<FacilityDataValue> l = dao.getFacilityDataValues(schema, startDate, endDate, location);
-        r.setValues(new HashSet<FacilityDataValue>(l));
+        for (FacilityDataValue value : l) {
+        	r.addValue(value);
+        }
         return r;
 	}
 	
