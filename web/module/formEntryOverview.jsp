@@ -74,7 +74,8 @@
 					<c:set var="dayStatus" value="notApplicable"/>
 					<c:forEach items="${form.schemas}" var="schema">
 						<c:if test="${facilitydata:isDateInRange(dayEntry.value, schema.validFrom, schema.validTo)}">
-							<c:set var="numQuestions" value="${numQuestionsBySchem[schema]}"/>
+							<c:set var="schemaId" value="${schema.id}"/>
+							<c:set var="numQuestions" value="${numQuestionsBySchema[schema]}"/>
 							<c:set var="dayStatus" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
 						</c:if>
 					</c:forEach>
@@ -82,12 +83,12 @@
 						<c:choose>
 							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
 							<c:when test="${dayStatus == 'missing'}">
-								<a href="#" style="color:white;">
+								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=<openmrs:formatDate date="${dayEntry.value}" type="textbox"/>" style="color:white;">
 									<spring:message code="facilitydata.enter-short"/>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="#">
+								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=<openmrs:formatDate date="${dayEntry.value}" type="textbox"/>&viewOnly=true" style="color:${dayStatus == 'complete' ? 'white' : 'black'};">
 									<spring:message code="facilitydata.view-short"/>
 								</a>
 							</c:otherwise>
@@ -103,6 +104,7 @@
 		<tr><td class="complete">&nbsp;&nbsp;</td><td><spring:message code="facilitydata.complete"/></td></tr>
 		<tr><td class="partial">&nbsp;&nbsp;</td><td><spring:message code="facilitydata.partially-entered"/></td></tr>
 		<tr><td class="missing">&nbsp;&nbsp;</td><td><spring:message code="facilitydata.not-entered"/></td></tr>
+		<tr><td class="notApplicable">&nbsp;&nbsp;</td><td><spring:message code="facilitydata.not-applicable"/></td></tr>
 	</table>
 </td>
 </tr></table>
