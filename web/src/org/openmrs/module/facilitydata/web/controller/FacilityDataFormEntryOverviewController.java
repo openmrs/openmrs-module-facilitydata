@@ -18,8 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
@@ -80,12 +83,14 @@ public class FacilityDataFormEntryOverviewController {
     	
     	DateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
     	DateFormat monthFormat = new SimpleDateFormat("MMM");
+    	List<Integer> daysOfWeekSupported = FacilityDataConstants.getDailyReportDaysOfWeek();
     	
     	Map<Integer, Integer> yearCols = new LinkedHashMap<Integer, Integer>(); // Year -> Number of columns
     	Map<String, Integer> monthCols = new LinkedHashMap<String, Integer>();  // Month -> Number of columns
     	Map<String, Date> dayCols = new LinkedHashMap<String, Date>();
     	Map<Integer, Map<String, Integer>> dayData = new HashMap<Integer, Map<String, Integer>>();    // LocationId -> Day -> Number of questions
     	Map<Object, String> displayKeys = new HashMap<Object, String>();  // Map key -> Display format
+    	Set<String> datesSupported = new HashSet<String>(); // Dates support entry
     	
     	while (cal.getTime().before(endDate)) {
     		
@@ -95,8 +100,12 @@ public class FacilityDataFormEntryOverviewController {
     		Integer day = cal.get(Calendar.DAY_OF_MONTH);
     		
     		yearCols.put(year, yearCols.get(year) == null ? 1 : yearCols.get(year) + 1);
-    		monthCols.put(month+year, monthCols.get(month+year) == null ? 1 : monthCols.get(month+year) + 1);
-    		dayCols.put(day+month+year, cal.getTime());
+    		monthCols.put(year+month, monthCols.get(year+month) == null ? 1 : monthCols.get(year+month) + 1);
+    		dayCols.put(dateStr, cal.getTime());
+    		
+    		if (daysOfWeekSupported.contains(cal.get(Calendar.DAY_OF_WEEK))) {
+    			datesSupported.add(dateStr);
+    		}
     		
     		for (Integer locationId : questionsAnswered.keySet()) {
     			Map<String, Integer> questionsAnsweredAtLocation = questionsAnswered.get(locationId);
@@ -106,12 +115,12 @@ public class FacilityDataFormEntryOverviewController {
     				locationData = new HashMap<String, Integer>();
     				dayData.put(locationId, locationData);
     			}
-    			locationData.put(day+month+year, numAnswered == null ? 0 : numAnswered);
+    			locationData.put(dateStr, numAnswered == null ? 0 : numAnswered);
     		}
     		
     		displayKeys.put(year, year.toString());
-    		displayKeys.put(month+year, month);
-    		displayKeys.put(day+month+year, day.toString());
+    		displayKeys.put(year+month, month);
+    		displayKeys.put(dateStr, day.toString());
     		
     		cal.add(form.getFrequency().getCalendarField(), form.getFrequency().getCalendarIncrement());
     	}
@@ -133,5 +142,6 @@ public class FacilityDataFormEntryOverviewController {
     	map.addAttribute("numQuestionsBySchema", numQuestionsBySchema);
     	map.addAttribute("questionsAnswered", questionsAnswered);
     	map.addAttribute("locations", FacilityDataConstants.getSupportedFacilities());
+    	map.addAttribute("datesSupported", datesSupported);
     }
 }

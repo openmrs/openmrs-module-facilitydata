@@ -1,5 +1,6 @@
 package org.openmrs.module.facilitydata.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,9 @@ public class FacilityDataConstants {
     
     // GLOBAL PROPERTIES
     
+    /**
+     * @return the Locations supported for entry
+     */
     public static List<Location> getSupportedFacilities() {
     	List<Location> ret = Context.getLocationService().getAllLocations();
     	String limitToFacilitiesGp = Context.getAdministrationService().getGlobalProperty("facilitydata.unsupportedFacilities");
@@ -33,6 +37,21 @@ public class FacilityDataConstants {
     			}
     		}
     	}
+    	return ret;
+    }
+    
+    /**
+     * @return the days of the week supported for entry for daily reports
+     */
+    public static List<Integer> getDailyReportDaysOfWeek() {
+    	List<Integer> ret = new ArrayList<Integer>();
+    	String dayOfWeekGp = Context.getAdministrationService().getGlobalProperty("facilitydata.dailyReportDaysOfWeek", "");
+    	List<String> days = Arrays.asList(dayOfWeekGp.split(","));
+		for (int i=1; i<=7; i++) {
+			if (StringUtils.isBlank(dayOfWeekGp) || days.contains(Integer.toString(i))) {
+				ret.add(i);
+			}
+		}
     	return ret;
     }
 }

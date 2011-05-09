@@ -46,6 +46,16 @@
 			those locations from within the user-interface for Facility Data.  Otherwise, will show all.
 		</description>
 	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.dailyReportDaysOfWeek</property>
+		<defaultValue></defaultValue>
+		<description>
+			An optional comma-separated list of days of the week.  If supplied, this will enable entry
+			for DAILY reports only on the days specified. (Sunday = 1, Monday = 2, ... Saturday = 7).
+			To support entry for weekdays only, you would enter 2,3,4,5,6
+		</description>
+	</globalProperty>
 
     <!-- All message codes should start with @MODULE_ID@.* -->
     <messages>
