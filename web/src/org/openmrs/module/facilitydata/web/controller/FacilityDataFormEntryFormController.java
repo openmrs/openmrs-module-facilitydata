@@ -14,7 +14,6 @@
 package org.openmrs.module.facilitydata.web.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,7 @@ public class FacilityDataFormEntryFormController {
     	
 		Date toDate = fromDate;
 		if (schema.getForm().getFrequency() == Frequency.MONTHLY) {
-			toDate = FacilityDataUtil.getEndOfCalendarPeriod(fromDate, Calendar.MONTH);
+			toDate = FacilityDataUtil.getEndOfMonth(fromDate);
 		}
 		else if (schema.getForm().getFrequency() != Frequency.DAILY) {
 			throw new RuntimeException("Unsupported period of " + schema.getForm().getFrequency());
