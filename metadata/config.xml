@@ -37,6 +37,15 @@
         <name>Manage Facility Data Reports</name>
         <description>Allows user to manage reports. (e.g. create, delete, etc)</description>
     </privilege>
+    
+	<globalProperty>
+		<property>@MODULE_ID@.unsupportedFacilities</property>
+		<defaultValue></defaultValue>
+		<description>
+			An optional comma-separated list of locationIds.  If supplied, this will hide
+			those locations from within the user-interface for Facility Data.  Otherwise, will show all.
+		</description>
+	</globalProperty>
 
     <!-- All message codes should start with @MODULE_ID@.* -->
     <messages>
