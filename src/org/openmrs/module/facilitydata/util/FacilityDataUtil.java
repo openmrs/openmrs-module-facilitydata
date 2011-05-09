@@ -87,12 +87,12 @@ public class FacilityDataUtil {
 	}
 	
 	/**
-	 * @return the date that is the end of the period that the passed date is in
+	 * @return the date that is the end of the month that the passed date is in
 	 */
-	public static Date getEndOfCalendarPeriod(Date currentDate, int field) { 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(currentDate);
-		calendar.set(field, calendar.getActualMaximum(field));
-		return calendar.getTime();
+	public static Date getEndOfMonth(Date currentDate) { 
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentDate);
+		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+		return cal.getTime();
 	}	
 }

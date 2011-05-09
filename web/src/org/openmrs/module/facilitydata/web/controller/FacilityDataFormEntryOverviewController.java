@@ -53,6 +53,7 @@ public class FacilityDataFormEntryOverviewController {
     	FacilityDataService service = Context.getService(FacilityDataService.class);
 
     	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.DATE, 1);
     	
     	if (yearIncrement != null) {
     		cal.add(Calendar.YEAR, yearIncrement);
@@ -119,6 +120,7 @@ public class FacilityDataFormEntryOverviewController {
     		numQuestionsBySchema.put(schema, schema.getTotalNumberOfQuestions());
     	}
     	
+    	map.addAttribute("today", new Date());
     	map.addAttribute("form", form);
     	map.addAttribute("yearIncrement", yearIncrement);
     	map.addAttribute("monthIncrement", monthIncrement);

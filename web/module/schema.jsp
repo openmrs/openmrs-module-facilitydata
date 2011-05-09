@@ -68,8 +68,8 @@ $(document).ready(function() {
 		var url = 'saveFormQuestion.form?schema=${schema.id}'
 		url += '&sectionId=' + $('#sectionIdField').val();
 		url += '&formQuestionId=' + $('#questionIdField').val();
-		url += '&name=' + $('#questionNameField').val();
-		url += '&questionNumber=' + $('#questionNumberField').val();
+		url += '&name=' + escape($('#questionNameField').val());
+		url += '&questionNumber=' + escape($('#questionNumberField').val());
 		url += '&question=' + $('#questionField').val();
 		window.location.href=url;
 	});
