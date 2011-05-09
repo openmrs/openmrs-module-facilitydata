@@ -73,7 +73,7 @@
 					<c:set var="numEntries" value="${locationEntry[dayEntry.key]}"/>
 					<c:set var="dayStatus" value="notApplicable"/>
 					<c:forEach items="${form.schemas}" var="schema">
-						<c:if test="${facilitydata:isDateInRange(dayEntry.value, schema.validFrom, schema.validTo) && dayEntry.value <= today}">
+						<c:if test="${facilitydata:isDateInRange(dayEntry.value, schema.validFrom, schema.validTo) && dayEntry.value <= today && fn:contains(datesSupported, dayEntry.key)}">
 							<c:set var="schemaId" value="${schema.id}"/>
 							<c:set var="numQuestions" value="${numQuestionsBySchema[schema]}"/>
 							<c:set var="dayStatus" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
