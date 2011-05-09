@@ -27,6 +27,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.util.FacilityDataConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -131,6 +132,6 @@ public class FacilityDataFormEntryOverviewController {
     	map.addAttribute("displayKeys", displayKeys);
     	map.addAttribute("numQuestionsBySchema", numQuestionsBySchema);
     	map.addAttribute("questionsAnswered", questionsAnswered);
-    	map.addAttribute("locations", Context.getLocationService().getAllLocations());
+    	map.addAttribute("locations", FacilityDataConstants.getSupportedFacilities());
     }
 }
