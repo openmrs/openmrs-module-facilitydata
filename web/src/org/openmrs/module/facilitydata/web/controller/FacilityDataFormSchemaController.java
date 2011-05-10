@@ -13,7 +13,9 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
@@ -23,6 +25,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,6 +41,7 @@ public class FacilityDataFormSchemaController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
         binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), true));
     }
 
     @RequestMapping("/module/facilitydata/schema.form")
@@ -50,6 +54,7 @@ public class FacilityDataFormSchemaController {
         map.addAttribute("schema", schema);
         map.addAttribute("questions", svc.getAllQuestions());
         map.addAttribute("questionBreakdown", svc.getFormQuestionBreakdown());
+        map.addAttribute("lastStartDate", svc.getMaxEnteredStartDateForSchema(schema));
         return "/module/facilitydata/schema";
     }
     
@@ -153,5 +158,62 @@ public class FacilityDataFormSchemaController {
     	section.getQuestions().remove(question);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
         return String.format("redirect:schema.form?id=%s", schema.getId());
+    }
+    
+    @RequestMapping("/module/facilitydata/cloneSchema.form")
+    public String cloneSchema(ModelMap map,
+    						 @RequestParam(required=true) FacilityDataFormSchema schema, 
+    						 @RequestParam(required=false) Date startDate) throws Exception {
+
+    	FacilityDataService svc = Context.getService(FacilityDataService.class);
+    	
+    	Date maxDateEntered = svc.getMaxEnteredStartDateForSchema(schema);
+    	
+    	Date endDate = schema.getValidTo();
+    	if (endDate == null) {
+    		Calendar cal = Calendar.getInstance();
+    		cal.setTime(startDate);
+    		cal.add(Calendar.DATE, -1);
+    		endDate = cal.getTime();
+    	}
+    	
+    	if (maxDateEntered != null && maxDateEntered.compareTo(endDate) > 0) {
+    		throw new IllegalArgumentException("You cannot enter a valid end date if entered values exist after this date");
+    	}
+    	
+    	schema.setValidTo(endDate);
+    	svc.saveFacilityDataFormSchema(schema);
+    	
+    	FacilityDataFormSchema newSchema = new FacilityDataFormSchema();
+    	newSchema.setName(schema.getName());
+    	newSchema.setDescription(schema.getDescription());
+    	newSchema.setForm(schema.getForm());
+    	newSchema.setValidFrom(startDate);
+    	for (FacilityDataFormSection section : schema.getSections()) {
+    		FacilityDataFormSection newSection = new FacilityDataFormSection();
+    		newSection.setSchema(newSchema);
+    		newSection.setName(section.getName());
+    		newSection.setDescription(section.getDescription());
+    		newSchema.addSection(newSection);
+    		for (FacilityDataFormQuestion question : section.getQuestions()) {
+    			FacilityDataFormQuestion newQuestion = new FacilityDataFormQuestion();
+    			newQuestion.setSection(newSection);
+    			newQuestion.setName(question.getName());
+    			newQuestion.setDescription(question.getDescription());
+    			newQuestion.setQuestion(question.getQuestion());
+    			newQuestion.setQuestionNumber(question.getQuestionNumber());
+    			newSection.getQuestions().add(newQuestion);
+    		}
+    	}
+    	newSchema = svc.saveFacilityDataFormSchema(newSchema);
+        return String.format("redirect:schema.form?id=%s", newSchema.getId());
+    }
+    
+    @RequestMapping("/module/facilitydata/deleteSchema.form")
+    public String deleteSchema(ModelMap map,
+								 @RequestParam(required=true) Integer schemaId) throws Exception {
+
+    	Context.getService(FacilityDataService.class).deleteFacilityDataFormSchema(schemaId);
+        return "redirect:form.list";
     }
 }

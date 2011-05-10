@@ -87,4 +87,12 @@ public class FacilityDataServiceTest extends BaseFacilityDataContextSensitiveTes
 		FacilityDataReport report = getService().getReport(schema, d1, d1, l);
 		Assert.assertEquals(1, report.getValues().size());
 	}
+	
+	/**
+	 * Delete Schema Test
+	 */
+	@Test
+	public void testDeletingSchemas() throws Exception {
+		getService().deleteFacilityDataFormSchema(1);
+	}
 }

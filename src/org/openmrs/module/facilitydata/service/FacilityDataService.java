@@ -169,7 +169,7 @@ public interface FacilityDataService extends OpenmrsService {
      */
     @Transactional
     @Authorized({FacilityDataConstants.MANAGE})
-    public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema);
+    public void deleteFacilityDataFormSchema(Integer schemaId);
 
     /**
      * Save a <code>FacilityDataQuestionType</code> to the database.
@@ -402,6 +402,13 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getFormQuestionBreakdown();
+    
+	/**
+	 * @return the most recent start date of the value in the database for the passed schema
+	 */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema);
     
 	/**
 	 * @return a Map from Location Id to a Map of Date String to Integer, 

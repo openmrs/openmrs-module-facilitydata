@@ -41,6 +41,18 @@ $(document).ready(function() {
 		zIndex:990
 	});
 	
+	$('#cloneSchemaDiv').dialog({
+		autoOpen: false,
+		modal: true,
+		draggable: false,
+		closeOnEscape: false,
+		title: '<spring:message code="facilitydata.clone-schema"/>',
+		width: '75%',
+		height: $(window).height()/2,
+		position: [150,150],
+		zIndex:990
+	});
+	
 	<c:forEach items="${schema.sections}" var="section">
 		$('#deleteSection${section.id}').dialog({
 			autoOpen: false,
@@ -123,9 +135,15 @@ $(document).ready(function() {
 	});
 
 	$('#cloneSchemaButton').click(function(event){
-		document.location.href='cloneSchema.form?schema=${schema.id}';
+		$('#cloneSchemaDiv').dialog('open');
 	});
 	
+	$('#deleteSchemaButton').click(function(event){
+		if (confirm('<spring:message code="facilitydata.schema.delete-warning"/>')) {
+			window.location.href='deleteSchema.form?schemaId=${schema.id}';
+		}
+	});
+
 });
 
 function editSection(existingId, existingName) {
@@ -396,5 +414,20 @@ function deleteQuestion(questionId, sectionId) {
 </div>
 <br/>
 <input type="button" id="cloneSchemaButton" value="<spring:message code="facilitydata.clone-schema"/>"/>
+
+<c:if test="${lastStartDate == null}">
+	&nbsp;&nbsp;&nbsp;
+	<input type="button" id="deleteSchemaButton" value="<spring:message code="facilitydata.delete-schema"/>"/>
+</c:if>
+
+<div id="cloneSchemaDiv" style="display:none;">
+	<spring:message code="facilitydata.clone-date-message"/><br/><br/>
+	<form action="cloneSchema.form">
+		<input type="hidden" name="schema" value="${schema.id}"/>
+		<spring:message code="facilitydata.clone-date"/>: <input type="text" name="startDate" onclick="showCalendar(this);"/>
+		<br/><br/>
+		<input id="moveQuestionButton" type="submit" value="<spring:message code="general.save"/>"/>
+	</form>
+</div>
 <br/>
 <%@ include file="/WEB-INF/template/footer.jsp" %>
