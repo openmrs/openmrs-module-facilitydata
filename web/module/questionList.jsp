@@ -16,6 +16,12 @@
             "bSortable": true
         });
     });
+    
+    function deleteQuestion(id) {
+    	if (confirm('<spring:message code="facilitydata.question.delete-warning"/>')) {
+    		document.location.href='deleteQuestion.form?question='+id;
+    	}
+    }
 </script>
 
 <div class="facilityDataHeader">
@@ -36,6 +42,7 @@
 		        <th style="white-space:nowrap;"><spring:message code="facilitydata.question-type"/></th>
 		        <th style="white-space:nowrap;"><spring:message code="facilitydata.period-applicability"/></th>
 		        <th style="width:100%;"><spring:message code="general.description"/></th>
+		        <th></th>
 		    </tr>
 	    </thead>
 	    <tbody>
@@ -45,6 +52,12 @@
 	                <td style="white-space:nowrap;">${question.questionType}</td>
 	                <td style="white-space:nowrap;">${question.periodApplicability}</td>
 	                <td>${question.description}</td>
+	                <td style="white-space:nowrap;">
+	                	<c:if test="${questionBreakdown[question.id] == null || questionBreakdown[question.id] == 0}">
+		        			<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${question.id}');"/>
+		        		</c:if>
+		        	</td>
+		        </th>
 		        </tr>
 		    </c:forEach>
 	    </tbody>

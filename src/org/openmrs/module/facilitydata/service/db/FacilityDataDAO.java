@@ -255,6 +255,16 @@ public interface FacilityDataDAO {
      */
     public Map<Integer, Integer> getFormQuestionBreakdown();
     
+    /**
+     * @return a Map from FacilityDataQuestion id to a count of form questions for that question
+     */
+    public Map<Integer, Integer> getQuestionBreakdown();
+    
+    /**
+     * @return a Map from FacilityDataQuestionType id to a count of questions for that type
+     */
+    public Map<Integer, Integer> getQuestionTypeBreakdown();
+    
 	/**
 	 * @return the most recent start date of the value in the database for the passed schema
 	 */

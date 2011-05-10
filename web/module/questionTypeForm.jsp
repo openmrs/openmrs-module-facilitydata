@@ -141,7 +141,7 @@
 
 		    <tr id="buttonsAtBottom">
 		        <td colspan="2">
-		        	<input name="action" type="submit" value="<spring:message code="facilitydata.save-question"/>"/>
+		        	<input name="action" type="submit" value="<spring:message code="facilitydata.save-question-type"/>"/>
 		        	<input type="button" value="<spring:message code="general.cancel"/>" onclick="document.location.href='questionType.list';"/>
 		        </td>
 		    </tr>     
