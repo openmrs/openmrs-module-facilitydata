@@ -54,19 +54,14 @@
 			</div>
 		</td>
 		<td>
-			<b class="boxHeader"><spring:message code="facilitydata.dashboard.manageData"/></b>
-			<div class="box">
-				<a href="dataEntryActivity.form"><spring:message code="facilitydata.view-data-entry-activity"/></a>
-			</div>
-			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.analyzeData"/></b>
-			<div class="box">
-				<a href="exportValues.form"><spring:message code="facilitydata.export-values-to-excel"/></a><br/>
-				<a href="analyzeValues.form"><spring:message code="facilitydata.analyze-values"/></a>
+			<div class="box" style="padding-top:10px; padding-bottom:10px;">
+				<spring:message code="facilitydata.export-values-to-excel"/><br/>
+				<spring:message code="facilitydata.analyze-values"/>
 			</div>
 			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.administerData"/></b>
-			<div class="box">
+			<div class="box" style="padding-top:10px; padding-bottom:10px;">
 				<a href="form.list"><spring:message code="facilitydata.manage-form"/></a><br/>
 				<a href="question.list"><spring:message code="facilitydata.manage-question"/></a><br/>
 				<a href="questionType.list"><spring:message code="facilitydata.manage-question-type"/></a>
