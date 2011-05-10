@@ -20,23 +20,37 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionTypeEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/module/facilitydata/questionType.list")
 public class FacilityDataQuestionTypeListController {
+	
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(FacilityDataQuestionType.class, new FacilityDataQuestionTypeEditor());
+    }
 
-    @RequestMapping(method= RequestMethod.GET)
+	@RequestMapping("/module/facilitydata/questionType.list")
     public String listQuestions(ModelMap map) {
         map.addAttribute("questionTypes", Context.getService(FacilityDataService.class).getAllQuestionTypes());
+        map.addAttribute("questionTypeBreakdown", Context.getService(FacilityDataService.class).getQuestionTypeBreakdown());
         Map<Class<? extends FacilityDataQuestionType>, String> questionDataTypes = new LinkedHashMap<Class<? extends FacilityDataQuestionType>, String>();
         questionDataTypes.put(CodedFacilityDataQuestionType.class, "facilitydata.question-type-coded");
         questionDataTypes.put(NumericFacilityDataQuestionType.class, "facilitydata.question-type-numeric");
         map.addAttribute("questionDataTypes", questionDataTypes);
         return "/module/facilitydata/questionTypeList";
+    }
+    
+	@RequestMapping("/module/facilitydata/deleteQuestionType.form")
+    public String deleteQuestion(ModelMap map, @RequestParam(required = true) FacilityDataQuestionType questionType) {
+		Context.getService(FacilityDataService.class).deleteQuestionType(questionType);
+        return "redirect:/module/facilitydata/questionType.list";
     }
 }

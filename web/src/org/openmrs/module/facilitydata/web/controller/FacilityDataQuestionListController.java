@@ -14,19 +14,34 @@
 package org.openmrs.module.facilitydata.web.controller;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
+import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/module/facilitydata/question.list")
 public class FacilityDataQuestionListController {
+	
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(FacilityDataQuestion.class, new FacilityDataQuestionEditor());
+    }
 
-    @RequestMapping(method= RequestMethod.GET)
+	@RequestMapping("/module/facilitydata/question.list")
     public String listQuestions(ModelMap map) {
         map.addAttribute("questions", Context.getService(FacilityDataService.class).getAllQuestions());
+        map.addAttribute("questionBreakdown", Context.getService(FacilityDataService.class).getQuestionBreakdown());
         return "/module/facilitydata/questionList";
+    }
+	
+	@RequestMapping("/module/facilitydata/deleteQuestion.form")
+    public String deleteQuestion(ModelMap map, @RequestParam(required = true) FacilityDataQuestion question) {
+		Context.getService(FacilityDataService.class).deleteQuestion(question);
+        return "redirect:/module/facilitydata/question.list";
     }
 }

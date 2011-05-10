@@ -403,6 +403,20 @@ public interface FacilityDataService extends OpenmrsService {
     @Authorized({FacilityDataConstants.VIEW})
     public Map<Integer, Integer> getFormQuestionBreakdown();
     
+    /**
+     * @return a Map from FacilityDataQuestion id to a count of form questions for that question
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+    public Map<Integer, Integer> getQuestionBreakdown();
+    
+    /**
+     * @return a Map from FacilityDataQuestionType id to a count of questions for that type
+     */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+    public Map<Integer, Integer> getQuestionTypeBreakdown();
+    
 	/**
 	 * @return the most recent start date of the value in the database for the passed schema
 	 */

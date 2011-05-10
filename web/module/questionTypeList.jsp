@@ -16,6 +16,12 @@
             "bSortable": true
         });
     });
+    
+    function deleteQuestionType(id) {
+    	if (confirm('<spring:message code="facilitydata.questionType.delete-warning"/>')) {
+    		document.location.href='deleteQuestionType.form?questionType='+id;
+    	}
+    }
 </script>
 
 <div class="facilityDataHeader">
@@ -45,6 +51,7 @@
 		        <th style="white-space:nowrap;"><spring:message code="facilitydata.question-type"/></th>
 		        <th style="white-space:nowrap;"><spring:message code="facilitydata.configuration"/></th>
 		        <th style="width:100%;"><spring:message code="general.description"/></th>
+		        <th></th>
 		    </tr>
 	    </thead>
 	    <tbody>
@@ -73,6 +80,11 @@
 			             </c:choose>
 	                </td>
 	                <td>${questionType.description}</td>
+	               	<td style="white-space:nowrap;">
+	                	<c:if test="${questionTypeBreakdown[questionType.id] == null || questionTypeBreakdown[questionType.id] == 0}">
+		        			<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestionType('${questionType.id}');"/>
+		        		</c:if>
+		        	</td>
 		        </tr>
 		    </c:forEach>
 	    </tbody>

@@ -335,6 +335,20 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	public Map<Integer, Integer> getFormQuestionBreakdown() {
 		return dao.getFormQuestionBreakdown();
 	}
+	
+	/**
+	 * @see FacilityDataService#getQuestionBreakdown()
+	 */
+	public Map<Integer, Integer> getQuestionBreakdown() {
+		return dao.getQuestionBreakdown();
+	}
+	
+	/**
+	 * @see FacilityDataService#getQuestionTypeBreakdown()
+	 */
+	public Map<Integer, Integer> getQuestionTypeBreakdown() {
+		return dao.getQuestionTypeBreakdown();
+	}
 
 	/**
 	 * @see FacilityDataService#getMaxEnteredStartDateForSchema(FacilityDataFormSchema)

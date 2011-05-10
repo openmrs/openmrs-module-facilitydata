@@ -251,6 +251,34 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 	
 	/**
+	 * @see FacilityDataService#getQuestionBreakdown()
+	 */
+	public Map<Integer, Integer> getQuestionBreakdown() {
+		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		String s = "select question, count(*) from facilitydata_form_question group by question";
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		for (Object entry : query.list()) {
+			Object[] row = (Object[]) entry;
+			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
+		}
+		return m;
+	}
+	
+	/**
+	 * @see FacilityDataService#getQuestionTypeBreakdown()
+	 */
+	public Map<Integer, Integer> getQuestionTypeBreakdown() {
+		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		String s = "select question_type, count(*) from facilitydata_question group by question_type";
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		for (Object entry : query.list()) {
+			Object[] row = (Object[]) entry;
+			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
+		}
+		return m;
+	}
+	
+	/**
 	 * @see FacilityDataService#getFormQuestionBreakdown()
 	 */
 	public Map<Integer, Integer> getFormQuestionBreakdown() {
