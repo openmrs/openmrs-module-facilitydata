@@ -118,8 +118,15 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	/**
 	 * @see FacilityDataDAO#deleteFacilityDataFormSchema(FacilityDataFormSchema)
 	 */
-	public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
-		sessionFactory.getCurrentSession().delete(formSchema);
+	public void deleteFacilityDataFormSchema(Integer schemaId) {
+		String q1 = "delete from facilitydata_form_question where section in " +
+						"(select form_section_id from facilitydata_form_section where schema_id = " + schemaId + ")";
+		String q2 = "delete from facilitydata_form_section where schema_id = " + schemaId;
+		String q3 = "delete from facilitydata_form_schema where schema_id = " + schemaId;
+		
+		sessionFactory.getCurrentSession().createSQLQuery(q1).executeUpdate();
+		sessionFactory.getCurrentSession().createSQLQuery(q2).executeUpdate();
+		sessionFactory.getCurrentSession().createSQLQuery(q3).executeUpdate();
 	}
 
 	/**
@@ -255,6 +262,25 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
 		}
 		return m;
+	}
+	
+	/**
+	 * @see FacilityDataService#getFormQuestionBreakdown()
+	 */
+	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema) {
+		Date d = null;
+		String s = "select max(from_date) " +
+				   "from facilitydata_value v, facilitydata_form_question q, facilitydata_form_section s " +
+				   "where v.question = q.form_question_id " +
+				   "and q.section = s.form_section_id " +
+				   "and s.schema_id = :schemaId " +
+				   "and v.voided = 0 ";
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		query.setParameter("schemaId", schema.getId());
+		for (Object entry : query.list()) {
+			d = (Date) entry;
+		}
+		return d;
 	}
 	
 	/**

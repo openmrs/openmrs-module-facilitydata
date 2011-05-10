@@ -141,10 +141,10 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#deleteFacilityDataFormSchema(FacilityDataFormSchema)
+	 * @see FacilityDataService#deleteFacilityDataFormSchema(Integer)
 	 */
-	public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
-		dao.deleteFacilityDataFormSchema(formSchema);
+	public void deleteFacilityDataFormSchema(Integer schemaId) {
+		dao.deleteFacilityDataFormSchema(schemaId);
 	}
 
 	/**
@@ -335,7 +335,14 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	public Map<Integer, Integer> getFormQuestionBreakdown() {
 		return dao.getFormQuestionBreakdown();
 	}
-	
+
+	/**
+	 * @see FacilityDataService#getMaxEnteredStartDateForSchema(FacilityDataFormSchema)
+	 */
+	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema) {
+		return dao.getMaxEnteredStartDateForSchema(schema);
+	}
+
 	/**
 	 * @see FacilityDataService#getNumberOfQuestionsAnswered(FacilityDataForm, Date, Date)
 	 */

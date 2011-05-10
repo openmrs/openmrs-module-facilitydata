@@ -111,12 +111,12 @@ public interface FacilityDataDAO {
     
     /**
      * Delete a schema
-     * @param formSchema the schema to delete.
+     * @param schemaId the schema to delete.
      * @throws IllegalArgumentException if passed a null parameter
      * @should throw an exception if passed a null parameter
      * @should delete the specified schema
      */
-    public void deleteFacilityDataFormSchema(FacilityDataFormSchema formSchema);
+    public void deleteFacilityDataFormSchema(Integer schemaId);
  
 
     /**
@@ -254,6 +254,11 @@ public interface FacilityDataDAO {
      * @return a Map from FacilityDataFormQuestion id to a count of values for that question
      */
     public Map<Integer, Integer> getFormQuestionBreakdown();
+    
+	/**
+	 * @return the most recent start date of the value in the database for the passed schema
+	 */
+	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema);
     
 	/**
 	 * @return a Map from Location Id to a Map of Date String to Integer, 
