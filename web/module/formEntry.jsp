@@ -4,13 +4,6 @@
 
 <openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntry.form"/>
 
-<style>
-	.odd { background-color:#DCDCDC; }
-	.even { background-color:white; }
-	.readOnly { color:blue; font-weight:bold; }
-	.noAnswer { color:red; font-weight:bold; }
-</style>
-
 <div class="facilityDataHeader">
 	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
 	-&gt;

@@ -24,6 +24,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 
 /**
  * Core Facility Data DB Layer
@@ -266,15 +267,24 @@ public interface FacilityDataDAO {
     public Map<Integer, Integer> getQuestionTypeBreakdown();
     
 	/**
-	 * @return the most recent start date of the value in the database for the passed schema
+	 * @return the earliest or latest start date of the value in the database for the passed schema
 	 */
-	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema);
+	public Date getMinOrMaxEnteredStartDateForSchema(FacilityDataFormSchema schema, String aggregation);
     
 	/**
 	 * @return a Map from Location Id to a Map of Date String to Integer, 
 	 * where Date String is the start date of a value, and Integer is the count of values
 	 */
 	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate);
+	
+	/**
+	 * @return a Map of Form Question ID to Integer count of values entered
+	 */
+	public Map<Integer, Integer> getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema schema, Location facility, Date fromDate, Date toDate);
 
+	/**
+	 * @return a List of {@link FacilityDataValue} that match the passed query parameters.  Null parameters are ignored.
+	 */
+	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query);
 }
 

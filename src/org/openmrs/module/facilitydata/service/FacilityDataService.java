@@ -28,6 +28,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.util.FacilityDataConstants;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -418,6 +419,13 @@ public interface FacilityDataService extends OpenmrsService {
     public Map<Integer, Integer> getQuestionTypeBreakdown();
     
 	/**
+	 * @return the earliest start date of the value in the database for the passed schema
+	 */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+	public Date getMinEnteredStartDateForSchema(FacilityDataFormSchema schema);
+    
+	/**
 	 * @return the most recent start date of the value in the database for the passed schema
 	 */
     @Transactional(readOnly = true)
@@ -431,5 +439,18 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})
 	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate);
+    
+	/**
+	 * @return a Map of Form Question ID to Integer count of values entered
+	 */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+	public Map<Integer, Integer> getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema schema, Location facility, Date fromDate, Date toDate);
 
+	/**
+	 * @return a List of {@link FacilityDataValue} that match the passed query parameters.  Null parameters are ignored.
+	 */
+    @Transactional(readOnly = true)
+    @Authorized({FacilityDataConstants.VIEW})
+	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query);
 }
