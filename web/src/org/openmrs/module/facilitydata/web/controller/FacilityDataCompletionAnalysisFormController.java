@@ -111,7 +111,7 @@ public class FacilityDataCompletionAnalysisFormController {
     		Map<FacilityDataFormQuestion, Map<FacilityDataCodedOption, Integer>> codedTotals = new HashMap<FacilityDataFormQuestion, Map<FacilityDataCodedOption, Integer>>();
     		
     		cal.setTime(query.getFromDate());
-    		while(cal.getTime().before(query.getToDate())) {
+    		while(cal.getTime().compareTo(query.getToDate()) <= 0) {
     			if (frequency != Frequency.DAILY || daysOfWeek.contains(cal.get(Calendar.DAY_OF_WEEK))) {
     				numExpected ++;
     			}
