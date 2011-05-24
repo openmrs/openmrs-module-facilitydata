@@ -103,7 +103,7 @@ public class FacilityDataFormEntryOverviewController {
     		monthCols.put(year+month, monthCols.get(year+month) == null ? 1 : monthCols.get(year+month) + 1);
     		dayCols.put(dateStr, cal.getTime());
     		
-    		if (daysOfWeekSupported.contains(cal.get(Calendar.DAY_OF_WEEK))) {
+    		if (form.getFrequency() == Frequency.MONTHLY || daysOfWeekSupported.contains(cal.get(Calendar.DAY_OF_WEEK))) {
     			datesSupported.add(dateStr);
     		}
     		
