@@ -54,10 +54,16 @@
 			</div>
 		</td>
 		<td>
+			<b class="boxHeader"><spring:message code="facilitydata.dashboard.manageData"/></b>
+			<div class="box" style="padding-top:10px; padding-bottom:10px;">
+				<a href="completionAnalysis.form"><spring:message code="facilitydata.view-data-completion"/></a>
+			</div>
+			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.analyzeData"/></b>
 			<div class="box" style="padding-top:10px; padding-bottom:10px;">
-				<spring:message code="facilitydata.export-values-to-excel"/><br/>
-				<spring:message code="facilitydata.analyze-values"/>
+				<a href="exportData.form">
+					<spring:message code="facilitydata.export-values-to-excel"/>
+				</a>
 			</div>
 			<br/>
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.administerData"/></b>

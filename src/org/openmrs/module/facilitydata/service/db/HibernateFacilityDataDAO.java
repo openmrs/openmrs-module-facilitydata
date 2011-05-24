@@ -32,6 +32,8 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
+import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 
 /**
  * Core implementation of the DAO
@@ -119,6 +121,10 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#deleteFacilityDataFormSchema(FacilityDataFormSchema)
 	 */
 	public void deleteFacilityDataFormSchema(Integer schemaId) {
+		
+		String q = "select form from facilitydata_form_schema where schema_id = " + schemaId;
+		Object formId = sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+		
 		String q1 = "delete from facilitydata_form_question where section in " +
 						"(select form_section_id from facilitydata_form_section where schema_id = " + schemaId + ")";
 		String q2 = "delete from facilitydata_form_section where schema_id = " + schemaId;
@@ -127,6 +133,13 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		sessionFactory.getCurrentSession().createSQLQuery(q1).executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery(q2).executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery(q3).executeUpdate();
+		
+		String anyQuery = "select count(*) from facilitydata_form_schema where form = " + formId;
+		String result = sessionFactory.getCurrentSession().createSQLQuery(anyQuery).uniqueResult().toString();
+		if ("0".equals(result)) {
+			String deleteFormQuery = "delete from facilitydata_form where form_id = " + formId;
+			sessionFactory.getCurrentSession().createSQLQuery(deleteFormQuery).executeUpdate();
+		}
 	}
 
 	/**
@@ -293,11 +306,11 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 	
 	/**
-	 * @see FacilityDataService#getFormQuestionBreakdown()
+	 * @see FacilityDataDAO#getMinOrMaxEnteredStartDateForSchema()
 	 */
-	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema) {
+	public Date getMinOrMaxEnteredStartDateForSchema(FacilityDataFormSchema schema, String aggregation) {
 		Date d = null;
-		String s = "select max(from_date) " +
+		String s = "select " + aggregation + "(from_date) " +
 				   "from facilitydata_value v, facilitydata_form_question q, facilitydata_form_section s " +
 				   "where v.question = q.form_question_id " +
 				   "and q.section = s.form_section_id " +
@@ -332,8 +345,8 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
 		query.setParameter("formId", form.getId());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", df.format(fromDate));
+		query.setParameter("toDate", df.format(toDate));
 		for (Object entry : query.list()) {
 			
 			Object[] row = (Object[]) entry;
@@ -347,6 +360,77 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * @see FacilityDataDAO#getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema, Location, Date, Date)
+	 */
+	public Map<Integer, Integer> getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema schema, Location facility, Date fromDate, Date toDate) {
+		Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
+		
+		String s = "select q.question, count(*) " +
+				   "from facilitydata_value v, facilitydata_form_question q, facilitydata_form_section s " +
+				   "where v.question = q.form_question_id " +
+				   "and q.section = s.form_section_id " +
+				   "and s.schema_id = :schemaId " +
+				   (facility == null ? "" : "and v.facility = :facility ") +
+				   (fromDate == null ? "" : "and v.from_date >= :fromDate ") +
+				   (toDate == null ? "" : "and v.to_date <= :toDate ") +
+				   "and v.voided = 0 " +
+				   "group by q.question";
+		
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		query.setParameter("schemaId", schema.getId());
+		if (facility != null) {
+			query.setParameter("facility", facility);
+		}
+		if (fromDate != null) {
+			query.setParameter("fromDate", fromDate);
+		}
+		if (toDate != null) {
+			query.setParameter("toDate", toDate);
+		}
+		for (Object entry : query.list()) {
+			Object[] row = (Object[]) entry;
+			ret.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * @see FacilityDataDAO#evaluateFacilityDataQuery(FacilityDataQuery)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query) {
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataValue.class);
+		if (query.getForm() != null) {
+			c.createCriteria("question").createCriteria("section").createCriteria("schema").add(Restrictions.eq("form", query.getForm()));
+		}
+		if (query.getSchema() != null) {
+			c.createCriteria("question").createCriteria("section").add(Restrictions.eq("schema", query.getSchema()));
+		}
+		if (query.getQuestion() != null) {
+			c.createCriteria("question").add(Restrictions.eq("question", query.getQuestion()));
+		}
+		if (query.getFacility() != null) {
+			c.add(Restrictions.eq("facility", query.getFacility()));
+		}
+		if (query.getFromDate() != null) {
+			c.add(Restrictions.ge("fromDate", query.getFromDate()));
+		}
+		if (query.getToDate() != null) {
+			c.add(Restrictions.le("toDate", query.getToDate()));
+		}
+		if (query.getEnteredFromDate() != null) {
+			c.add(Restrictions.ge("dateCreated", query.getEnteredFromDate()));
+		}
+		if (query.getEnteredToDate() != null) {
+			c.add(Restrictions.le("dateCreated", FacilityDataUtil.getEndOfDayIfTimeExcluded(query.getEnteredToDate())));
+		}		
+		c.add(Restrictions.eq("voided", Boolean.FALSE));
+
+		return c.list();
 	}
 
 	/**

@@ -27,6 +27,7 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.db.FacilityDataDAO;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 
 /**
  * Core implementation of the FacilityDataService
@@ -349,19 +350,40 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	public Map<Integer, Integer> getQuestionTypeBreakdown() {
 		return dao.getQuestionTypeBreakdown();
 	}
+	
+	/**
+	 * @see FacilityDataService#getMinEnteredStartDateForSchema(FacilityDataFormSchema)
+	 */
+	public Date getMinEnteredStartDateForSchema(FacilityDataFormSchema schema) {
+		return dao.getMinOrMaxEnteredStartDateForSchema(schema, "min");
+	}
 
 	/**
 	 * @see FacilityDataService#getMaxEnteredStartDateForSchema(FacilityDataFormSchema)
 	 */
 	public Date getMaxEnteredStartDateForSchema(FacilityDataFormSchema schema) {
-		return dao.getMaxEnteredStartDateForSchema(schema);
+		return dao.getMinOrMaxEnteredStartDateForSchema(schema, "max");
 	}
 
 	/**
 	 * @see FacilityDataService#getNumberOfQuestionsAnswered(FacilityDataForm, Date, Date)
 	 */
-	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm schema, Date fromDate, Date toDate) {
-		return dao.getNumberOfQuestionsAnswered(schema, fromDate, toDate);
+	public Map<Integer, Map<String, Integer>> getNumberOfQuestionsAnswered(FacilityDataForm form, Date fromDate, Date toDate) {
+		return dao.getNumberOfQuestionsAnswered(form, fromDate, toDate);
+	}
+	
+	/**
+	 * @see FacilityDataService#getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema, Location, Date, Date)
+	 */
+	public Map<Integer, Integer> getNumberOfValuesRecordedByQuestion(FacilityDataFormSchema schema, Location facility, Date fromDate, Date toDate) {
+		return dao.getNumberOfValuesRecordedByQuestion(schema, facility, fromDate, toDate);
+	}
+	
+	/**
+	 * @see FacilityDataService#evaluateFacilityDataQuery(FacilityDataQuery)
+	 */
+	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query) {
+		return dao.evaluateFacilityDataQuery(query);
 	}
 	
 	//***** PROPERTY ACCESS *****
