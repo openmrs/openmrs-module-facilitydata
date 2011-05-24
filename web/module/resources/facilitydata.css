@@ -11,3 +11,10 @@
 .even { background-color:white; }
 .readOnly { color:blue; font-weight:bold; }
 .noAnswer { color:red; font-weight:bold; }
+
+input.wide {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}

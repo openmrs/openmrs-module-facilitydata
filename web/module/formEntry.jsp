@@ -85,7 +85,7 @@
 						    <td class="${oddEven}" style="white-space:nowrap;">
 						    	<c:choose>
 					    			<c:when test="${!viewOnly}">
-					         			<input type="text" size="30" name="comments.${q.id}" value="<c:out value="${report.values[q].comments}" default=""/>"/>
+					         			<input type="text" class="wide" name="comments.${q.id}" value="<c:out value="${report.values[q].comments}" default=""/>"/>
 					        		</c:when>
 					        		<c:otherwise>
 					        			<span class="readOnly">${report.values[q].comments}</span>
