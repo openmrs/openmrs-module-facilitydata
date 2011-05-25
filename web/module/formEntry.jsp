@@ -17,6 +17,25 @@
 	<hr/>
 </div>
 
+<script type="text/javascript">
+	function validate(value, minValue, maxValue, allowDecimals, errorSpanId) {
+		$("#"+errorSpanId).hide();
+		$("#submitButton").removeAttr("disabled");
+		if (minValue != null && value < minValue) {
+			$("#"+errorSpanId).html('<spring:message code="facilitydata.minValueExceeded"/>').show();
+			$("#submitButton").attr("disabled", "disabled");
+		}
+		if (maxValue != null && value > maxValue) {
+			$("#"+errorSpanId).html('<spring:message code="facilitydata.maxValueExceeded"/>').show();
+			$("#submitButton").attr("disabled", "disabled");
+		}
+		if (!allowDecimals && value != parseInt(value)) {
+			$("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
+			$("#submitButton").attr("disabled", "disabled");
+		}
+	}
+</script>
+
 <form method="post">
 	<input type="hidden" name="toDate" value="<openmrs:formatDate date="${toDate}" type="textbox"/>"/>
 	<c:forEach items="${schema.sections}" var="section">
@@ -60,9 +79,11 @@
 								     	</c:choose>
 								     </c:when>
 							         <c:when test="${q.question.questionType.class.name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
+							         	<c:set var="qt" value="${q.question.questionType}"/>
 							         	<c:choose>
 							    			<c:when test="${!viewOnly}">
-							         			<input type="text" size="10" name="valueNumeric.${q.id}" value="<c:out value="${report.values[q].valueNumeric}" default=""/>"/>
+							         			<input type="text" size="10" id="valueNumeric.${q.id}" name="valueNumeric.${q.id}" value="<c:out value="${report.values[q].valueNumeric}"/>" onblur="validate(this.value, ${qt.minValue == null ? 'null' : qt.minValue}, ${qt.maxValue == null ? 'null' : qt.maxValue}, ${qt.allowDecimals}, 'valueError${q.id}');"/>
+							        			<span id="valueError${q.id}" class="error" style="display:none;"></span>
 							        		</c:when>
 							        		<c:otherwise>
 							        			<c:choose>
@@ -100,7 +121,7 @@
 		<br/>
 	</c:forEach>
 	<c:if test="${!viewOnly}">
-		<input type="submit" value="<spring:message code="general.save"/>" />
+		<input id="submitButton" type="submit" value="<spring:message code="general.save"/>" />
 		<a href="formEntryOverview.form?form=${schema.form.id}"><input type="button" value="<spring:message code="general.cancel"/>"></a>
 	</c:if>
 	<c:if test="${viewOnly}">
