@@ -28,9 +28,11 @@ import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
+import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
+import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.util.FacilityDataConstants;
@@ -119,6 +121,7 @@ public class FacilityDataCompletionAnalysisFormController {
     		}
     		
     		List<FacilityDataValue> values = fds.evaluateFacilityDataQuery(query);
+    		Map<FacilityDataFormQuestion, Map<Location, FacilityDataValue>> latestValuesForQuestion = new HashMap<FacilityDataFormQuestion, Map<Location, FacilityDataValue>>();
     		for (FacilityDataValue v : values) {
     			
 				Integer numValues = numValuesByQuestion.get(v.getQuestion());
@@ -136,12 +139,42 @@ public class FacilityDataCompletionAnalysisFormController {
     				m.put(v.getValueCoded(), num);
     			}
     			else {
-    				Double num = numericTotals.get(v.getQuestion());
-    				if (num == null) {
-    					num = new Double(0);
+    				PeriodApplicability pa = v.getQuestion().getQuestion().getPeriodApplicability();
+    				if (pa == PeriodApplicability.DURING_PERIOD) {
+	    				Double num = numericTotals.get(v.getQuestion());
+	    				if (num == null) {
+	    					num = new Double(0);
+	    				}
+	    				num += v.getValueNumeric();
+	    				numericTotals.put(v.getQuestion(), num);
     				}
-    				num += v.getValueNumeric();
-    				numericTotals.put(v.getQuestion(), num);
+    				else {
+    					Map<Location, FacilityDataValue> valueForQuestion = latestValuesForQuestion.get(v.getQuestion());
+    					if (valueForQuestion == null) {
+    						valueForQuestion = new HashMap<Location, FacilityDataValue>();
+    						latestValuesForQuestion.put(v.getQuestion(), valueForQuestion);
+    					}
+    					FacilityDataValue valueForLocation = valueForQuestion.get(v.getFacility());
+    					if (valueForLocation == null || valueForLocation.getToDate().before(v.getToDate())) {
+    						valueForQuestion.put(v.getFacility(), v);
+    					}
+    				}
+    			}
+    		}
+    		if (!latestValuesForQuestion.isEmpty()) {
+    			for (FacilityDataFormSection section : query.getSchema().getSections()) {
+    				for (FacilityDataFormQuestion question : section.getQuestions()) {
+    					Double d = new Double(0);
+    					Map<Location, FacilityDataValue> m = latestValuesForQuestion.get(question);
+    					if (m != null) {
+	    					for (FacilityDataValue v : m.values()) {
+	    						if (v != null) {
+	    							d += v.getValueNumeric();
+	    						}
+	    					}
+	    					numericTotals.put(question, d);
+    					}
+    				}
     			}
     		}
     		
