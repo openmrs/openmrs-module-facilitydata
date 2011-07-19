@@ -19,20 +19,25 @@
 
 <script type="text/javascript">
 	function validate(value, minValue, maxValue, allowDecimals, errorSpanId) {
-		$("#"+errorSpanId).hide();
+		$("#"+errorSpanId).html('').hide();
 		$("#submitButton").removeAttr("disabled");
-		if (minValue != null && value < minValue) {
-			$("#"+errorSpanId).html('<spring:message code="facilitydata.minValueExceeded"/>').show();
-			$("#submitButton").attr("disabled", "disabled");
+		if (value != null && value != '') {
+			if (minValue != null && value < minValue) {
+				$("#"+errorSpanId).html('<spring:message code="facilitydata.minValueExceeded"/>').show();
+			}
+			if (maxValue != null && value > maxValue) {
+				$("#"+errorSpanId).html('<spring:message code="facilitydata.maxValueExceeded"/>').show();
+			}
+			if (!allowDecimals && value != parseInt(value)) {
+				$("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
+			}
 		}
-		if (maxValue != null && value > maxValue) {
-			$("#"+errorSpanId).html('<spring:message code="facilitydata.maxValueExceeded"/>').show();
-			$("#submitButton").attr("disabled", "disabled");
-		}
-		if (!allowDecimals && value != parseInt(value)) {
-			$("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
-			$("#submitButton").attr("disabled", "disabled");
-		}
+		$(".error").each(function(i, val) {
+			var errorText = $(val).text();
+			if (errorText && errorText != '') {
+				$("#submitButton").attr("disabled", "disabled");
+			}
+		});
 	}
 </script>
 

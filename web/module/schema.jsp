@@ -260,34 +260,34 @@ function deleteQuestion(questionId, sectionId) {
 										<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteSection('${section.id}');"/>
 									</td>
 								</tr>
-								
-								<div id="deleteSection${section.id}" style="display:none;">
-									
-									<form action="deleteSection.form">
-										<input type="hidden" name="schema" value="${schema.id}"/>
-										<input type="hidden" name="sectionId" value="${section.id}"/>
-										
-										<c:if test="${fn:length(section.questions) > 0}">
-											<spring:message code="facilitydata.section.delete-with-questions-warning"/>
-											<br/>
-											<select name="newQuestionSectionId">
-												<option value=""><spring:message code="facilitydata.choose-section"/></option>
-												<c:forEach items="${schema.sections}" var="s">
-													<c:if test="${s != section}">
-														<option value="${s.id}">${s.name}</option>
-													</c:if>
-												</c:forEach>
-											</select>
-										</c:if>
-										
-										<spring:message code="facilitydata.section.delete-warning"/>
-										<input type="submit" value="<spring:message code="general.delete"/>"/>
-									</form>
-								</div>
-								
 							</c:forEach>
 						</tbody>
 					</table>
+					<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
+						<div id="deleteSection${section.id}" style="display:none;">
+							
+							<form action="deleteSection.form">
+								<input type="hidden" name="schema" value="${schema.id}"/>
+								<input type="hidden" name="sectionId" value="${section.id}"/>
+								
+								<c:if test="${fn:length(section.questions) > 0}">
+									<spring:message code="facilitydata.section.delete-with-questions-warning"/>
+									<br/>
+									<select name="newQuestionSectionId">
+										<option value=""><spring:message code="facilitydata.choose-section"/></option>
+										<c:forEach items="${schema.sections}" var="s">
+											<c:if test="${s != section}">
+												<option value="${s.id}">${s.name}</option>
+											</c:if>
+										</c:forEach>
+									</select>
+								</c:if>
+								
+								<spring:message code="facilitydata.section.delete-warning"/>
+								<input type="submit" value="<spring:message code="general.delete"/>"/>
+							</form>
+						</div>					
+					</c:forEach>
 
 					<a href="javascript:editSection('','');" ><spring:message code="facilitydata.add-section"/></a>
 					
