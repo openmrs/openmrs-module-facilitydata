@@ -32,7 +32,7 @@
 				$("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
 			}
 		}
-		$(".error").each(function(i, val) {
+		$(".facilityDataAnswerError").each(function(i, val) {
 			var errorText = $(val).text();
 			if (errorText && errorText != '') {
 				$("#submitButton").attr("disabled", "disabled");
@@ -88,7 +88,7 @@
 							         	<c:choose>
 							    			<c:when test="${!viewOnly}">
 							         			<input type="text" size="10" id="valueNumeric.${q.id}" name="valueNumeric.${q.id}" value="<c:out value="${report.values[q].valueNumeric}"/>" onblur="validate(this.value, ${qt.minValue == null ? 'null' : qt.minValue}, ${qt.maxValue == null ? 'null' : qt.maxValue}, ${qt.allowDecimals}, 'valueError${q.id}');"/>
-							        			<span id="valueError${q.id}" class="error" style="display:none;"></span>
+							        			<span id="valueError${q.id}" class="facilityDataAnswerError" style="display:none;"></span>
 							        		</c:when>
 							        		<c:otherwise>
 							        			<c:choose>
