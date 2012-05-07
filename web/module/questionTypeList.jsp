@@ -58,7 +58,7 @@
 		    <c:forEach items="${questionTypes}" var="questionType">
 		        <tr>
 	                <td style="white-space:nowrap;"><a href="questionTypeForm.form?id=${questionType.id}">${questionType.name}</a></td>
-	                <td style="white-space:nowrap;"><spring:message code="${questionDataTypes[questionType.class]}"/></td>
+	                <td style="white-space:nowrap;"><spring:message code="${questionDataTypes[questionType['class']]}"/></td>
 	                <td style="white-space:nowrap;">
 	                	<c:choose>
 	                		<c:when test="${questionType['class']name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
