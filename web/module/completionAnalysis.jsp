@@ -76,7 +76,7 @@
 							<td class="${oddEven}" style="white-space:nowrap;">${numValuesByQuestion[question] == null ? 0 : numValuesByQuestion[question]} / ${numExpected}
 							<td class="${oddEven}" style="width:100%">
 								<c:choose>
-									<c:when test="${question.question.questionType.class.name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+									<c:when test="${question.question.questionType['class']name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 										<c:forEach items="${question.question.questionType.options}" var="option" varStatus="optionStatus">
 											${option.name}: ${codedTotals[question][option] == null ? 0 : codedTotals[question][option]}
 											<c:if test="${!optionStatus.last}">, </c:if>

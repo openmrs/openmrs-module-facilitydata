@@ -61,7 +61,7 @@
 	                <td style="white-space:nowrap;"><spring:message code="${questionDataTypes[questionType.class]}"/></td>
 	                <td style="white-space:nowrap;">
 	                	<c:choose>
-	                		<c:when test="${questionType.class.name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
+	                		<c:when test="${questionType['class']name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
 			                	<spring:message code="${questionType.allowDecimals ? 'facilitydata.numeric-value' : 'facilitydata.integer-value'}"/>&nbsp;&nbsp;
 			                	<c:if test="${questionType.minValue != null}">
 			                		&gt;= ${questionType.minValue}&nbsp;&nbsp;
@@ -70,7 +70,7 @@
 			                		&lt;= ${questionType.maxValue}
 			                	</c:if>
 			                </c:when>
-			                <c:when test="${questionType.class.name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+			                <c:when test="${questionType['class']name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 			                	<spring:message code="facilitydata.possible-values"/>:
 			                	<c:forEach items="${questionType.activeOptions}" var="option" varStatus="optionStatus">
 			                		${option.name}<c:if test="${!optionStatus.last}">, </c:if>
