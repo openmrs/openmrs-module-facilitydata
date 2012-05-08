@@ -68,7 +68,7 @@
 	        </tr>
 
 	        <c:choose>
-	        	<c:when test="${questionType['class']name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
+	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
 			        <tr>
 			            <td><spring:message code="facilitydata.minValue"/></td>
 			            <td><input name="minValue" size="50" value="${questionType.minValue}"/></td>
@@ -82,7 +82,7 @@
 			            <td><input type="checkbox" name="allowDecimals" ${questionType.allowDecimals ? 'checked="checked"' : ""}/></td>
 			        </tr>
 	        	</c:when>
-	        	<c:when test="${questionType['class']name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 	        		<tr>
 			            <td style="vertical-align:top;"><spring:message code="facilitydata.coded-options"/></td>
 			            <td>

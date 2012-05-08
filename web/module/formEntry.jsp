@@ -61,7 +61,7 @@
 						    <td class="${oddEven}" style="width:400px; vertical-align:middle;">${q.name}</td>
 						    <td class="${oddEven}" style="width:200px; white-space:nowrap;">
 				    		    <c:choose>
-				    				<c:when test="${q.question.questionType['class']name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+				    				<c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 						    			<c:choose>
 							    			<c:when test="${!viewOnly}">
 								    			<select name="valueCoded.${q.id}">
@@ -83,7 +83,7 @@
 								        	</c:otherwise>
 								     	</c:choose>
 								     </c:when>
-							         <c:when test="${q.question.questionType['class']name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
+							         <c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
 							         	<c:set var="qt" value="${q.question.questionType}"/>
 							         	<c:choose>
 							    			<c:when test="${!viewOnly}">
@@ -104,7 +104,7 @@
 							        	</c:choose>
 							         </c:when>
 							         <c:otherwise>
-							         	<spring:message code="facilitydata.invalid-question-type"/>: ${q.question.questionType['class']name}
+							         	<spring:message code="facilitydata.invalid-question-type"/>: ${q.question.questionType['class'].name}
 							         </c:otherwise>
 							     </c:choose>
 						    </td>
