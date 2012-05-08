@@ -29,9 +29,9 @@ public class BaseFacilityMetadataValidator implements Validator {
 	/**
 	 * @see Validator#supports(Class)
 	 */
-    public final boolean supports(Class aClass) {
-    	Validator v = HandlerUtil.getPreferredHandler(this.getClass(), Validator.class);
-        return this.getClass().equals(v.getClass());
+    @SuppressWarnings("unchecked")
+    public boolean supports(Class c) {
+	return BaseFacilityMetaData.class.isAssignableFrom(c);
     }
 
 	/**

@@ -3,7 +3,6 @@ package org.openmrs.module.facilitydata.validator;
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 
@@ -14,6 +13,14 @@ import org.springframework.validation.Validator;
 public class FacilityDataFormSchemaValidator extends BaseFacilityMetadataValidator {
 
 	/**
+     * @see Validator#supports(Class)
+     */
+    @SuppressWarnings("unchecked")
+    public boolean supports(Class c) {
+	return FacilityDataFormSchema.class.isAssignableFrom(c);
+    }
+
+    /**
 	 * @see Validator#validate(Object, Errors)
 	 */
     public void validate(Object obj, Errors errors) {

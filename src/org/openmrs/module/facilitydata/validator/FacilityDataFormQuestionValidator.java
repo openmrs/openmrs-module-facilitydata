@@ -13,6 +13,14 @@ import org.springframework.validation.Validator;
 public class FacilityDataFormQuestionValidator extends BaseFacilityMetadataValidator {
 
 	/**
+     * @see Validator#supports(Class)
+     */
+    @SuppressWarnings("unchecked")
+    public boolean supports(Class c) {
+	return FacilityDataFormQuestion.class.isAssignableFrom(c);
+    }
+
+    /**
 	 * @see Validator#validate(Object, Errors)
 	 */
     public void validate(Object o, Errors errors) {
