@@ -12,9 +12,9 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/facilitydata/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/facilitydata/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/facilitydata/trunk/</url>
+		<connection>scm:git:https://github.com/openmrs/openmrs-module-facilitydata/</connection>
+		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-facilitydata/</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-facilitydata/</url>
 	</scm>
 
 	<modules>
