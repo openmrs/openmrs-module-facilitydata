@@ -4,10 +4,10 @@
 <module configVersion="1.0">
 
     <!-- Base Module Properties -->
-    <id>facilitydata</id>
-    <name>Facility Data Module</name>
-    <version>2.0.3.7</version>
-    <package>org.openmrs.module.@MODULE_ID@</package>
+    <id>@MODULE_ID@</id>
+    <name>@MODULE_NAME@</name>
+    <version>@MODULE_VERSION@</version>
+    <package>@MODULE_PACKAGE@</package>
     <author>Partners In Health and Robert O'Connor</author>
     <description>A module to collect and manage periodic facility-based indicator data</description>
     <activator>org.openmrs.module.facilitydata.activator.FacilityDataModuleActivator</activator>
@@ -65,10 +65,6 @@
     <!-- /Internationalization -->
 
     <mappingFiles>
-        FacilityDataFormSchema.hbm.xml
-        FacilityDataFormSection.hbm.xml
-        FacilityDataFormQuestion.hbm.xml
-        FacilityDataQuestion.hbm.xml
-        FacilityDataValue.hbm.xml
+        ${omodHbmConfig}
     </mappingFiles>
 </module>
