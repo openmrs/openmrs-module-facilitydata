@@ -17,6 +17,14 @@
 		<url>https://github.com/openmrs/openmrs-module-facilitydata/</url>
 	</scm>
 
+	<distributionManagement>
+		<repository>
+			<id>openmrs-repo-modules</id>
+			<name>OpenMRS Modules</name>
+			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
+		</repository>
+	</distributionManagement>
+
 	<modules>
 		<module>api</module>
 		<module>omod</module>
