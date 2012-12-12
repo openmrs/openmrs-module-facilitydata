@@ -65,6 +65,10 @@
     <!-- /Internationalization -->
 
     <mappingFiles>
-        ${omodHbmConfig}
+		FacilityDataFormQuestion.hbm.xml
+		FacilityDataFormSchema.hbm.xml
+		FacilityDataFormSection.hbm.xml
+		FacilityDataQuestion.hbm.xml
+		FacilityDataValue.hbm.xml
     </mappingFiles>
 </module>
