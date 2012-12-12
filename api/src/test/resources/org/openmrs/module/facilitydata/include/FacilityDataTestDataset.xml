@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+  <facilitydata_question_type question_type_id="1" name="Status Question Type" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType" [METADATA]/>
+  <facilitydata_question_type question_type_id="2" name="Boolean Question Type" data_type="org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType" [METADATA]/>
+  <facilitydata_question_type question_type_id="3" name="Daily Hours Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" max_value="24" allow_decimal="true" [METADATA]/>
+  <facilitydata_question_type question_type_id="4" name="Positive Whole Number Question Type" data_type="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" min_value="0" allow_decimal="false" [METADATA]/>
+  
+  <facilitydata_coded_option id="1" name="True" question_type_id="2" option_order="0" code="t" [METADATA]/>
+  <facilitydata_coded_option id="2" name="False" question_type_id="2" option_order="1" code="f" [METADATA]/>
+  <facilitydata_coded_option id="3" name="Unknown" question_type_id="2" option_order="2" code="?" [METADATA]/>
+  <facilitydata_coded_option id="4" name="Excellent" question_type_id="1" option_order="0" code="excellent" [METADATA]/>
+  <facilitydata_coded_option id="5" name="Average" question_type_id="1" option_order="1" code="average" [METADATA]/>
+  <facilitydata_coded_option id="6" name="Poor" question_type_id="1" option_order="2" code="poor" [METADATA]/>
+  <facilitydata_coded_option id="7" name="Unavailable" question_type_id="1" option_order="3" code="unavailable" [METADATA]/>
+
+  <facilitydata_question question_id="1" name="Internet Status" period_applicability="AT_END_OF_PERIOD" question_type="1" [METADATA]/>
+  <facilitydata_question question_id="2" name="Any power outages" period_applicability="DURING_PERIOD" question_type="2" [METADATA]/>
+  <facilitydata_question question_id="3" name="Hours without water" period_applicability="DURING_PERIOD" question_type="3" [METADATA]/>
+  <facilitydata_question question_id="4" name="Number of Surgeries Performed" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
+  <facilitydata_question question_id="5" name="Number of Outpatient Womens Health Visits" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
+  <facilitydata_question question_id="6" name="Number of Outpatient Pediatric Visits" period_applicability="DURING_PERIOD" question_type="4" [METADATA]/>
+
+  <facilitydata_form form_id="1" name="Daily Report" description="A sample daily data collection form" frequency="DAILY" [METADATA]/>
+  <facilitydata_form form_id="2" name="Montly Report" description="A sample montly data collection form" frequency="MONTHLY" [METADATA]/>
+
+  <facilitydata_form_schema schema_id="1" name="Daily Report" description="A sample daily data collection form" form="1" [METADATA]/>
+  <facilitydata_form_schema schema_id="2" name="Montly Report" description="A sample montly data collection form" form="2" [METADATA]/>
+
+  <facilitydata_form_section form_section_id="1" name="Equipment Status" section_number="0" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="2" name="Summary of Services" section_number="1" schema_id="1" [METADATA]/>
+  <facilitydata_form_section form_section_id="3" name="Outpatient Visits" section_number="0" schema_id="2" [METADATA]/>
+
+  <facilitydata_form_question form_question_id="1" name="Internet Status" question_number="1a" section="1" question="1" [METADATA]/>
+  <facilitydata_form_question form_question_id="2" name="Any power outages" question_number="1b" section="1" question="2" [METADATA]/>
+  <facilitydata_form_question form_question_id="3" name="Hours without water" question_number="1c" section="1" question="3" [METADATA]/>
+  <facilitydata_form_question form_question_id="4" name="Number of Surgeries Performed" question_number="2a" section="2" question="4" [METADATA]/>
+  <facilitydata_form_question form_question_id="5" name="Number of Outpatient Womens Health Visits" question_number="3" section="3" question="5" [METADATA]/>
+  <facilitydata_form_question form_question_id="6" name="Number of Outpatient Pediatric Visits" question_number="2" section="3" question="6" [METADATA]/>
+
+  <facilitydata_value id="1" facility="1" from_date="2010-08-01 00:00:00.0" to_date="2010-08-01 00:00:00.0" question="1" value_coded="6" value_numeric="[NULL]" comments="" [DATA]/>
+
+</dataset>

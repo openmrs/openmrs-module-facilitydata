@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.facilitydata.model">
+    
+    <class name="FacilityDataQuestion" table="facilitydata_question">
+
+       <id name="id" type="int" column="question_id"><generator class="native"/></id>
+                        
+        <!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <property name="name" column="name" not-null="true" length="255"/>
+        <property name="description" column="description" not-null="false" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->
+
+        <property name='periodApplicability' column="period_applicability" not-null="true">
+            <type name="org.openmrs.module.facilitydata.service.db.GenericEnumUserType">
+                <param name="enumClass">org.openmrs.module.facilitydata.model.enums.PeriodApplicability</param>
+            </type>
+        </property>
+        <many-to-one name="questionType" class="FacilityDataQuestionType" column="question_type" not-null="true" lazy="false"/>
+        
+    </class>
+    
+    <class name="FacilityDataQuestionType" table="facilitydata_question_type">
+
+       <id name="id" type="int" column="question_type_id"><generator class="native"/></id>
+       <discriminator column="data_type" type="string" not-null="true" length="255"/>
+                        
+        <!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <property name="name" column="name" not-null="true" length="255"/>
+        <property name="description" column="description" not-null="false" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->
+                
+        <subclass name="NumericFacilityDataQuestionType">
+            <property name="minValue" type="java.lang.Double" not-null="false" column="min_value" />
+            <property name="maxValue" type="java.lang.Double" not-null="false" column="max_value"/>
+            <property name="allowDecimals" type="java.lang.Boolean" not-null="false" column="allow_decimal"/>
+        </subclass>
+
+        <subclass name="CodedFacilityDataQuestionType">
+	       	<list name="options" cascade="all-delete-orphan" inverse="false" lazy="false" batch-size="1000">
+	            <key column="question_type_id" not-null="true"/>
+	            <list-index column="option_order" base="0"/>
+	            <one-to-many class="FacilityDataCodedOption" />
+	        </list>
+        </subclass>
+
+    </class>
+    
+    <class name="FacilityDataCodedOption" table="facilitydata_coded_option">
+
+       <id name="id" type="int" column="id"><generator class="native"/></id>
+                        
+        <!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <property name="name" column="name" not-null="true" length="255"/>
+        <property name="description" column="description" not-null="false" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->
+        
+        <property name="code" type="java.lang.String" column="code" not-null="true" length="255"/>
+        <many-to-one name="questionType" class="CodedFacilityDataQuestionType" column="question_type_id" not-null="false" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.facilitydata.model">
+
+    <class name="FacilityDataFormSection" table="facilitydata_form_section" lazy="false">
+
+        <id name="id" type="int" column="form_section_id"><generator class="native"/></id>
+                        
+        <!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <property name="name" column="name" not-null="true" length="255"/>
+        <property name="description" column="description" not-null="false" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="retired" column="retired" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" not-null="false"/>
+        <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
+        <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->
+        
+        <many-to-one name="schema" class="FacilityDataFormSchema" column="schema_id" not-null="true" insert="false" update="false"/>
+
+        <set name="questions" cascade="all-delete-orphan" sort="natural" lazy="false">
+            <key column="section" not-null="false"/>
+            <one-to-many class="org.openmrs.module.facilitydata.model.FacilityDataFormQuestion"/>
+        </set>
+        
+    </class>
+    
+</hibernate-mapping>

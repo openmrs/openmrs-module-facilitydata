@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.facilitydata.model">
+
+    <class name="FacilityDataValue" table="facilitydata_value" lazy="false">
+
+        <id name="id" type="int" column="id"><generator class="native"/></id>
+        
+       	<!-- OpenMRS Stuff -->
+        <property name="uuid" type="java.lang.String" column="uuid" not-null="true" length="255"/>
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" not-null="false"/>
+        <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"/>
+        <property name="voided" column="voided" type="java.lang.Boolean" not-null="false"/>
+        <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" not-null="false"/>
+        <property name="dateVoided" type="java.util.Date" column="date_voided" not-null="false"/>
+        <property name="voidReason" type="java.lang.String" column="void_reason" not-null="false" length="255"/>  
+        <!-- / OpenMRS Stuff -->        
+
+        <many-to-one name="facility" column="facility" class="org.openmrs.Location" not-null="true"/>
+        <property name="fromDate" type="java.util.Date" column="from_date" not-null="true"/>
+        <property name="toDate" type="java.util.Date" column="to_date" not-null="true"/>
+        <many-to-one name="question" column="question" class="FacilityDataFormQuestion" not-null="true"/>
+        <property name="valueNumeric" type="java.lang.Double" column="value_numeric" not-null="false" length="255"/>
+        <many-to-one name="valueCoded" class="FacilityDataCodedOption" column="value_coded" not-null="false"/>
+        <property name="comments" type="java.lang.String" column="comments" not-null="false" length="255"/>
+
+    </class>
+    
+</hibernate-mapping>
