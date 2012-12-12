@@ -1,1 +1,12 @@
+# maven ignores
 target/
+
+# Eclipse ignores
+/.settings
+/.project
+
+# IntelliJ ignores
+*.iml
+*.ipr
+*.iws
+.idea/
