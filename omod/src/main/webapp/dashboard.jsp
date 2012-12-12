@@ -19,8 +19,9 @@
 </script>
 
 <style>
-	table.schemaForm th,td {padding:5px; white-space:nowrap; font-size:small;}
-	table.dashboardTable th,td {width:50%; white-space:nowrap; font-size:small; vertical-align:top;}
+	table {font-size: small;}
+	.schemaForm {padding:5px; white-space:nowrap; font-size:small;}
+	.dashboardTable {width:50%; white-space:nowrap; font-size:small; vertical-align:top;}
 </style>
 
 <div class="facilityDataHeader">
@@ -28,32 +29,32 @@
 	<hr/>
 </div>
 
-<table width="100%" class="dashboardTable">
+<table width="100%">
 	<tr>
-		<td>
+		<td class="dashboardTable">
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.enterData"/></b>
 			<div class="box">
 				<table cellpadding="2" cellspacing="1" id="formList" class="schemaForm">
 				    <thead>
 					    <tr>
-					        <th><spring:message code="facilitydata.display-name"/></th>
-					        <th><spring:message code="facilitydata.schema.frequency"/></th>
-					        <th><spring:message code="general.description"/></th>
+					        <th class="schemaForm"><spring:message code="facilitydata.display-name"/></th>
+					        <th class="schemaForm"><spring:message code="facilitydata.schema.frequency"/></th>
+					        <th class="schemaForm"><spring:message code="general.description"/></th>
 					    </tr>
 				    </thead>
 				    <tbody>
 					    <c:forEach items="${forms}" var="form">
 					        <tr>
-				                <td><a href="formEntryOverview.form?form=${form.id}">${form.name}</a></td>
-				                <td>${form.frequency}</td>
-				                <td>${form.description}</td>
+				                <td class="schemaForm"><a href="formEntryOverview.form?form=${form.id}">${form.name}</a></td>
+				                <td class="schemaForm">${form.frequency}</td>
+				                <td class="schemaForm">${form.description}</td>
 					        </tr>
 					    </c:forEach>
 				    </tbody>
 				</table>
 			</div>
 		</td>
-		<td>
+		<td class="dashboardTable">
 			<b class="boxHeader"><spring:message code="facilitydata.dashboard.manageData"/></b>
 			<div class="box" style="padding-top:10px; padding-bottom:10px;">
 				<a href="completionAnalysis.form"><spring:message code="facilitydata.view-data-completion"/></a>
