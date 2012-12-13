@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntryOverview.form"/>
+<openmrs:require anyPrivilege="Manage Facility Data Reports,Enter Facility Data Reports,View Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntryOverview.form"/>
 
 <style>
 	.reportSummaryTable th,td { width:10px; font-size:small; white-space:nowrap; padding:5px; }
@@ -83,9 +83,11 @@
 						<c:choose>
 							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
 							<c:when test="${dayStatus == 'missing'}">
-								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=${facilitydata:formatDate(dayEntry.value, 'yyyy-MM-dd', '')}" style="color:white;">
-									<spring:message code="facilitydata.enter-short"/>
-								</a>
+								<openmrs:hasPrivilege privilege="Manage Facility Data Reports,Enter Facility Data Reports">
+									<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=${facilitydata:formatDate(dayEntry.value, 'yyyy-MM-dd', '')}" style="color:white;">
+										<spring:message code="facilitydata.enter-short"/>
+									</a>
+								</openmrs:hasPrivilege>
 							</c:when>
 							<c:otherwise>
 								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=${facilitydata:formatDate(dayEntry.value, 'yyyy-MM-dd', '')}&viewOnly=true" style="color:${dayStatus == 'complete' ? 'white' : 'black'};">

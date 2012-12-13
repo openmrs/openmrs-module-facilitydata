@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-<openmrs:require privilege="Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntry.form"/>
+<openmrs:require anyPrivilege="View Facility Data Reports,Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntry.form"/>
 
 <div class="facilityDataHeader">
 	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
@@ -130,10 +130,12 @@
 		<input id="submitButton" type="submit" value="<spring:message code="general.save"/>" />
 		<a href="formEntryOverview.form?form=${schema.form.id}"><input type="button" value="<spring:message code="general.cancel"/>"></a>
 	</c:if>
-	<c:if test="${viewOnly}">
-		<a href="formEntry.form?schema=${schema.id}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
-			<input type="button" value="<spring:message code="general.edit"/>">
-		</a>
-	</c:if>
+	<openmrs:hasPrivilege privilege="Enter Facility Data Reports,Manage Facility Data Reports">
+		<c:if test="${viewOnly}">
+			<a href="formEntry.form?schema=${schema.id}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
+				<input type="button" value="<spring:message code="general.edit"/>">
+			</a>
+		</c:if>
+	</openmrs:hasPrivilege>
 </form>
 <%@ include file="/WEB-INF/template/footer.jsp" %>

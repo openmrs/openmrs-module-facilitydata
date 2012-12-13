@@ -34,6 +34,11 @@ public class AdminList extends AdministrationSectionExt {
         return Extension.MEDIA_TYPE.html;
     }
 
+	@Override
+	public String getRequiredPrivilege() {
+		return "Enter Facility Data Reports,View Facility Data Reports,Manage Facility Data Reports";
+	}
+
 	/**
 	 * @see AdministrationSectionExt#getTitle()
 	 */

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
-<openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/form.list"/>
+<openmrs:require anyPrivilege="Manage Facility Data Reports,Enter Facility Data Reports,View Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/form.list"/>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -66,13 +66,15 @@
 					<spring:message code="facilitydata.export-values-to-excel"/>
 				</a>
 			</div>
-			<br/>
-			<b class="boxHeader"><spring:message code="facilitydata.dashboard.administerData"/></b>
-			<div class="box" style="padding-top:10px; padding-bottom:10px;">
-				<a href="form.list"><spring:message code="facilitydata.manage-form"/></a><br/>
-				<a href="question.list"><spring:message code="facilitydata.manage-question"/></a><br/>
-				<a href="questionType.list"><spring:message code="facilitydata.manage-question-type"/></a>
-			</div>	
+			<openmrs:hasPrivilege privilege="Manage Facility Data Reports">
+				<br/>
+				<b class="boxHeader"><spring:message code="facilitydata.dashboard.administerData"/></b>
+				<div class="box" style="padding-top:10px; padding-bottom:10px;">
+					<a href="form.list"><spring:message code="facilitydata.manage-form"/></a><br/>
+					<a href="question.list"><spring:message code="facilitydata.manage-question"/></a><br/>
+					<a href="questionType.list"><spring:message code="facilitydata.manage-question-type"/></a>
+				</div>
+			</openmrs:hasPrivilege>
 		</td>
 	</tr>
 </table>
