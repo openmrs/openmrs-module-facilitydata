@@ -42,7 +42,8 @@
 </script>
 
 <form method="post">
-	<input type="hidden" name="toDate" value="<openmrs:formatDate date="${toDate}" type="textbox"/>"/>
+	<input type="hidden" name="fromDate" value="${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}"/>
+	<input type="hidden" name="toDate" value="${facilitydata:formatDate(toDate, 'yyyy-MM-dd', '')}"/>
 	<c:forEach items="${schema.sections}" var="section">
 		<c:if test="${!empty section.questions}">
 			<fieldset>
@@ -130,7 +131,7 @@
 		<a href="formEntryOverview.form?form=${schema.form.id}"><input type="button" value="<spring:message code="general.cancel"/>"></a>
 	</c:if>
 	<c:if test="${viewOnly}">
-		<a href="formEntry.form?schema=${schema.id}&facility=${facility.id}&fromDate=<openmrs:formatDate date="${fromDate}" type="textbox"/>">
+		<a href="formEntry.form?schema=${schema.id}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
 			<input type="button" value="<spring:message code="general.edit"/>">
 		</a>
 	</c:if>

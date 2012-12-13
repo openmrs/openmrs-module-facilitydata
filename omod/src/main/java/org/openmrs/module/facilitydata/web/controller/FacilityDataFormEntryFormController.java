@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,7 +53,7 @@ public class FacilityDataFormEntryFormController {
     public void initBinder(WebDataBinder binder) {
     	binder.registerCustomEditor(FacilityDataFormSchema.class, new FacilityDataFormSchemaEditor());
 	 	binder.registerCustomEditor(Location.class, new LocationEditor());
-	 	binder.registerCustomEditor(Date.class, new CustomDateEditor(Context.getDateFormat(), false));
+	 	binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), false));
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -61,7 +62,7 @@ public class FacilityDataFormEntryFormController {
                            @RequestParam(required = true) Location facility, 
                            @RequestParam(required = true) Date fromDate,
                            @RequestParam(required = false) Boolean viewOnly) {
-    	
+
 		Date toDate = fromDate;
 		if (schema.getForm().getFrequency() == Frequency.MONTHLY) {
 			toDate = FacilityDataUtil.getEndOfMonth(fromDate);
@@ -131,9 +132,9 @@ public class FacilityDataFormEntryFormController {
     			}
     		}
     	}
-    	SimpleDateFormat df = Context.getDateFormat();
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     	Context.getService(FacilityDataService.class).saveReport(report);
-    	return String.format("redirect:formEntry.form?schema=%s&facility=%s&fromDate=%s&toDate=%s&viewOnly=true", 
-    						 schema.getId(), facility.getId(), df.format(fromDate), df.format(toDate));
+    	return String.format("redirect:formEntry.form?schema=%s&facility=%s&fromDate=%s&viewOnly=true",
+    						 schema.getId(), facility.getId(), df.format(fromDate));
     }
 }

@@ -83,12 +83,12 @@
 						<c:choose>
 							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
 							<c:when test="${dayStatus == 'missing'}">
-								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=<openmrs:formatDate date="${dayEntry.value}" type="textbox"/>" style="color:white;">
+								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=${facilitydata:formatDate(dayEntry.value, 'yyyy-MM-dd', '')}" style="color:white;">
 									<spring:message code="facilitydata.enter-short"/>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=<openmrs:formatDate date="${dayEntry.value}" type="textbox"/>&viewOnly=true" style="color:${dayStatus == 'complete' ? 'white' : 'black'};">
+								<a href="formEntry.form?schema=${schemaId}&facility=${location.locationId}&fromDate=${facilitydata:formatDate(dayEntry.value, 'yyyy-MM-dd', '')}&viewOnly=true" style="color:${dayStatus == 'complete' ? 'white' : 'black'};">
 									<spring:message code="facilitydata.view-short"/>
 								</a>
 							</c:otherwise>
