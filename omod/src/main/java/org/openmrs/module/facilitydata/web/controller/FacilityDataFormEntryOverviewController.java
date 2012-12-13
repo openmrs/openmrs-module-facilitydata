@@ -66,6 +66,10 @@ public class FacilityDataFormEntryOverviewController {
     		cal.add(Calendar.DATE, monthIncrement*21);
     	}
 
+		if (form.getFrequency() == Frequency.MONTHLY) {
+			cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+		}
+
     	Date endDate = cal.getTime();
     	if (form.getFrequency() == Frequency.MONTHLY) {  // For monthly reports, display last year
     		cal.set(Calendar.DATE, 1);
