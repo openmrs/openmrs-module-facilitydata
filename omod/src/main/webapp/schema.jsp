@@ -59,7 +59,7 @@ $(document).ready(function() {
 			modal: true,
 			draggable: false,
 			closeOnEscape: false,
-			title: '<spring:message code="facilitydata.delete-section"/>: ${section.name}',
+			title: "<spring:message code="facilitydata.delete-section"/>: ${section.name}",
 			width: '75%',
 			height: $(window).height()/2,
 			position: [150,150],
@@ -146,8 +146,9 @@ $(document).ready(function() {
 
 });
 
-function editSection(existingId, existingName) {
+function editSection(existingId) {
 	$('#editSectionIdField').val(existingId);
+	var existingName = $("#sectionName"+existingId).html();
 	$('#editSectionNameField').val(existingName);
 	$('#editSectionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-section"/>: ' + existingName).dialog('open');
 }
@@ -160,12 +161,13 @@ function moveSection(existingIndex, newIndex) {
 	window.location.href='moveSection.form?schema=${schema.id}&existingIndex='+ existingIndex + '&newIndex='+newIndex;
 }
 
-function editQuestion(id, name, questionNumber, question) {
+function editQuestion(id, questionNumber, question) {
 	$('#questionIdField').val(id);
-	$('#questionNameField').val(name);
+	var existingName = $("#questionName"+id).html();
+	$('#questionNameField').val(existingName);
 	$('#questionNumberField').val(questionNumber);
 	$('#questionField').val(question);
-	$('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + name).dialog('open');
+	$('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + existingName).dialog('open');
 }
 
 function moveQuestion(questionId, sectionId) {
@@ -240,9 +242,9 @@ function deleteQuestion(questionId, sectionId) {
 						<tbody>
 							<c:forEach items="${schema.sections}" var="section" varStatus="sectionStatus">
 								<tr>
-									<td>${section.name} (${fn:length(section.questions)})</td>
+									<td><span id="sectionName${section.id}">${section.name}</span> (${fn:length(section.questions)})</td>
 									<td style="white-space:nowrap; text-align:center;">
-										<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editSection('${section.id}','${section.name}');"/>
+										<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick='editSection(${section.id});'/>
 										<c:if test="${fn:length(schema.sections) > 1}">
 											<c:choose>
 												<c:when test="${!sectionStatus.first}">
@@ -289,7 +291,7 @@ function deleteQuestion(questionId, sectionId) {
 						</div>					
 					</c:forEach>
 
-					<a href="javascript:editSection('','');" ><spring:message code="facilitydata.add-section"/></a>
+					<a href="javascript:editSection('');" ><spring:message code="facilitydata.add-section"/></a>
 					
 					<div id="editSectionDiv" style="display:none;">
 						<table>
@@ -341,9 +343,9 @@ function deleteQuestion(questionId, sectionId) {
 											<c:forEach items="${section.questions}" var="question">
 												<tr class="questionRow questionRow${section.id}" style="${sectionStatus.index == 0 ? '' : 'display:none;'}">
 													<td style="white-space:nowrap;">${question.questionNumber}</td>
-													<td width="100%">${question.name}</td>
+													<td width="100%"><span id="questionName${question.id}">${question.name}</span></td>
 													<td style="white-space:nowrap;">
-														<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.name}','${question.questionNumber}','${question.question.id}');"/>
+														<img class="actionImage" src='<c:url value="/images/edit.gif"/>' border="0" onclick="editQuestion('${question.id}','${question.questionNumber}','${question.question.id}');"/>
 														<img class="actionImage" src='<c:url value="/images/lookup.gif"/>' border="0" onclick="moveQuestion('${question.id}','${section.id}');"/>
 														<c:if test="${questionBreakdown[question.id] == null || questionBreakdown[question.id] == 0}">
 															<img class="actionImage" src='<c:url value="/images/trash.gif"/>' border="0" onclick="deleteQuestion('${question.id}','${section.id}');"/>
@@ -356,7 +358,7 @@ function deleteQuestion(questionId, sectionId) {
 								</c:forEach>
 							</tbody>
 						</table>
-						<a href="javascript:editQuestion('','','','');"><spring:message code="facilitydata.add-form-question"/></a>
+						<a href="javascript:editQuestion('','','');"><spring:message code="facilitydata.add-form-question"/></a>
 					</div>
 					
 					<div id="editQuestionDiv" style="display:none;">
