@@ -4,6 +4,18 @@
 
 <script>
 	$j = jQuery;
+	$j(document).ready(function() {
+		$j("#submitButton").click(function(event) {
+			var formVal = $j("#formField").val();
+			var questionVal = $j("#questionField").val();
+			if (formVal && questionVal) {
+				alert("Please choose either a form to export *or* a question to export");
+			}
+			else {
+				$j("#queryForm").submit();
+			}
+		});
+	});
 </script>
 
 <style>
@@ -21,13 +33,13 @@
 
 <b class="boxHeader"><spring:message code="facilitydata.export-data"/></b>
 <div class="box">
-	<frm:form commandName="query" method="post">
+	<frm:form id="queryForm" commandName="query" method="post">
 		<br/>
 		<table class="facilityDataTable">
 			<tr>
 				<th><spring:message code="facilitydata.choose-form"/>:</th>
 	            <td>
-	                <frm:select path="form" multiple="false">
+	                <frm:select id="formField" path="form" multiple="false">
 	                    <frm:option value=""><spring:message code="facilitydata.all-forms"/></frm:option>
 	                    <frm:options items="${forms}" itemValue="id" itemLabel="name"/>
 	                </frm:select>
@@ -38,7 +50,7 @@
 			<tr>
 				<th><spring:message code="facilitydata.choose-question"/>:</th>
 	            <td>
-	                <frm:select path="question" multiple="false">
+	                <frm:select id="questionField" path="question" multiple="false">
 	                    <frm:option value=""><spring:message code="facilitydata.all-questions"/></frm:option>
 	                    <frm:options items="${questions}" itemValue="id" itemLabel="name"/>
 	                </frm:select>
@@ -83,7 +95,7 @@
 			</tr>
 		</table>
 		<br/>
-		<input type="submit" value="<spring:message code="facilitydata.export-data"/>"/>
+		<input id="submitButton" type="button" value="<spring:message code="facilitydata.export-data"/>"/>
 	</frm:form>
 </div>
 
