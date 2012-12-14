@@ -122,7 +122,7 @@ public interface FacilityDataDAO {
 
     /**
      * Save a <code>FacilityDataQuestionType</code> to the database.
-     * @param question the <code>FacilityDataQuestionType</code> to be saved
+     * @param questionType the <code>FacilityDataQuestionType</code> to be saved
      * @return the <code>FacilityDataQuestionType</code> which was just saved.
      * @should save and return the passed <code>FacilityDataQuestionType</code>
      */
@@ -156,7 +156,7 @@ public interface FacilityDataDAO {
 
     /**
      * Delete a <code>FacilityDataQuestionType</code>
-     * @param question the <code>FacilityDataQuestionType</code> object to be deleted
+     * @param questionType the <code>FacilityDataQuestionType</code> object to be deleted
      * @throws IllegalArgumentException if passed a null parameter
      * @should delete the <code>FacilityDataQuestionType</code> object
      */

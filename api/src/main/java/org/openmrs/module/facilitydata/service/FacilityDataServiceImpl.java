@@ -149,7 +149,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#saveCodedQuestionType(FacilityDataQuestionType)
+	 * @see FacilityDataService#saveQuestionType(FacilityDataQuestionType)
 	 */
 	public FacilityDataQuestionType saveQuestionType(FacilityDataQuestionType questionType) {
 		return dao.saveQuestionType(questionType);
@@ -186,7 +186,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#unretireQuestion(FacilityDataQuestionType)
+	 * @see FacilityDataService#unretireQuestionType(FacilityDataQuestionType)
 	 */
 	public FacilityDataQuestionType unretireQuestionType(FacilityDataQuestionType questionType) {
 		questionType.setRetired(false);
@@ -231,7 +231,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#retireFacilityDataQuestion(FacilityDataQuestion, String)
+	 * @see FacilityDataService#retireQuestion(FacilityDataQuestion, String)
 	 */
 	public FacilityDataQuestion retireQuestion(FacilityDataQuestion question, String reason) {
 		question.setRetired(true);
@@ -240,7 +240,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#unretireFacilityDataQuestion(FacilityDataQuestion)
+	 * @see FacilityDataService#unretireQuestion(FacilityDataQuestion)
 	 */
 	public FacilityDataQuestion unretireQuestion(FacilityDataQuestion question) {
 		question.setRetired(false);
@@ -281,7 +281,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#unvoidFacilityDataFormValue(FacilityDataValue)
+	 * @see FacilityDataService#unvoidFacilityDataValue(FacilityDataValue)
 	 */
 	public FacilityDataValue unvoidFacilityDataValue(FacilityDataValue value) {
 		value.setVoided(false);
@@ -291,7 +291,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	}
 
 	/**
-	 * @see FacilityDataService#deleteFacilityValue(FacilityDataValue)
+	 * @see FacilityDataService#deleteFacilityDataValue(FacilityDataValue)
 	 */
 	public void deleteFacilityDataValue(FacilityDataValue value) {
 		dao.deleteFacilityDataValue(value);

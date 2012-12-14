@@ -5,7 +5,7 @@
 <openmrs:require anyPrivilege="Manage Facility Data Reports,Enter Facility Data Reports,View Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntryOverview.form"/>
 
 <style>
-	.reportSummaryTable th,td { width:10px; font-size:small; white-space:nowrap; padding:5px; }
+	.reportSummaryTable { width:10px; font-size:small; white-space:nowrap; padding:5px; }
 	.missing { background-color:red; color:white; }
 	.partial { background-color:yellow; color:black; }
 	.complete { background-color:green; color:white; }
@@ -20,11 +20,11 @@
 </div>
 
 <table><tr><td>
-	<table border="1" class="reportSummaryTable">
+	<table border="1">
 		<tr>
-			<th></th>
+			<th class="reportSummaryTable"></th>
 			<c:forEach items="${yearCols}" var="yearEntry" varStatus="yearStatus">
-				<th colspan="${yearEntry.value}">
+				<th class="reportSummaryTable" colspan="${yearEntry.value}">
 					<c:if test="${yearStatus.first}">
 						<a href="formEntryOverview.form?form=${form.id}&yearIncrement=${yearIncrement == null ? -1 : yearIncrement-1}&monthIncrement=${monthIncrement}">
 							&lt;&lt;
@@ -40,9 +40,9 @@
 			</c:forEach>
 		</tr>
 		<tr>
-			<th></th>
+			<th class="reportSummaryTable"></th>
 			<c:forEach items="${monthCols}" var="monthEntry" varStatus="monthStatus">
-				<th colspan="${monthEntry.value}">
+				<th class="reportSummaryTable" colspan="${monthEntry.value}">
 					<c:if test="${monthStatus.first && form.frequency == 'DAILY'}">
 						<a href="formEntryOverview.form?form=${form.id}&monthIncrement=${monthIncrement == null ? -1 : monthIncrement-1}&yearIncrement=${yearIncrement}">
 							&lt;&lt;
@@ -59,16 +59,16 @@
 		</tr>
 		<c:if test="${form.frequency == 'DAILY'}">
 			<tr>
-				<th></th>
+				<th class="reportSummaryTable"></th>
 				<c:forEach items="${dayCols}" var="day">
-					<th style="text-align:center;">${displayKeys[day.key]}</th>
+					<th class="reportSummaryTable" style="text-align:center;">${displayKeys[day.key]}</th>
 				</c:forEach>
 			</tr>
 		</c:if>
 		<c:forEach items="${locations}" var="location">
 			<c:set var="locationEntry" value="${dayData[location.locationId]}"/>
 			<tr>
-				<th>${location.name}</th>
+				<th class="reportSummaryTable">${location.name}</th>
 				<c:forEach items="${dayCols}" var="dayEntry">
 					<c:set var="numEntries" value="${locationEntry[dayEntry.key]}"/>
 					<c:set var="dayStatus" value="notApplicable"/>
@@ -79,7 +79,7 @@
 							<c:set var="dayStatus" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
 						</c:if>
 					</c:forEach>
-					<td class="${dayStatus}" style="text-align:center;">
+					<td class="reportSummaryTable ${dayStatus}" style="text-align:center;">
 						<c:choose>
 							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
 							<c:when test="${dayStatus == 'missing'}">

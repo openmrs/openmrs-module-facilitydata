@@ -164,7 +164,7 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Delete a schema
-     * @param formSchema the schema to delete.
+     * @param schemaId the id of the schema to delete.
      * @throws IllegalArgumentException if passed a null parameter
      * @should delete the specified schema
      */
@@ -174,7 +174,7 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Save a <code>FacilityDataQuestionType</code> to the database.
-     * @param question the <code>FacilityDataQuestionType</code> to be saved
+     * @param questionType the <code>FacilityDataQuestionType</code> to be saved
      * @return the <code>FacilityDataQuestionType</code> which was just saved.
      * @should save and return the passed <code>FacilityDataQuestionType</code>
      */
@@ -216,7 +216,7 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Retire a FacilityDataQuestionType
-     * @param FacilityDataQuestionType
+     * @param questionType
      * @should retire a FacilityDataQuestionType then save it
      */
     @Transactional
@@ -234,7 +234,7 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Delete a <code>FacilityDataQuestionType</code>
-     * @param question the <code>FacilityDataQuestionType</code> object to be deleted
+     * @param questionType the <code>FacilityDataQuestionType</code> object to be deleted
      * @throws IllegalArgumentException if passed a null parameter
      * @should delete the <code>FacilityDataQuestionType</code> object
      */
@@ -364,13 +364,6 @@ public interface FacilityDataService extends OpenmrsService {
 
     /**
      * Used to save the data that is entered into the reports.
-     * @param question the associated question being answered.
-     * @param value the existing answer -- if any.
-     * @param val the value. 
-     * @param comments the comment such as why, etc.
-     * @param location the facility
-     * @param fromDate the start of the period.
-     * @param toDate the end of the period.
      * @should save the passed report
      */
     @Transactional

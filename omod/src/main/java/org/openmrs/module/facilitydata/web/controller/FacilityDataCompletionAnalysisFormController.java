@@ -13,12 +13,7 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +32,7 @@ import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEdit
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.util.FacilityDataConstants;
 import org.openmrs.module.facilitydata.util.FacilityDataQuery;
+import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -181,6 +177,12 @@ public class FacilityDataCompletionAnalysisFormController {
     		if (query.getFacility() == null) {
     			numExpected = numExpected * getLocations().size();
     		}
+			else {
+				Set<Location> allFacilities = FacilityDataUtil.getAllLocationsInHierarchy(query.getFacility());
+				List<Location> supportedFacilities = FacilityDataConstants.getSupportedFacilities();
+				allFacilities.retainAll(supportedFacilities);
+				numExpected = numExpected * allFacilities.size();
+			}
     		
     		map.addAttribute("numExpected", numExpected);
     		map.addAttribute("numValuesByQuestion", numValuesByQuestion);

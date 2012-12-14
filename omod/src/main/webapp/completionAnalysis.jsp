@@ -39,11 +39,7 @@
 	        <tr>
 	        	<th><spring:message code="facilitydata.site"/>:</th>
 	            <td>
-	                <frm:select path="facility" multiple="false">
-	                    <frm:option value=""><spring:message code="facilitydata.all-locations"/></frm:option>
-	                    <frm:options items="${locations}" itemValue="id" itemLabel="name"/>
-	                </frm:select>
-	                <frm:errors cssClass="error" path="facility"/>
+					<openmrs_tag:locationField formFieldName="facility" initialValue="${query.facility}" />
 	            </td>
 				<th><spring:message code="facilitydata.to-date"/>:</th>
 	            <td>

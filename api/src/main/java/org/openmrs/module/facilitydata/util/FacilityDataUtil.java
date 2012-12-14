@@ -2,15 +2,11 @@ package org.openmrs.module.facilitydata.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
 import org.openmrs.module.facilitydata.model.FacilityDataValue;
 
@@ -184,5 +180,19 @@ public class FacilityDataUtil {
 			r.addValue(v);
 		}
 		return new ArrayList<FacilityDataReport>(l.values());
+	}
+
+	/**
+	 * @return all Locations that are either the passed Location, or any children or grandchildren of it
+	 */
+	public static Set<Location> getAllLocationsInHierarchy(Location l) {
+		Set<Location> ret = new HashSet<Location>();
+		ret.add(l);
+		if (l.getChildLocations() != null) {
+			for (Location childLocation : l.getChildLocations()) {
+				ret.addAll(getAllLocationsInHierarchy(childLocation));
+			}
+		}
+		return ret;
 	}
 }

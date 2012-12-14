@@ -15,10 +15,7 @@ package org.openmrs.module.facilitydata.service.db;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -118,7 +115,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 
 	/**
-	 * @see FacilityDataDAO#deleteFacilityDataFormSchema(FacilityDataFormSchema)
+	 * @see FacilityDataDAO#deleteFacilityDataFormSchema(Integer)
 	 */
 	public void deleteFacilityDataFormSchema(Integer schemaId) {
 		
@@ -306,7 +303,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	}
 	
 	/**
-	 * @see FacilityDataDAO#getMinOrMaxEnteredStartDateForSchema()
+	 * @see FacilityDataDAO#getMinOrMaxEnteredStartDateForSchema(FacilityDataFormSchema, String)
 	 */
 	public Date getMinOrMaxEnteredStartDateForSchema(FacilityDataFormSchema schema, String aggregation) {
 		Date d = null;
@@ -414,7 +411,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 			c.createCriteria("question").add(Restrictions.eq("question", query.getQuestion()));
 		}
 		if (query.getFacility() != null) {
-			c.add(Restrictions.eq("facility", query.getFacility()));
+			c.add(Restrictions.in("facility", FacilityDataUtil.getAllLocationsInHierarchy(query.getFacility())));
 		}
 		if (query.getFromDate() != null) {
 			c.add(Restrictions.ge("fromDate", query.getFromDate()));
