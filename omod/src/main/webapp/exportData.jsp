@@ -2,6 +2,10 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
+<script>
+	$j = jQuery;
+</script>
+
 <style>
 	table.questionForm td {padding:5px; font-size:small;}
 </style>
@@ -45,11 +49,7 @@
 			<tr>
 				<th><spring:message code="facilitydata.site"/> (<spring:message code="facilitydata.optional"/>):</th>
 	            <td>
-	                <frm:select path="facility" multiple="false">
-	                    <frm:option value=""><spring:message code="facilitydata.all-locations"/></frm:option>
-	                    <frm:options items="${locations}" itemValue="id" itemLabel="name"/>
-	                </frm:select>
-	                <frm:errors cssClass="error" path="facility"/>
+					<openmrs_tag:locationField formFieldName="facility" initialValue="${query.facility}" />
 	            </td>
 			</tr>
 			<tr>
