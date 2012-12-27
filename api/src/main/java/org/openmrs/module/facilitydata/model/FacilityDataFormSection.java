@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -74,5 +76,17 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
 	 */
 	public void setQuestions(Set<FacilityDataFormQuestion> questions) {
 		this.questions = questions;
+	}
+	
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+        for (FacilityDataFormQuestion question : getQuestions()) {
+            list.add(question.getQuestion());
+        }
+		list.add(getSchema());
+		return list;
 	}
 }

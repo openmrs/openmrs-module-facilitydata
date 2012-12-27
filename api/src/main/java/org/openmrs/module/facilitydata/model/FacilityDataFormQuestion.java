@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openmrs.module.facilitydata.util.DelimitedKeyComparator;
 
 /**
@@ -82,5 +85,15 @@ public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Co
 	 */
 	public void setQuestion(FacilityDataQuestion question) {
 		this.question = question;
+	}
+	
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(getQuestion());
+		list.add(getSection());
+		return list;
 	}
 }

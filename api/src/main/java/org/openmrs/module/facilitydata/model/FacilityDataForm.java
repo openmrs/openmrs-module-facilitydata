@@ -1,6 +1,8 @@
 package org.openmrs.module.facilitydata.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.openmrs.module.facilitydata.model.enums.Frequency;
@@ -53,5 +55,22 @@ public class FacilityDataForm extends BaseFacilityMetaData {
 	 */
 	public void setSchemas(Set<FacilityDataFormSchema> schemas) {
 		this.schemas = schemas;
+	}
+	
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		
+		for (FacilityDataFormSchema schema : getSchemas()) {
+	        for (FacilityDataFormSection section : schema.getSections()) {
+	            for (FacilityDataFormQuestion question : section.getQuestions()) {
+	                list.add(question.getQuestion());
+                }
+            }
+        }
+		
+		return list;
 	}
 }
