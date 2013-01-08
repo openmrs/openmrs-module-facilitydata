@@ -43,6 +43,16 @@ public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Co
     	return c.compare(this.getQuestionNumber(), that.getQuestionNumber());
 	}
 
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(getQuestion());
+		list.add(getSection());
+		return list;
+	}
+
     //***** PROPERTY ACCESS *****
     
 	/**
@@ -85,15 +95,5 @@ public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Co
 	 */
 	public void setQuestion(FacilityDataQuestion question) {
 		this.question = question;
-	}
-	
-	/**
-	 * @return a list of dependencies for the Metadata Sharing Module
-	 */
-	public List<Object> getPriorityDependenciesForMetadataSharing() {
-		List<Object> list = new ArrayList<Object>();
-		list.add(getQuestion());
-		list.add(getSection());
-		return list;
 	}
 }

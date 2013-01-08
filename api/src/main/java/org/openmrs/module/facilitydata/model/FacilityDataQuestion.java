@@ -31,6 +31,17 @@ public class FacilityDataQuestion extends BaseFacilityMetaData {
     //***** CONSTRUCTORS *****
     
     public FacilityDataQuestion() {}
+
+	//***** INSTANCE METHJODS *****
+
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(questionType);
+		return list;
+	}
     
     //***** PROPERTY ACCESS *****
 
@@ -60,16 +71,5 @@ public class FacilityDataQuestion extends BaseFacilityMetaData {
 	 */
 	public void setQuestionType(FacilityDataQuestionType questionType) {
 		this.questionType = questionType;
-	}
-	
-	/**
-	 * @return a list of dependencies for the Metadata Sharing Module
-	 */
-	public List<Object> getPriorityDependenciesForMetadataSharing() {
-		List<Object> list = new ArrayList<Object>();
-		
-		list.add(questionType);
-		
-		return list;
 	}
 }

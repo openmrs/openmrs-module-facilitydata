@@ -46,6 +46,15 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
     	return null;
     }
 
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(getSchema());
+		return list;
+	}
+
     //***** PROPERTY ACCESS *****
 	/**
 	 * @return the schema
@@ -76,17 +85,5 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
 	 */
 	public void setQuestions(Set<FacilityDataFormQuestion> questions) {
 		this.questions = questions;
-	}
-	
-	/**
-	 * @return a list of dependencies for the Metadata Sharing Module
-	 */
-	public List<Object> getPriorityDependenciesForMetadataSharing() {
-		List<Object> list = new ArrayList<Object>();
-        for (FacilityDataFormQuestion question : getQuestions()) {
-            list.add(question.getQuestion());
-        }
-		list.add(getSchema());
-		return list;
 	}
 }

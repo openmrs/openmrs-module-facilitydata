@@ -23,6 +23,20 @@ public class FacilityDataForm extends BaseFacilityMetaData {
     
     //***** INSTANCE METHODS *****
 
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		for (FacilityDataFormSchema schema : getSchemas()) {
+			for (FacilityDataFormSection section : schema.getSections()) {
+				for (FacilityDataFormQuestion question : section.getQuestions()) {
+					list.add(question.getQuestion());
+				}
+			}
+		}
+		return list;
+	}
 
     //***** PROPERTY ACCESS *****
     
@@ -55,22 +69,5 @@ public class FacilityDataForm extends BaseFacilityMetaData {
 	 */
 	public void setSchemas(Set<FacilityDataFormSchema> schemas) {
 		this.schemas = schemas;
-	}
-	
-	/**
-	 * @return a list of dependencies for the Metadata Sharing Module
-	 */
-	public List<Object> getPriorityDependenciesForMetadataSharing() {
-		List<Object> list = new ArrayList<Object>();
-		
-		for (FacilityDataFormSchema schema : getSchemas()) {
-	        for (FacilityDataFormSection section : schema.getSections()) {
-	            for (FacilityDataFormQuestion question : section.getQuestions()) {
-	                list.add(question.getQuestion());
-                }
-            }
-        }
-		
-		return list;
 	}
 }

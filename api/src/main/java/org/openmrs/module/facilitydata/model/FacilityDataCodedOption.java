@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents one of the possible answers to a Coded Question.
  */
@@ -26,6 +29,17 @@ public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	//***** CONSTRUCTORS *****
 	
 	public FacilityDataCodedOption() {super();}
+
+	//***** INSTANCE METHODS *****
+
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(questionType);
+		return list;
+	}
 	
 	//***** PROPERTY ACCESS*****
 

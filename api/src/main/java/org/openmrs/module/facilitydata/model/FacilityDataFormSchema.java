@@ -78,6 +78,15 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
     	return null;
     }
 
+	/**
+	 * @return a list of dependencies for the Metadata Sharing Module
+	 */
+	public List<Object> getPriorityDependenciesForMetadataSharing() {
+		List<Object> list = new ArrayList<Object>();
+		list.add(getForm());
+		return list;
+	}
+
     //***** PROPERTY ACCESS *****
 
 	/**
@@ -144,19 +153,5 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
 	 */
 	public void addSection(FacilityDataFormSection section) {
 		getSections().add(section);
-	}
-	
-	/**
-	 * @return a list of dependencies for the Metadata Sharing Module
-	 */
-	public List<Object> getPriorityDependenciesForMetadataSharing() {
-		List<Object> list = new ArrayList<Object>();
-        for (FacilityDataFormSection section : getSections()) {
-            for (FacilityDataFormQuestion question : section.getQuestions()) {
-                list.add(question.getQuestion());
-            }
-        }
-		list.add(getForm());
-		return list;
 	}
 }
