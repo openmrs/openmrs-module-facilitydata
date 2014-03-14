@@ -5,27 +5,13 @@
 <openmrs:require anyPrivilege="Manage Facility Data Reports,Enter Facility Data Reports,View Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntryOverview.form"/>
 
 <style>
-	.reportSummaryTable { width:10px; font-size:small; white-space:nowrap; padding:5px;border:1px solid black; }
+	.reportSummaryTable { width:10px; font-size:small; white-space:nowrap; padding:5px; }
 	.missing { background-color:red; color:white; }
 	.partial { background-color:yellow; color:black; }
 	.complete { background-color:green; color:white; }
 	.notApplicable { background-color:grey; color:white; }
 	.inner_table {height: 500px;overflow-y: scroll;}
-	
 </style>
-<script type="text/javascript">
-$( document ).ready(function( $ ) {
-var tabwidth=$("#loc1").width();
-$("#loc").width(tabwidth);
-
-var a=$("#location").width();
-$('.emptybox').width(a);
-
-var loc =$(".colorbox").width();
-$(".month").width(loc);
-
-});
-</script>
 
 <div class="facilityDataHeader">
 	<a href="${pageContext.request.contextPath}/module/facilitydata/dashboard.list"><spring:message code="facilitydata.dashboard"/></a>
@@ -33,12 +19,22 @@ $(".month").width(loc);
 	${form.name}
 	<hr/>
 </div>
+<script type="text/javascript">
+
+
+$( document ).ready(function( $ ) {
+	
+	$('.emptybox').width($('.locationbox').width());
+	$('.dateSection').width($('.dayStatus').width());
+	$('#table1').width($('#table2').width());
+	});
+</script>
 
 <table><tr><td>
 <div class="wrap">
-	<table border="1" id="loc">
+	<table border="1" id="table1">
 		<tr>
-			<th class="reportSummaryTable  emptybox">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+			<th class="reportSummaryTable emptybox"></th>
 			<c:forEach items="${yearCols}" var="yearEntry" varStatus="yearStatus">
 				<th class="reportSummaryTable" colspan="${yearEntry.value}">
 					<c:if test="${yearStatus.first}">
@@ -56,9 +52,9 @@ $(".month").width(loc);
 			</c:forEach>
 		</tr>
 		<tr>
-			<th class="reportSummaryTable emptybox">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+			<th class="reportSummaryTable emptybox"></th>
 			<c:forEach items="${monthCols}" var="monthEntry" varStatus="monthStatus">
-				<th class="reportSummaryTable month" colspan="${monthEntry.value}">
+				<th class="reportSummaryTable months" colspan="${monthEntry.value}">
 					<c:if test="${monthStatus.first && form.frequency == 'DAILY'}">
 						<a href="formEntryOverview.form?form=${form.id}&monthIncrement=${monthIncrement == null ? -1 : monthIncrement-1}&yearIncrement=${yearIncrement}">
 							&lt;&lt;
@@ -75,19 +71,20 @@ $(".month").width(loc);
 		</tr>
 		<c:if test="${form.frequency == 'DAILY'}">
 			<tr>
-				<th class="reportSummaryTable"></th>
+				<th class="reportSummaryTable emptybox"></th>
 				<c:forEach items="${dayCols}" var="day">
-					<th class="reportSummaryTable" style="text-align:center;">${displayKeys[day.key]}</th>
+					<th class="reportSummaryTable dateSection" style="text-align:center;">${displayKeys[day.key]}</th>
 				</c:forEach>
 			</tr>
-		</c:if>
-		</table>
-	<div class='inner_table'>
-	<table id="loc1">
+			</c:if>
+			</table>
+			<div class="inner_table">
+			<table border="1" id="table2">
+		
 		<c:forEach items="${locations}" var="location">
 			<c:set var="locationEntry" value="${dayData[location.locationId]}"/>
 			<tr>
-				<th class="reportSummaryTable" id="location">${location.name}</th>
+				<th class="reportSummaryTable locationbox">${location.name}</th>
 				<c:forEach items="${dayCols}" var="dayEntry">
 					<c:set var="numEntries" value="${locationEntry[dayEntry.key]}"/>
 					<c:set var="dayStatus" value="notApplicable"/>
@@ -98,7 +95,7 @@ $(".month").width(loc);
 							<c:set var="dayStatus" value="${numEntries == 0 || numEntries == null ? 'missing' : numEntries == numQuestions ? 'complete' : 'partial'}"/>
 						</c:if>
 					</c:forEach>
-					<td class="reportSummaryTable ${dayStatus}  colorbox" style="text-align:center;">
+					<td class="reportSummaryTable ${dayStatus} dayStatus" style="text-align:center;">
 						<c:choose>
 							<c:when test="${dayStatus == 'notApplicable'}"><spring:message code="facilitydata.not-applicable-short"/></c:when>
 							<c:when test="${dayStatus == 'missing'}">
@@ -118,10 +115,9 @@ $(".month").width(loc);
 				</c:forEach>
 			</tr>	
 		</c:forEach>
-		</table>
+	</table>
 	</div>
 	</div>
-	
 </td>
 <td style="vertical-align:top;">
 	<table>
