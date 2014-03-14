@@ -63,7 +63,7 @@ public class FacilityDataFormEntryOverviewController {
     		cal.add(Calendar.YEAR, yearIncrement);
     	}
     	if (monthIncrement != null) {
-    		cal.add(Calendar.DATE, monthIncrement*21);
+    		cal.add(Calendar.DATE, monthIncrement*14);
     	}
 
 		if (form.getFrequency() == Frequency.MONTHLY) {
@@ -75,8 +75,8 @@ public class FacilityDataFormEntryOverviewController {
     		cal.set(Calendar.DATE, 1);
     		cal.add(Calendar.YEAR, -1);
     	}
-    	else if (form.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 3 weeks
-    		cal.add(Calendar.DATE, -21);
+    	else if (form.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 2 weeks
+    		cal.add(Calendar.DATE, -14);
     	}
     	else {
     		throw new RuntimeException("Unable to handle a report with frequency: " + form.getFrequency());

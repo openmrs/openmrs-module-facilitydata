@@ -10,7 +10,8 @@
 	.partial { background-color:yellow; color:black; }
 	.complete { background-color:green; color:white; }
 	.notApplicable { background-color:grey; color:white; }
-	.inner_table {height: 500px;overflow-y: scroll;}
+	.inner_table {height: 400px;overflow-y: scroll;}
+	.dayStatus {width: 35px;}
 </style>
 
 <div class="facilityDataHeader">
@@ -20,13 +21,10 @@
 	<hr/>
 </div>
 <script type="text/javascript">
-
-
-$( document ).ready(function( $ ) {
-	
-	$('.emptybox').width($('.locationbox').width());
-	$('.dateSection').width($('.dayStatus').width());
-	$('#table1').width($('#table2').width());
+	$( document ).ready(function( $ ) {
+		$('.emptybox').width($('.locationbox').width());
+		$('.dateSection').width($('.dayStatus').width());
+		$('#table1').width($('#table2').width());
 	});
 </script>
 
@@ -76,10 +74,10 @@ $( document ).ready(function( $ ) {
 					<th class="reportSummaryTable dateSection" style="text-align:center;">${displayKeys[day.key]}</th>
 				</c:forEach>
 			</tr>
-			</c:if>
-			</table>
-			<div class="inner_table">
-			<table border="1" id="table2">
+		</c:if>
+	</table>
+	<div class="inner_table">
+		<table border="1" id="table2">
 		
 		<c:forEach items="${locations}" var="location">
 			<c:set var="locationEntry" value="${dayData[location.locationId]}"/>

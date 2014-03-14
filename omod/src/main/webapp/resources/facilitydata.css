@@ -18,3 +18,7 @@ input.wide {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+
+table {
+	font-size: 1em;
+}
