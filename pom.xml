@@ -16,18 +16,14 @@
 		<url>https://github.com/openmrs/openmrs-module-facilitydata/</url>
 	</scm>
 
-	<distributionManagement>
-		<repository>
-			<id>openmrs-repo-modules</id>
-			<name>OpenMRS Modules</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
-		</repository>
-	</distributionManagement>
+    <modules>
+        <module>api</module>
+        <module>omod</module>
+    </modules>
 
-	<modules>
-		<module>api</module>
-		<module>omod</module>
-	</modules>
+    <properties>
+        <openMRSVersion>1.9.7</openMRSVersion>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -46,32 +42,50 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.openmrs.api</groupId>
-			<artifactId>openmrs-api</artifactId>
-			<version>${openMRSVersion}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-			<version>${openMRSVersion}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.test</groupId>
-			<artifactId>openmrs-test</artifactId>
-			<version>${openMRSVersion}</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
-	<properties>
-		<openMRSVersion>1.6.4</openMRSVersion>
-	</properties>
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>jar</type>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.web</groupId>
+            <artifactId>openmrs-web</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.web</groupId>
+            <artifactId>openmrs-web</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>jar</type>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.test</groupId>
+            <artifactId>openmrs-test</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+	</dependencies>
 
 	<build>
 		<pluginManagement>
@@ -98,7 +112,20 @@
 		</pluginManagement>
 	</build>
 
-	<repositories>
+    <distributionManagement>
+        <repository>
+            <id>openmrs-repo-modules</id>
+            <name>OpenMRS Modules</name>
+            <url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
+        </repository>
+        <snapshotRepository>
+            <id>openmrs-repo-snapshots</id>
+            <name>OpenMRS Snapshots</name>
+            <url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
 		<repository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>

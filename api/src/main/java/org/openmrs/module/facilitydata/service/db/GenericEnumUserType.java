@@ -13,6 +13,12 @@
  */
 package org.openmrs.module.facilitydata.service.db;
 
+import org.hibernate.HibernateException;
+import org.hibernate.engine.SessionImplementor;
+import org.hibernate.type.Type;
+import org.hibernate.usertype.ParameterizedType;
+import org.hibernate.usertype.UserType;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
@@ -20,23 +26,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.SessionImplementor;
-import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.usertype.ParameterizedType;
-import org.hibernate.usertype.UserType;
-
-import org.openmrs.api.context.Context;
-
 /**
  * Taken primarily from https://www.hibernate.org/272.html
  * Written by Martin Kersten and tweaked by Gavin King
- *
- * Hibernate made non-backwards-compatible changes in 3.6,
- * which are used in OpenMRS 1.9 .  Code to accomodate both
- * was lifted from org.openmrs.module.reporting.report.service.db.GenericEnumUserType
- * and org.openmrs.module.reporting.report.service.db.HibernateUtil
+ * 
+ * Updated by Darius Jazayeri to (hackily) support both Hibernate 3.2.5 and 3.6  
  */
 public class GenericEnumUserType implements UserType, ParameterizedType {
     private static final String DEFAULT_IDENTIFIER_METHOD_NAME = "name";
@@ -47,7 +41,6 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     private Method identifierMethod;
     private Method valueOfMethod;
     private Type type;
-
     private int[] sqlTypes;
 
     public void setParameterValues(Properties parameters) {
@@ -67,12 +60,12 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
             throw new HibernateException("Failed to obtain identifier method", e);
         }
 
-        type = GenericEnumUserType.getBasicType(identifierType.getName(), parameters);
+        type = HibernateUtil.getBasicType(identifierType.getName(), parameters);
 
         if (type == null)
             throw new HibernateException("Unsupported identifier type " + identifierType.getName());
 
-        sqlTypes = new int[] { GenericEnumUserType.sqlType(type) };
+       	sqlTypes = new int[] { HibernateUtil.sqlType(type) };
 
         String valueOfMethodName = parameters.getProperty("valueOfMethod", DEFAULT_VALUE_OF_METHOD_NAME);
 
@@ -88,8 +81,7 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     }
 
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-
-	// in 3.2.5 it'd be type.get(rs, names[0]);
+    	// in 3.2.5 it'd be type.get(rs, names[0]);
     	// in 3.6 it'd be type.get(rs, names[0], null);
     	Object identifier;
     	try {
@@ -102,7 +94,6 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
 	            throw new RuntimeException("Error executing get method on " + type, e);
             }
     	}
-
         if (rs.wasNull()) {
             return null;
         }
@@ -118,12 +109,12 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
         try {
             if (value == null) {
-		st.setNull(index, GenericEnumUserType.sqlType(type));
+                st.setNull(index, HibernateUtil.sqlType(type));
             } else {
                 Object identifier = identifierMethod.invoke(value, new Object[0]);
-
-		// in both 3.2.5 and 3.6: type.set(st, identifier, index);
-		type.getClass().getMethod("set", PreparedStatement.class, Object.class, int.class).invoke(type, st, identifier, index);
+                
+                // in both 3.2.5 and 3.6: type.set(st, identifier, index);
+                type.getClass().getMethod("set", PreparedStatement.class, Object.class, int.class).invoke(type, st, identifier, index);
             }
         } catch (Exception e) {
             throw new HibernateException("Exception while invoking identifierMethod '" + identifierMethod.getName() + "' of " +
@@ -162,53 +153,4 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
     }
-
-
-    /**
-     * Copied from org.openmrs.module.reporting.report.service.db.HibernateUtil:
-     * Hibernate made a non-backwards-compatible change in version 3.6 (which we
-     * use starting in OpenMRS 1.9). See
-     * https://hibernate.onjira.com/browse/HHH-5138. TypeFactory.basic no longer
-     * exists.
-     *
-     * @param name
-     * @return Given the name of a Hibernate basic type, return an instance of
-     *         org.hibernate.type.Type
-     */
-    public static Type getBasicType(String name, Properties parameters) {
-	try {
-	    return TypeFactory.basic(name);
-	} catch (NoSuchMethodError ex) {
-	    // use reflection to do: return new
-	    // TypeResolver().heuristicType(name, parameters);
-	    try {
-		Object typeResolver = Context.loadClass(
-			"org.hibernate.type.TypeResolver").newInstance();
-		Method method = typeResolver.getClass().getMethod(
-			"heuristicType", String.class, Properties.class);
-		return (Type) method.invoke(typeResolver, name, parameters);
-	    } catch (Exception e) {
-		throw new RuntimeException("Error getting hibernate type", e);
-}
-	}
-    }
-
-    /**
-     * Copied from org.openmrs.module.reporting.report.service.db.HibernateUtil:
-     * Hibernate made a non-backwards-compatible change in version 3.6 (which we
-     * use starting in OpenMRS 1.9). See
-     * https://hibernate.onjira.com/browse/HHH-5138.
-     *
-     * @param type
-     * @return The JDBC type associated with the given Hibernate type
-     */
-    public static Integer sqlType(Type type) {
-	try {
-	    return (Integer) type.getClass().getMethod("sqlType").invoke(type);
-	} catch (Exception ex) {
-	    throw new RuntimeException("Error calling sqlType() method on "
-		    + type, ex);
-	}
-    }
-
 }
