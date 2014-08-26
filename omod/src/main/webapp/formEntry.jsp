@@ -68,7 +68,10 @@
 								    			<select name="valueCoded.${q.id}">
 									                <option value=""></option>
 									                <c:forEach items="${q.question.questionType.options}" var="option">
-									                    <option value="${option.id}" ${option == report.values[q].valueCoded ? "selected" : ""}>${option.name}</option>
+                                                        <c:set var="codedSelected" value="${option == report.values[q].valueCoded}"/>
+                                                        <c:if test="${codedSelected || !option.retired}">
+									                        <option value="${option.id}" ${codedSelected ? "selected" : ""}>${option.name}</option>
+                                                        </c:if>
 									                </c:forEach>
 									            </select>
 								        	</c:when>
