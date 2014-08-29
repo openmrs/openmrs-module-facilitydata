@@ -234,4 +234,14 @@
 
 		</sql>
 	</diff>
+
+    <diff>
+        <version>2.0</version>
+        <author>Partners In Health</author>
+        <date>28 Aug 2014</date>
+        <description></description>
+        <sql>
+            alter table facilitydata_question_type add column field_style varchar(255);
+        </sql>
+    </diff>
 </sqldiff>

@@ -18,6 +18,21 @@ package org.openmrs.module.facilitydata.model;
  */
 public abstract class FacilityDataQuestionType extends BaseFacilityMetaData {
 
+	private String fieldStyle;
+
     public FacilityDataQuestionType() {}
 
+	/**
+	 * @return the field style
+	 */
+	public String getFieldStyle() {
+		return fieldStyle;
+	}
+
+	/**
+	 * @param fieldStyle the field style to set
+	 */
+	public void setFieldStyle(String fieldStyle) {
+		this.fieldStyle = fieldStyle;
+	}
 }

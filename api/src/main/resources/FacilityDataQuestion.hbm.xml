@@ -48,6 +48,8 @@
         <property name="dateRetired" type="java.util.Date" column="date_retired" not-null="false"/>
         <property name="retireReason" type="java.lang.String" column="retired_reason" not-null="false" length="255"/>  
         <!-- / OpenMRS Stuff -->
+
+        <property name="fieldStyle" type="java.lang.String" not-null="false" column="field_style"/>
                 
         <subclass name="NumericFacilityDataQuestionType">
             <property name="minValue" type="java.lang.Double" not-null="false" column="min_value" />
