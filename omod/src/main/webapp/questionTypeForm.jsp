@@ -83,6 +83,15 @@
 			        </tr>
 	        	</c:when>
 	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+                    <tr>
+                        <td><spring:message code="facilitydata.fieldStyle"/></td>
+                        <td>
+                            <select name="fieldStyle">
+                                <option value=""><spring:message code="facilitydata.default"/></option>
+                                <option value="AUTOCOMPLETE"<c:if test="${questionType.fieldStyle == 'AUTOCOMPLETE'}"> selected</c:if>><spring:message code="facilitydata.autocomplete"/></option>
+                            </select>
+                        </td>
+                    </tr>
 	        		<tr>
 			            <td style="vertical-align:top;"><spring:message code="facilitydata.coded-options"/></td>
 			            <td>

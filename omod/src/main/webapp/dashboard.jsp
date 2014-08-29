@@ -21,7 +21,7 @@
 <style>
 	table {font-size: small;}
 	.schemaForm {padding:5px; white-space:nowrap; font-size:small;}
-	.dashboardTable {width:50%; white-space:nowrap; font-size:small; vertical-align:top;}
+	.dashboardTable {width:50%; padding-right:20px; white-space:nowrap; font-size:small; vertical-align:top;}
 </style>
 
 <div class="facilityDataHeader">

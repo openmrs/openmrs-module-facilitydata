@@ -64,6 +64,7 @@ public class FacilityDataQuestionTypeFormController {
     						 @RequestParam(required = true) String name,
     						 @RequestParam(required = false) String description,
     						 @RequestParam(required = false) Class<? extends FacilityDataQuestionType> dataType,
+							 @RequestParam(required = false) String fieldStyle,
     						 @RequestParam(required = false) Double minValue,
     						 @RequestParam(required = false) Double maxValue,
     						 @RequestParam(required = false) Boolean allowDecimals,
@@ -75,6 +76,7 @@ public class FacilityDataQuestionTypeFormController {
     	FacilityDataQuestionType questionType = getQuestionType(id, dataType);
     	questionType.setName(name);
     	questionType.setDescription(description);
+		questionType.setFieldStyle(fieldStyle);
     	
     	if (questionType instanceof NumericFacilityDataQuestionType) {
     		NumericFacilityDataQuestionType numericType = (NumericFacilityDataQuestionType) questionType;
