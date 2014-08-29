@@ -18,6 +18,39 @@
 </div>
 
 <script type="text/javascript">
+
+    var autocompleteQuestionOptions = {};
+    <c:forEach items="${questionTypes}" var="qt">
+        <c:if test="${qt['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
+            var typeOptions = new Array();
+            <c:forEach items="${qt.options}" var="option">
+                typeOptions.push({"code": "${option.id}", "label": "${option.name}"});
+            </c:forEach>
+            autocompleteQuestionOptions['${qt.id}'] = typeOptions;
+        </c:if>
+    </c:forEach>
+
+    function setupAutocomplete(element, questionTypeId) {
+        var $hiddenField = jQuery(element).parent().children('.autoCompleteHidden');
+        var $textField = jQuery(element).parent().children('.autoCompleteText');
+        if ($hiddenField.length > 0 && $textField.length > 0) {
+            $textField.autocomplete(
+                autocompleteQuestionOptions[questionTypeId],
+                {
+                    "minChars": 0,
+                    "width": 600,
+                    "scroll": false,
+                    "matchContains": true,
+                    "autoFill": false,
+                    "formatItem": function(row, i, max) { return row.label; },
+                    "formatMatch": function(row, i, max) { return row.label; },
+                    "formatResult": function(row) { return row.label; }
+                }
+            );
+            $textField.result(function(event, data, formatted) { $hiddenField.val(data.code); });
+        }
+    }
+
 	function validate(value, minValue, maxValue, allowDecimals, errorSpanId) {
 		$("#"+errorSpanId).html('').hide();
 		$("#submitButton").removeAttr("disabled");
@@ -65,15 +98,25 @@
 				    				<c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
 						    			<c:choose>
 							    			<c:when test="${!viewOnly}">
-								    			<select name="valueCoded.${q.id}">
-									                <option value=""></option>
-									                <c:forEach items="${q.question.questionType.options}" var="option">
-                                                        <c:set var="codedSelected" value="${option == report.values[q].valueCoded}"/>
-                                                        <c:if test="${codedSelected || !option.retired}">
-									                        <option value="${option.id}" ${codedSelected ? "selected" : ""}>${option.name}</option>
-                                                        </c:if>
-									                </c:forEach>
-									            </select>
+                                                <c:choose>
+                                                    <c:when test="${q.question.questionType.fieldStyle == 'AUTOCOMPLETE'}">
+                                                        <span class="autoCompleteSection">
+                                                            <input id="valueCoded_${q.id}" class="autoCompleteHidden" name="valueCoded.${q.id}" type="hidden" value="${report.values[q].valueCoded.id}" />
+                                                            <input id="valueCodedText_${q.id}" size="40" type="text" class="autoCompleteText" onfocus="setupAutocomplete(this, '${q.question.questionType.id}');" value="${report.values[q].valueCoded.name}" />
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <select name="valueCoded.${q.id}">
+                                                            <option value=""></option>
+                                                            <c:forEach items="${q.question.questionType.options}" var="option">
+                                                                <c:set var="codedSelected" value="${option == report.values[q].valueCoded}"/>
+                                                                <c:if test="${codedSelected || !option.retired}">
+                                                                    <option value="${option.id}" ${codedSelected ? "selected" : ""}>${option.name}</option>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </c:otherwise>
+                                                </c:choose>
 								        	</c:when>
 								        	<c:otherwise>
 							        			<c:choose>

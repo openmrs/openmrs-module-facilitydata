@@ -13,12 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Location;
 import org.openmrs.User;
@@ -45,9 +39,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping("/module/facilitydata/formEntry.form")
 public class FacilityDataFormEntryFormController {
+
+	protected FacilityDataService getFacilityDataService() {
+		return Context.getService(FacilityDataService.class);
+	}
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -57,9 +59,9 @@ public class FacilityDataFormEntryFormController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public void viewForm(ModelMap map, HttpServletRequest request, 
+    public void viewForm(ModelMap map, HttpServletRequest request,
     		               @RequestParam(required = true) FacilityDataFormSchema schema,
-                           @RequestParam(required = true) Location facility, 
+                           @RequestParam(required = true) Location facility,
                            @RequestParam(required = true) Date fromDate,
                            @RequestParam(required = false) Boolean viewOnly) {
 
@@ -70,27 +72,29 @@ public class FacilityDataFormEntryFormController {
 		else if (schema.getForm().getFrequency() != Frequency.DAILY) {
 			throw new RuntimeException("Unsupported period of " + schema.getForm().getFrequency());
 		}
-		FacilityDataReport report = Context.getService(FacilityDataService.class).getReport(schema, fromDate, toDate, facility);
+		FacilityDataReport report = getFacilityDataService().getReport(schema, fromDate, toDate, facility);
 		map.addAttribute("schema", schema);
 		map.addAttribute("facility", facility);
 		map.addAttribute("fromDate", fromDate);
 		map.addAttribute("toDate", toDate);
 		map.addAttribute("viewOnly", viewOnly == Boolean.TRUE);
 	    map.addAttribute("report", report);
+
+		map.addAttribute("questionTypes", getFacilityDataService().getAllQuestionTypes());
     }
-    
+
     @RequestMapping(method = RequestMethod.POST)
     public String saveReport( ModelMap map,
     						  @RequestParam(required = false) FacilityDataFormSchema schema,
-    						  @RequestParam(required = false) Location facility, 
+    						  @RequestParam(required = false) Location facility,
     						  @RequestParam(required = false) Date fromDate,
     		                  @RequestParam(required = false) Date toDate,
     		                  HttpServletRequest request) {
-    	
-    	FacilityDataReport report = Context.getService(FacilityDataService.class).getReport(schema, fromDate, toDate, facility);
+
+    	FacilityDataReport report = getFacilityDataService().getReport(schema, fromDate, toDate, facility);
     	Date currentDate = new Date();
     	User currentUser = Context.getAuthenticatedUser();
-    	
+
     	for (FacilityDataFormSection section : schema.getSections()) {
     		for (FacilityDataFormQuestion question : section.getQuestions()) {
     			FacilityDataValue value = report.getValue(question);
@@ -108,8 +112,8 @@ public class FacilityDataFormEntryFormController {
     			}
     			boolean createNew = valueCoded != null || valueNumeric != null || StringUtils.isNotBlank(commentsParam);
     			if (value != null){
-    				if (!OpenmrsUtil.nullSafeEquals(valueNumeric, value.getValueNumeric()) || 
-    					!OpenmrsUtil.nullSafeEquals(valueCoded, value.getValueCoded()) || 
+    				if (!OpenmrsUtil.nullSafeEquals(valueNumeric, value.getValueNumeric()) ||
+    					!OpenmrsUtil.nullSafeEquals(valueCoded, value.getValueCoded()) ||
     					!OpenmrsUtil.nullSafeEquals(commentsParam, value.getComments())) {
     					value.setVoided(true);
     					value.setVoidedBy(currentUser);
@@ -133,7 +137,7 @@ public class FacilityDataFormEntryFormController {
     		}
     	}
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    	Context.getService(FacilityDataService.class).saveReport(report);
+    	getFacilityDataService().saveReport(report);
     	return String.format("redirect:formEntry.form?schema=%s&facility=%s&fromDate=%s&viewOnly=true",
     						 schema.getId(), facility.getId(), df.format(fromDate));
     }
