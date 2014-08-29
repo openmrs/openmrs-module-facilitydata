@@ -13,16 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
@@ -40,6 +30,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/module/facilitydata/questionTypeForm.form")
@@ -89,45 +88,56 @@ public class FacilityDataQuestionTypeFormController {
 
         	Map<Integer, Integer> codedOptionBreakdown = getService().getCodedOptionBreakdown();
         	Date now = new Date();
-        	List<Integer> passedOptionIds = Arrays.asList(optionId);
-        	Set<Integer> removedOptionIds = new HashSet<Integer>();
-        	
-        	// First we need to go through existing options, and delete or retire as needed
-        	for (Iterator<FacilityDataCodedOption> i = codedType.getOptions().iterator(); i.hasNext();) {
-        		FacilityDataCodedOption option = i.next();
-        		if (!passedOptionIds.contains(option.getId())) { // In this case we need to delete or retire
-        			Integer numValues = codedOptionBreakdown.get(option.getId());
-        			if (numValues == null || numValues.intValue() == 0) { // If no values are saved for it, we can delete
-        				i.remove();
-        				removedOptionIds.add(option.getId());
-        			}
-        			else { // If values exist for it, we have to retire
-            			option.setRetired(true);
-            			option.setRetiredBy(Context.getAuthenticatedUser());
-            			option.setDateRetired(now);
-        			}
-        		}
+			List<Integer> passedOptionIds = Arrays.asList(optionId);
+
+			// Get existing options from the question and clear the question out
+			Map<Integer, FacilityDataCodedOption> existingOptions = new HashMap<Integer, FacilityDataCodedOption>();
+			for (FacilityDataCodedOption option : codedType.getOptions()) {
+				existingOptions.put(option.getId(), option);
+			}
+			codedType.getOptions().clear();
+
+			// Go through and retire or delete options that have been removed
+			List<Integer> needRetiring = new ArrayList<Integer>();
+			for (Iterator<Integer> existingOptionIdIterator = existingOptions.keySet().iterator(); existingOptionIdIterator.hasNext();) {
+				Integer existingOptionId = existingOptionIdIterator.next();
+				if (!passedOptionIds.contains(existingOptionId)) { // In this case we need to delete or retire
+					Integer numValues = codedOptionBreakdown.get(existingOptionId);
+					if (numValues == null || numValues.intValue() == 0) { // If no values are saved for it, we can delete
+						existingOptionIdIterator.remove();
+					}
+					else { // If values exist for it, we have to retire
+						needRetiring.add(existingOptionId);
+					}
+				}
+			}
+
+        	// Now add the passed in options using the new order
+
+			for (int i=0; i<passedOptionIds.size(); i++) {
+				if (optionCode[i].length() > 0 && optionName[i].length() > 0) {
+					Integer optId = passedOptionIds.get(i);
+					FacilityDataCodedOption codedOption = existingOptions.get(optId);
+					if (codedOption == null) {
+						codedOption = new FacilityDataCodedOption();
+					}
+					codedOption.setName(optionName[i]);
+					codedOption.setCode(optionCode[i]);
+					codedOption.setDescription(optionDescription[i]);
+					codedOption.setRetired(false);
+					codedOption.setRetiredBy(null);
+					codedOption.setDateRetired(null);
+					codedType.getOptions().add(codedOption);
+				}
         	}
-        	
-        	// Now we go through passed options and update or add as needed
-        	for (int i=0; i < optionId.length; i++) {
-        		if (optionCode[i].length() > 0 && optionName[i].length() > 0 && !removedOptionIds.contains(optionId[i])) {
-            		FacilityDataCodedOption codedOption = null;
-            		if (optionId[i] != null) {
-            			codedOption = codedType.getOptionById(optionId[i]);
-            		}
-            		else {
-            			codedOption = new FacilityDataCodedOption();
-            			codedType.getOptions().add(codedOption);
-            		}
-        	    	codedOption.setName(optionName[i]);
-        	    	codedOption.setCode(optionCode[i]);
-        	    	codedOption.setDescription(optionDescription[i]);
-        	    	codedOption.setRetired(false);
-        	    	codedOption.setRetiredBy(null);
-        	    	codedOption.setDateRetired(null);
-        		}
-        	}
+
+			for (Integer retiredId : needRetiring) {
+				FacilityDataCodedOption option = existingOptions.get(retiredId);
+				option.setRetired(true);
+				option.setRetiredBy(Context.getAuthenticatedUser());
+				option.setDateRetired(now);
+				codedType.getOptions().add(option);
+			}
     		
     	}
     	

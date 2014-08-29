@@ -3,6 +3,11 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <script type="text/javascript">
+
+    jQuery(document).ready(function() {
+        jQuery('#sortable tbody.sortable-content').sortable().disableSelection().css('cursor','hand');
+    });
+
     function addNewOptionRow() {
     	var $newRow = $('#rowOptionTemplate').clone(true).show();
     	$('.optionRow:last').after($newRow);
@@ -34,6 +39,7 @@
 <style>
 	table.questionForm td {padding:5px; font-size:small;}
 	.retSty {text-decoration:line-through; background-color:lightgrey;}
+    .optionRow {background-color: lightgrey; padding: 5px;}
 </style>
 
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/question.form"/>
@@ -95,7 +101,7 @@
 	        		<tr>
 			            <td style="vertical-align:top;"><spring:message code="facilitydata.coded-options"/></td>
 			            <td>
-							<table class="questionForm">
+							<table id="sortable" class="questionForm">
 								<thead>
 									<tr>
 										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required"/></th>
@@ -104,7 +110,7 @@
 										<th></th>
 									</tr>
 								</thead>
-								<tbody id="optionTableBody">
+								<tbody id="optionTableBody" class="sortable-content">
 									<c:forEach var="option" items="${questionType.options}">
 										<c:set var="retAtt" value="${option.retired ? 'style=\"retiredRow\" disabled=\"disabled\"' : ''}"/>
 										<tr class="optionRow">
@@ -115,6 +121,7 @@
 											<td><input type="text" name="optionCode" value="${option.code}" ${retAtt}/></td>
 											<td><input type="text" name="optionDescription" size="75" value="${option.description}" ${retAtt}/></td>
 											<td>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
 												<c:choose>
 													<c:when test="${option.retired}">
 														<img class="actionImage" src='<c:url value="/images/add.gif"/>' border="0" onclick="undeleteOption(this, '${option.id}');"/>
