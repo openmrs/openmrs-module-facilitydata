@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>facilitydata</artifactId>
-	<version>2.5</version>
+	<version>2.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Facility Data Module</name>
 	<description>Parent project for Facility Data Module</description>
@@ -14,7 +14,7 @@
 		<connection>scm:git:https://github.com/openmrs/openmrs-module-facilitydata/</connection>
 		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-facilitydata/</developerConnection>
 		<url>https://github.com/openmrs/openmrs-module-facilitydata/</url>
-	  <tag>2.5</tag>
+	  <tag>HEAD</tag>
   </scm>
 
     <modules>
