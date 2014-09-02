@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <style>

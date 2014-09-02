@@ -1,36 +1,35 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <script type="text/javascript">
 
-    jQuery(document).ready(function() {
-        jQuery('#sortable tbody.sortable-content').sortable().disableSelection().css('cursor','hand');
+    $j(document).ready(function() {
+        $j('#sortable tbody.sortable-content').sortable().disableSelection().css('cursor','hand');
     });
 
     function addNewOptionRow() {
-    	var $newRow = $('#rowOptionTemplate').clone(true).show();
-    	$('.optionRow:last').after($newRow);
+    	var $newRow = $j('#rowOptionTemplate').clone(true).show();
+    	$j('.optionRow:last').after($newRow);
     }
     
     function deleteOption(element, id, count) {
     	if (count == '') {
     		if (confirm('<spring:message code="facilitydata.codedOption.unused-delete-warning"/>')) {
-    			$(element).parent().parent().remove();
+    			$j(element).parent().parent().remove();
     		}
     	}
     	else {
     		if (confirm('<spring:message code="facilitydata.codedOption.used-delete-warning"/>')) {
-    			$(element).parent().parent().find("input").addClass("retSty");
-    			$(element).parent().parent().find("input").attr("disabled", "disabled");
+    			$j(element).parent().parent().find("input").addClass("retSty");
+    			$j(element).parent().parent().find("input").attr("disabled", "disabled");
     		}
     	}
     }
     
     function undeleteOption(element, id) {
    		if (confirm('<spring:message code="facilitydata.codedOption.undelete-warning"/>')) {
-   			$(element).parent().parent().find("input").removeClass("retSty");
-   			$(element).parent().parent().find("input").removeAttr("disabled");
+   			$j(element).parent().parent().find("input").removeClass("retSty");
+   			$j(element).parent().parent().find("input").removeAttr("disabled");
    		}
     }
     
@@ -151,6 +150,7 @@
 							</table>
 			            </td>
 			        </tr>
+                    <tr><td></td><td><spring:message code="facilitydata.question-type.changeOrder"/></td></tr>
 	        	</c:when>
 	        	<c:otherwise></c:otherwise>
 	        </c:choose>

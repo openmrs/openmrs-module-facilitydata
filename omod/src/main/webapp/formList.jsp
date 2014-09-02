@@ -1,12 +1,11 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <openmrs:require privilege="Manage Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/form.list"/>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#formList').dataTable({
+    $j(document).ready(function() {
+        $j('#formList').dataTable({
             "bPaginate": true,
             "bLengthChange": false,
             "bFilter": false,

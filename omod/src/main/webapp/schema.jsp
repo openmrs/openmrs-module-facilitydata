@@ -1,100 +1,99 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <script type="text/javascript">
 
-$(document).ready(function() {	
-	$('#editSectionDiv').dialog({
+$j(document).ready(function() {
+	$j('#editSectionDiv').dialog({
 		autoOpen: false,
 		modal: true,
 		draggable: false,
 		closeOnEscape: false,
 		title: '<spring:message code="facilitydata.section-details"/>',
 		width: '75%',
-		height: $(window).height()/2,
+		height: $j(window).height()/2,
 		position: [150,150],
 		zIndex:990
 	});
 	
-	$('#editQuestionDiv').dialog({
+	$j('#editQuestionDiv').dialog({
 		autoOpen: false,
 		modal: true,
 		draggable: false,
 		closeOnEscape: false,
 		title: '<spring:message code="facilitydata.question-details"/>',
 		width: '75%',
-		height: $(window).height()/2,
+		height: $j(window).height()/2,
 		position: [150,150],
 		zIndex:990
 	});
 	
-	$('#moveQuestionDiv').dialog({
+	$j('#moveQuestionDiv').dialog({
 		autoOpen: false,
 		modal: true,
 		draggable: false,
 		closeOnEscape: false,
 		title: '<spring:message code="facilitydata.move-question"/>',
 		width: '75%',
-		height: $(window).height()/2,
+		height: $j(window).height()/2,
 		position: [150,150],
 		zIndex:990
 	});
 	
-	$('#cloneSchemaDiv').dialog({
+	$j('#cloneSchemaDiv').dialog({
 		autoOpen: false,
 		modal: true,
 		draggable: false,
 		closeOnEscape: false,
 		title: '<spring:message code="facilitydata.clone-schema"/>',
 		width: '75%',
-		height: $(window).height()/2,
+		height: $j(window).height()/2,
 		position: [150,150],
 		zIndex:990
 	});
 	
 	<c:forEach items="${schema.sections}" var="section">
-		$('#deleteSection${section.id}').dialog({
+		$j('#deleteSection${section.id}').dialog({
 			autoOpen: false,
 			modal: true,
 			draggable: false,
 			closeOnEscape: false,
 			title: "<spring:message code="facilitydata.delete-section"/>: ${section.name}",
 			width: '75%',
-			height: $(window).height()/2,
+			height: $j(window).height()/2,
 			position: [150,150],
 			zIndex:990
 		});
 	</c:forEach>
 
-	$('#saveSectionButton').click(function(event){
-		var sectionId = $('#editSectionIdField').val();
-		var sectionName = $('#editSectionNameField').val();
+	$j('#saveSectionButton').click(function(event){
+		var sectionId = $j('#editSectionIdField').val();
+		var sectionName = $j('#editSectionNameField').val();
 		if (sectionName == '') {
-			$('#sectionErrorSpan').html('<spring:message code="facilitydata.required-field"/>').show();
+			$j('#sectionErrorSpan').html('<spring:message code="facilitydata.required-field"/>').show();
 		}
 		window.location.href='saveSection.form?schema=${schema.id}&id='+ sectionId + '&name='+sectionName;
 	});
 	
-	$('#saveQuestionButton').click(function(event){
+	$j('#saveQuestionButton').click(function(event){
 		var url = 'saveFormQuestion.form?schema=${schema.id}'
-		url += '&sectionId=' + $('#sectionIdField').val();
-		url += '&formQuestionId=' + $('#questionIdField').val();
-		url += '&name=' + escape($('#questionNameField').val());
-		url += '&questionNumber=' + escape($('#questionNumberField').val());
-		url += '&question=' + $('#questionField').val();
+		url += '&sectionId=' + $j('#sectionIdField').val();
+		url += '&formQuestionId=' + $j('#questionIdField').val();
+		url += '&name=' + escape($j('#questionNameField').val());
+		url += '&questionNumber=' + escape($j('#questionNumberField').val());
+		url += '&question=' + $j('#questionField').val();
 		window.location.href=url;
 	});
 	
-	$('#moveQuestionButton').click(function(event){
+	$j('#moveQuestionButton').click(function(event){
 		var url = 'moveFormQuestion.form?schema=${schema.id}';
-		url += '&formQuestionId=' + $('#moveQuestionIdField').val();
-		url += '&fromSectionId=' + $('#moveFromSectionIdField').val();
-		url += '&toSectionId=' + $('#moveToSectionIdField').val();
+		url += '&formQuestionId=' + $j('#moveQuestionIdField').val();
+		url += '&fromSectionId=' + $j('#moveFromSectionIdField').val();
+		url += '&toSectionId=' + $j('#moveToSectionIdField').val();
 		window.location.href = url;
 	});
 	
-	$('#sectionList').dataTable({
+	$j('#sectionList').dataTable({
 	    "bPaginate": false,
 	    "bLengthChange": false,
 	    "bFilter": false,
@@ -104,7 +103,7 @@ $(document).ready(function() {
 	    "bSortable": false
 	});
 	
-	$('#questionTable').dataTable({
+	$j('#questionTable').dataTable({
 	    "bPaginate": false,
 	    "bLengthChange": false,
 	    "bFilter": false,
@@ -114,31 +113,31 @@ $(document).ready(function() {
 	    "bSortable": false
 	});		
 	
-	$('#sectionChooser').change(function(event){
-		var sectionId = $(this).val();
-		$('.questionRow').hide();
-		$('.questionRow'+sectionId).show();
-		$('#sectionIdField').val(sectionId);
-		$.cookie("facilitydata_lastSchemaSection", sectionId);
+	$j('#sectionChooser').change(function(event){
+		var sectionId = $j(this).val();
+		$j('.questionRow').hide();
+		$j('.questionRow'+sectionId).show();
+		$j('#sectionIdField').val(sectionId);
+		$j.cookie("facilitydata_lastSchemaSection", sectionId);
 	});
 	
-	var savedSection = $.cookie("facilitydata_lastSchemaSection");
+	var savedSection = $j.cookie("facilitydata_lastSchemaSection");
 	if (savedSection != null && savedSection != '') {
-		$('#sectionChooser').val(savedSection).change();
+		$j('#sectionChooser').val(savedSection).change();
 	}
-	$('#sectionIdField').val($('#sectionChooser').val());
+	$j('#sectionIdField').val($j('#sectionChooser').val());
 	
-	$('#questionField').change(function(event){
-		if ($('#questionNameField').val() == '') {
-			$('#questionNameField').val($(this).find('option:selected').text());
+	$j('#questionField').change(function(event){
+		if ($j('#questionNameField').val() == '') {
+			$j('#questionNameField').val($j(this).find('option:selected').text());
 		}
 	});
 
-	$('#cloneSchemaButton').click(function(event){
-		$('#cloneSchemaDiv').dialog('open');
+	$j('#cloneSchemaButton').click(function(event){
+		$j('#cloneSchemaDiv').dialog('open');
 	});
 	
-	$('#deleteSchemaButton').click(function(event){
+	$j('#deleteSchemaButton').click(function(event){
 		if (confirm('<spring:message code="facilitydata.schema.delete-warning"/>')) {
 			window.location.href='deleteSchema.form?schemaId=${schema.id}';
 		}
@@ -147,14 +146,14 @@ $(document).ready(function() {
 });
 
 function editSection(existingId) {
-	$('#editSectionIdField').val(existingId);
-	var existingName = $("#sectionName"+existingId).html();
-	$('#editSectionNameField').val(existingName);
-	$('#editSectionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-section"/>: ' + existingName).dialog('open');
+	$j('#editSectionIdField').val(existingId);
+	var existingName = $j("#sectionName"+existingId).html();
+	$j('#editSectionNameField').val(existingName);
+	$j('#editSectionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-section"/>: ' + existingName).dialog('open');
 }
 
 function deleteSection(id) {
-	$('#deleteSection'+id).dialog('open');
+	$j('#deleteSection'+id).dialog('open');
 }
 
 function moveSection(existingIndex, newIndex) {
@@ -162,18 +161,18 @@ function moveSection(existingIndex, newIndex) {
 }
 
 function editQuestion(id, questionNumber, question) {
-	$('#questionIdField').val(id);
-	var existingName = $("#questionName"+id).html();
-	$('#questionNameField').val(existingName);
-	$('#questionNumberField').val(questionNumber);
-	$('#questionField').val(question);
-	$('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + existingName).dialog('open');
+	$j('#questionIdField').val(id);
+	var existingName = $j("#questionName"+id).html();
+	$j('#questionNameField').val(existingName);
+	$j('#questionNumberField').val(questionNumber);
+	$j('#questionField').val(question);
+	$j('#editQuestionDiv').dialog('option', 'title', '<spring:message code="facilitydata.edit-form-question"/>: ' + existingName).dialog('open');
 }
 
 function moveQuestion(questionId, sectionId) {
-	$('#moveQuestionIdField').val(questionId);
-	$('#moveFromSectionIdField').val(sectionId);
-	$('#moveQuestionDiv').dialog('open');
+	$j('#moveQuestionIdField').val(questionId);
+	$j('#moveFromSectionIdField').val(sectionId);
+	$j('#moveQuestionDiv').dialog('open');
 }
 
 function deleteQuestion(questionId, sectionId) {

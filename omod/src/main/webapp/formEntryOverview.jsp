@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <openmrs:require anyPrivilege="Manage Facility Data Reports,Enter Facility Data Reports,View Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntryOverview.form"/>
@@ -21,10 +20,10 @@
 	<hr/>
 </div>
 <script type="text/javascript">
-	$( document ).ready(function( $ ) {
-		$('.emptybox').width($('.locationbox').width());
-		$('.dateSection').width($('.dayStatus').width());
-		$('#table1').width($('#table2').width());
+	$j( document ).ready(function(event) {
+		$j('.emptybox').width($j('.locationbox').width());
+		$j('.dateSection').width($j('.dayStatus').width());
+		$j('#table1').width($j('#table2').width());
 	});
 </script>
 

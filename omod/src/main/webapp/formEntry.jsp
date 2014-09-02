@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/facilitydata/include/includeScripts.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
 <openmrs:require anyPrivilege="View Facility Data Reports,Enter Facility Data Reports" otherwise="/login.htm" redirect="/module/facilitydata/formEntry.form"/>
@@ -33,8 +32,8 @@
     </c:forEach>
 
     function setupAutocomplete(element, questionTypeId) {
-        var $hiddenField = jQuery(element).parent().children('.autoCompleteHidden');
-        var $textField = jQuery(element).parent().children('.autoCompleteText');
+        var $hiddenField = $j(element).parent().children('.autoCompleteHidden');
+        var $textField = $j(element).parent().children('.autoCompleteText');
         if ($hiddenField.length > 0 && $textField.length > 0) {
             $textField.autocomplete(
                 autocompleteQuestionOptions[questionTypeId],
@@ -54,33 +53,33 @@
     }
 
 	function validate(value, minValue, maxValue, allowDecimals, errorSpanId) {
-		$("#"+errorSpanId).html('').hide();
-		$("#submitButton").removeAttr("disabled");
+		$j("#"+errorSpanId).html('').hide();
+		$j("#submitButton").removeAttr("disabled");
 		if (value != null && value != '') {
 			if (minValue != null && value < minValue) {
-				$("#"+errorSpanId).html('<spring:message code="facilitydata.minValueExceeded"/>').show();
+				$j("#"+errorSpanId).html('<spring:message code="facilitydata.minValueExceeded"/>').show();
 			}
 			if (maxValue != null && value > maxValue) {
-				$("#"+errorSpanId).html('<spring:message code="facilitydata.maxValueExceeded"/>').show();
+				$j("#"+errorSpanId).html('<spring:message code="facilitydata.maxValueExceeded"/>').show();
 			}
 			if (!allowDecimals && value != parseInt(value)) {
-				$("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
+				$j("#"+errorSpanId).html('<spring:message code="facilitydata.decimalNotAllowed"/>').show();
 			}
 		}
-		$(".facilityDataAnswerError").each(function(i, val) {
-			var errorText = $(val).text();
+		$j(".facilityDataAnswerError").each(function(i, val) {
+			var errorText = $j(val).text();
 			if (errorText && errorText != '') {
-				$("#submitButton").attr("disabled", "disabled");
+				$j("#submitButton").attr("disabled", "disabled");
 			}
 		});
 	}
 
-    $(".autocompleteText").mouseup(function(e) {
+    $j(".autocompleteText").mouseup(function(e) {
         e.preventDefault();
     });
 </script>
 
-<form method="post">
+<form method="post" id="entryForm">
 	<input type="hidden" name="fromDate" value="${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}"/>
 	<input type="hidden" name="toDate" value="${facilitydata:formatDate(toDate, 'yyyy-MM-dd', '')}"/>
 	<c:forEach items="${schema.sections}" var="section">
