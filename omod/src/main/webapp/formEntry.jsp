@@ -48,7 +48,10 @@
                     "formatResult": function(row) { return row.label; }
                 }
             );
-            $textField.result(function(event, data, formatted) { $hiddenField.val(data.code); });
+
+            $textField.result(function(event, data, formatted) {
+                $hiddenField.val(data.code);
+            });
         }
     }
 
@@ -74,9 +77,15 @@
 		});
 	}
 
-    $j(".autocompleteText").mouseup(function(e) {
-        e.preventDefault();
+    $j( document ).ready(function(event) {
+
+        $j(".autocompleteText").mouseup(function(e) {
+            e.preventDefault();
+        });
+
     });
+
+
 </script>
 
 <form method="post" id="entryForm">
@@ -107,7 +116,7 @@
                                                     <c:when test="${q.question.questionType.fieldStyle == 'AUTOCOMPLETE'}">
                                                         <span class="autoCompleteSection">
                                                             <input id="valueCoded_${q.id}" class="autoCompleteHidden" name="valueCoded.${q.id}" type="hidden" value="${report.values[q].valueCoded.id}" />
-                                                            <input id="valueCodedText_${q.id}" size="40" type="text" class="autoCompleteText" onfocus="setupAutocomplete(this, '${q.question.questionType.id}');" value="${report.values[q].valueCoded.name}" />
+                                                            <input id="valueCodedText_${q.id}" size="40" type="text" name="valueCodedText.${q.id}" class="autoCompleteText" onfocus="setupAutocomplete(this, '${q.question.questionType.id}');" value="${report.values[q].valueCoded.name}" />
                                                         </span>
                                                     </c:when>
                                                     <c:otherwise>

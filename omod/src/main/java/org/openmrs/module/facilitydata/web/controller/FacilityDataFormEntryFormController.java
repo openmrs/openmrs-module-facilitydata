@@ -99,13 +99,16 @@ public class FacilityDataFormEntryFormController {
     		for (FacilityDataFormQuestion question : section.getQuestions()) {
     			FacilityDataValue value = report.getValue(question);
     			String valueCodedParam = request.getParameter("valueCoded." + question.getId());
+				String valueCodedTextParam = request.getParameter("valueCodedText." + question.getId());
     			String valueNumericParam = request.getParameter("valueNumeric." + question.getId());
     			String commentsParam = request.getParameter("comments." + question.getId());
     			FacilityDataCodedOption valueCoded = null;
     			Double valueNumeric = null;
-    			if (StringUtils.isNotBlank(valueCodedParam)) {
+    			if (StringUtils.isNotBlank(valueCodedParam) || StringUtils.isNotBlank(valueCodedTextParam)) {
     				CodedFacilityDataQuestionType codedType = (CodedFacilityDataQuestionType) question.getQuestion().getQuestionType();
-    				valueCoded = codedType.getOptionById(Integer.parseInt(valueCodedParam));
+					if (!"AUTOCOMPLETE".equals(codedType.getFieldStyle()) || StringUtils.isNotBlank(valueCodedTextParam)) {
+						valueCoded = codedType.getOptionById(Integer.parseInt(valueCodedParam));
+					}
     			}
     			else if (StringUtils.isNotBlank(valueNumericParam)) {
     				valueNumeric = Double.valueOf(valueNumericParam);
