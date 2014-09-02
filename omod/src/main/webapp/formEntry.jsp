@@ -24,7 +24,9 @@
         <c:if test="${qt['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
             var typeOptions = new Array();
             <c:forEach items="${qt.options}" var="option">
-                typeOptions.push({"code": "${option.id}", "label": "${option.name}"});
+                <c:if test="${!option.retired}">
+                    typeOptions.push({"code": "${option.id}", "label": "${option.name}"});
+                </c:if>
             </c:forEach>
             autocompleteQuestionOptions['${qt.id}'] = typeOptions;
         </c:if>
@@ -72,6 +74,10 @@
 			}
 		});
 	}
+
+    $(".autocompleteText").mouseup(function(e) {
+        e.preventDefault();
+    });
 </script>
 
 <form method="post">
