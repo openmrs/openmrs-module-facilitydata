@@ -8,7 +8,7 @@
     <changeSet id="facilitydatamodule-1.0" author="Robert O'Connor; Partners In Health">
         <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
         <createTable tableName="facilitydata_form">
-            <column name="form_id" type="int">
+            <column name="form_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -33,7 +33,8 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_change_by"
                              references="users(user_id)"/>
             </column>
@@ -44,11 +45,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -60,7 +61,7 @@
 
 
         <createTable tableName="facilitydata_form_schema">
-            <column name="schema_id" type="int">
+            <column name="schema_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -94,7 +95,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_schema_change_by"
                              references="users(user_id)"/>
             </column>
@@ -105,11 +106,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_schema_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -121,7 +122,7 @@
 
 
         <createTable tableName="facilitydata_form_section">
-            <column name="form_section_id" type="int">
+            <column name="form_section_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -136,6 +137,12 @@
 
             <column name="section_number" type="int(11)">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="schema_id" type="int(11)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_facilitydata_form_section_schema_id"
+                             references="facilitydata_form_schema(schema_id)"/>
             </column>
             <column name="valid_from" type="date">
                 <constraints nullable="true"/>
@@ -153,7 +160,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_section_change_by"
                              references="users(user_id)"/>
             </column>
@@ -164,11 +171,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_section_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -182,7 +189,7 @@
 
 
         <createTable tableName="facilitydata_question_type">
-            <column name="question_type_id" type="int">
+            <column name="question_type_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -202,7 +209,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_type_change_by"
                              references="users(user_id)"/>
             </column>
@@ -213,11 +220,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_type_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -248,7 +255,7 @@
 
 
         <createTable tableName="facilitydata_coded_option">
-            <column name="id" type="int">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -268,7 +275,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_coded_option_change_by"
                              references="users(user_id)"/>
             </column>
@@ -279,11 +286,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_coded_option_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -311,7 +318,7 @@
 
 
         <createTable tableName="facilitydata_question">
-            <column name="question_id" type="int">
+            <column name="question_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -331,7 +338,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_change_by"
                              references="users(user_id)"/>
             </column>
@@ -342,11 +349,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -371,7 +378,7 @@
 
 
         <createTable tableName="facilitydata_form_question">
-            <column name="form_question_id" type="int">
+            <column name="form_question_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -391,7 +398,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_change_by"
                              references="users(user_id)"/>
             </column>
@@ -402,11 +409,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="retired_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_retired_by"
                              references="users(user_id)"/>
             </column>
@@ -420,7 +427,7 @@
             </column>
 
             <column name="section" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_section"
                              references="facilitydata_form_section(form_section_id)"/>
 
@@ -428,7 +435,7 @@
 
 
             <column name="question" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_question"
                              references="facilitydata_question(question_id)"/>
 
@@ -440,7 +447,7 @@
 
 
         <createTable tableName="facilitydata_value">
-            <column name="id" type="int">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -460,7 +467,7 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_value_change_by"
                              references="users(user_id)"/>
             </column>
@@ -471,11 +478,11 @@
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="voided" type="tinyint(1)">
+            <column name="voided" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="voided_by" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_value_retired_by"
                              references="users(user_id)"/>
             </column>
