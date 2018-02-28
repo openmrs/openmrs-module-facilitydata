@@ -569,7 +569,7 @@
             </column>
 
             <column name="value_coded" type="int(11)">
-                <constraints nullable="false"
+                <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_value_value_coded"
                              references="facilitydata_coded_option(id)"/>
 
