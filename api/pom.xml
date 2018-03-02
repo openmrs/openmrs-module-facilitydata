@@ -10,5 +10,13 @@
 	<packaging>jar</packaging>
 	<name>Facility Data Module API</name>
 	<description>API project for Facility Data Module</description>
-
+	<dependencies>
+		<dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+			<version>${openMRSVersion}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
