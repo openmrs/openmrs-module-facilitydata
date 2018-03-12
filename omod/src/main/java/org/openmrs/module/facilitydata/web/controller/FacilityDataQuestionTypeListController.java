@@ -13,13 +13,8 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
+import org.openmrs.module.facilitydata.model.*;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionTypeEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
@@ -28,6 +23,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 public class FacilityDataQuestionTypeListController {
@@ -44,6 +42,9 @@ public class FacilityDataQuestionTypeListController {
         Map<Class<? extends FacilityDataQuestionType>, String> questionDataTypes = new LinkedHashMap<Class<? extends FacilityDataQuestionType>, String>();
         questionDataTypes.put(CodedFacilityDataQuestionType.class, "facilitydata.question-type-coded");
         questionDataTypes.put(NumericFacilityDataQuestionType.class, "facilitydata.question-type-numeric");
+        questionDataTypes.put(FreeTextFacilityDataQuestionType.class, "facilitydata.question-type-text");
+        questionDataTypes.put(DocumentTypeFacilityDataQuestionType.class, "facilitydata.question-type-document");
+        questionDataTypes.put(BlobFacilityDataQuestionType.class, "facilitydata.question-type-blob");
         map.addAttribute("questionDataTypes", questionDataTypes);
         return "/module/facilitydata/questionTypeList";
     }

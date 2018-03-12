@@ -13,20 +13,34 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import org.openmrs.module.facilitydata.util.DelimitedKeyComparator;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openmrs.module.facilitydata.util.DelimitedKeyComparator;
 
 /**
  * This represents a question that is a part of a particular report.  It is an instance of a question
  */
+@Entity
+@Table(name="facilitydata_form_question")
 public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Comparable<FacilityDataFormQuestion> {
     
 	//***** PROPERTIES *****
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="form_question_id")
+	private int formQuestionId;
 	
+	@ManyToOne(optional=false,cascade = CascadeType.ALL)  
+	@JoinColumn(name = "section", insertable = true, updatable = true)
     private FacilityDataFormSection section;
+    
+    @Column(name="question_number")
     private String questionNumber;
+    
+    @ManyToOne(optional=false,cascade = CascadeType.ALL)
+    @JoinColumn(name = "question", insertable = true, updatable = true)
     private FacilityDataQuestion question;
 
     //**** CONSTRUCTORS *****
@@ -96,4 +110,25 @@ public class FacilityDataFormQuestion extends BaseFacilityMetaData implements Co
 	public void setQuestion(FacilityDataQuestion question) {
 		this.question = question;
 	}
+
+	public int getFormQuestionId() {
+		return formQuestionId;
+	}
+
+	public void setFormQuestionId(int formQuestionId) {
+		this.formQuestionId = formQuestionId;
+	}
+
+	@Override
+	public Integer getId() {
+
+		return formQuestionId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.formQuestionId=formQuestionId;
+	}
+	
+	
 }

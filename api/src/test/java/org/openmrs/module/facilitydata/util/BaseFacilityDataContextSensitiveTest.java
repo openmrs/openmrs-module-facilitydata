@@ -13,21 +13,16 @@
  */
 package org.openmrs.module.facilitydata.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.io.IOUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Overrides the default {@link BaseModuleContextSensitiveTest} to allow for better handling
@@ -67,25 +62,26 @@ public abstract class BaseFacilityDataContextSensitiveTest extends BaseModuleCon
 			StringReader reader = null;
 			try {
 				String xmlFile = IOUtils.toString(fileInInputStreamFormat);
+				
 				StringBuilder openmrsObjectText = new StringBuilder();
-				openmrsObjectText.append("uuid=\"" + UUID.randomUUID().toString() + "\" ");
+				//openmrsObjectText.append("uuid=\"" + UUID.randomUUID().toString() + "\" ");
 				openmrsObjectText.append("creator=\"1\" date_created=\"2005-08-07 00:00:00.0\" ");
 				openmrsObjectText.append("changed_by=\"1\" date_changed=\"2007-10-24 14:51:53.0\" ");
 				
 				StringBuilder metadataObjectText = new StringBuilder(openmrsObjectText);
-				metadataObjectText.append(" retired=\"false\" retired_reason=\"\"");
+				metadataObjectText.append(" retired=\"false\" retire_reason=\"\"");
 				
 				StringBuilder dataObjectText = new StringBuilder(openmrsObjectText);
 				dataObjectText.append(" voided=\"false\" void_reason=\"\"");
-				
+			
 				xmlFile = xmlFile.replace("[METADATA]", metadataObjectText.toString());
 				xmlFile = xmlFile.replace("[DATA]", dataObjectText.toString());
-
+				
 				reader = new StringReader(xmlFile);
 				FlatXmlDataSet flatXml = new FlatXmlDataSet(reader, false, true, false);
 				ReplacementDataSet replacementDataSet = new ReplacementDataSet(flatXml);
 				replacementDataSet.addReplacementObject("[NULL]", null);
-
+				
 				xmlDataSetToRun = replacementDataSet;
 			}
 			finally {
@@ -95,6 +91,7 @@ public abstract class BaseFacilityDataContextSensitiveTest extends BaseModuleCon
 		}
 		
 		cachedDatasets.put(datasetFilename, xmlDataSetToRun);
+		
 		executeDataSet(xmlDataSetToRun);
 	}
 }

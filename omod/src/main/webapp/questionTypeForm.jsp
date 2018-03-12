@@ -57,15 +57,15 @@
 
 <b class="boxHeader"><spring:message code="facilitydata.question-type-form"/></b>
 <div class="box">
-	<spring:message code="facilitydata.question-type.info"/><br/><br/>
+	<spring:message code="facilitydata.question-type.info" htmlEscape="false"/><br/><br/>
 	<form method="post">
 	    <table class="questionForm">
 	        <tr>
 	            <td>
 	            	<spring:message code="facilitydata.display-name"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
-	            <td><input name="name" size="50" value="${questionType.name}"/></td>
+	            <td><input name="name" size="50" value="${questionType.name}" required="true"/></td>
 	        </tr>
 	        <tr>
 	            <td><spring:message code="general.description"/></td>
@@ -76,22 +76,43 @@
 	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType'}">
 			        <tr>
 			            <td><spring:message code="facilitydata.minValue"/></td>
-			            <td><input name="minValue" size="50" value="${questionType.minValue}"/></td>
+			            <td><input name="minValue" size="50" value="${questionType.minValue}" required="true"/></td>
 			        </tr>
 			        <tr>
 			            <td><spring:message code="facilitydata.maxValue"/></td>
-			            <td><input name="maxValue" size="50" value="${questionType.maxValue}"/></td>
+			            <td><input name="maxValue" size="50" value="${questionType.maxValue}" required="true"/></td>
 			        </tr>
 			        <tr>
 			            <td><spring:message code="facilitydata.allowDecimals"/></td>
 			            <td><input type="checkbox" name="allowDecimals" ${questionType.allowDecimals ? 'checked="checked"' : ""}/></td>
 			        </tr>
 	        	</c:when>
+				<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.FreeTextFacilityDataQuestionType'}">
+			        <tr>
+			            <td><spring:message code="facilitydata.questionText"/></td>
+			            <td><input name="questionText" size=100 value="${questionType.questionText}" required="true"/></td>
+			        </tr>
+			       
+	        	</c:when>
+
+				<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.DocumentTypeFacilityDataQuestionType'}">
+					<tr>
+						<td><spring:message code="facilitydata.documentType"/></td>
+						<td><select name="documentType" required="true">
+							<option value=""><spring:message code="facilitydata.default"/></option>
+							<option value="JSON">JSON</option>
+							<option value="XML">XML</option>
+						</select></td>
+					</tr>
+
+				</c:when>
+
 	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
                     <tr>
                         <td><spring:message code="facilitydata.fieldStyle"/></td>
                         <td>
-                            <select name="fieldStyle">
+                            <select name="fieldStyle" required="true">
+								<option value=""></option>
                                 <option value=""><spring:message code="facilitydata.default"/></option>
                                 <option value="AUTOCOMPLETE"<c:if test="${questionType.fieldStyle == 'AUTOCOMPLETE'}"> selected</c:if>><spring:message code="facilitydata.autocomplete"/></option>
                             </select>
@@ -103,8 +124,8 @@
 							<table id="sortable" class="questionForm">
 								<thead>
 									<tr>
-										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required"/></th>
-										<th><spring:message code="facilitydata.option-code"/><spring:message code="facilitydata.required"/></th>
+										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required" htmlEscape="false"/></th>
+										<th><spring:message code="facilitydata.option-code"/><spring:message code="facilitydata.required" htmlEscape="false"/></th>
 										<th><spring:message code="general.description"/></th>
 										<th></th>
 									</tr>
@@ -115,9 +136,9 @@
 										<tr class="optionRow">
 											<td>
 												<input type="hidden" name="optionId" value="${option.id}" ${retAtt}/>
-												<input type="text" name="optionName" value="${option.name}" ${retAtt}/>
+												<input type="text" name="optionName" value="${option.name}" ${retAtt} required="true"/>
 											</td>
-											<td><input type="text" name="optionCode" value="${option.code}" ${retAtt}/></td>
+											<td><input type="text" name="optionCode" value="${option.code}" ${retAtt} required="true"/></td>
 											<td><input type="text" name="optionDescription" size="75" value="${option.description}" ${retAtt}/></td>
 											<td>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;

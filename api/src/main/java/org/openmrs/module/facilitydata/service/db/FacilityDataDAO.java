@@ -13,18 +13,14 @@
  */
 package org.openmrs.module.facilitydata.service.db;
 
+import org.openmrs.Location;
+import org.openmrs.module.facilitydata.model.*;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.openmrs.Location;
-import org.openmrs.module.facilitydata.model.FacilityDataForm;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
-import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 
 /**
  * Core Facility Data DB Layer
@@ -286,5 +282,19 @@ public interface FacilityDataDAO {
 	 * @return a List of {@link FacilityDataValue} that match the passed query parameters.  Null parameters are ignored.
 	 */
 	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query);
+
+    FacilityDataCodedOption saveCodedOption(FacilityDataCodedOption facilityDataCodedOption);
+
+    FacilityDataCodedOption getCodedoptionByUuid(String s);
+
+    FacilityDataFormSection saveFacilityDataFormSection(FacilityDataFormSection facilityDataFormSection);
+
+    FacilityDataFormSection getFacilityDataFormSectionByUUID(String s);
+
+    FacilityDataFormQuestion saveFacilityDataFormQuestion(FacilityDataFormQuestion facilityDataFormQuestion);
+
+    FacilityDataFormQuestion getFacilityDataFormQuestion(String s);
+
+    FacilityDataValue getFacilityDataValueByUuid(String s);
 }
 

@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,13 +22,25 @@ import java.util.TreeSet;
 /**
  * Represents a single report section with a specified number of questions
  */
+@Entity
+@Table(name="facilitydata_form_section")
 public class FacilityDataFormSection extends BaseFacilityMetaData {
     
-	//***** PROPERTIES *****
+	//***** PROPERTIES ***** form_section_id
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="form_section_id")
+	private int formSectionId;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "schema_id", insertable = false, updatable = false)
     private FacilityDataFormSchema schema;
-    private Set<FacilityDataFormQuestion> questions;
+	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="section",targetEntity=FacilityDataFormQuestion.class,orphanRemoval=false)
+	private Set<FacilityDataFormQuestion> questions;
 
+	@Column(name="section_number")
+	private int sectionNumber;
     //***** CONSTRUCTORS *****
     
     public FacilityDataFormSection() {}
@@ -39,7 +52,7 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
      */
     public FacilityDataFormQuestion getQuestionById(Integer questionId) {
     	for (FacilityDataFormQuestion question : getQuestions()) {
-    		if (question.getId().equals(questionId)) {
+    		if (question.getFormQuestionId()==questionId) {
     			return question;
     		}
     	}
@@ -86,4 +99,26 @@ public class FacilityDataFormSection extends BaseFacilityMetaData {
 	public void setQuestions(Set<FacilityDataFormQuestion> questions) {
 		this.questions = questions;
 	}
+
+	public int getSectionNumber() {
+		return sectionNumber;
+	}
+
+	public void setSectionNumber(int sectionNumber) {
+		this.sectionNumber = sectionNumber;
+	}
+
+	@Override
+	public Integer getId() {
+		
+		return formSectionId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.formSectionId=id;
+	}
+	
+	
+	
 }

@@ -1,74 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">-->
+<!--<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd"> -->
 
 <module configVersion="1.0">
 
-    <!-- Base Module Properties -->
-    <id>@MODULE_ID@</id>
-    <name>@MODULE_NAME@</name>
-    <version>@MODULE_VERSION@</version>
-    <package>@MODULE_PACKAGE@</package>
-    <author>Partners In Health and Robert O'Connor</author>
-    <description>A module to collect and manage periodic facility-based indicator data</description>
-    <activator>org.openmrs.module.facilitydata.activator.FacilityDataModuleActivator</activator>
+	<!-- Base Module Properties -->
+	<id>@MODULE_ID@</id>
+	<name>@MODULE_NAME@</name>
+	<version>@MODULE_VERSION@</version>
+	<package>@MODULE_PACKAGE@</package>
+	<author>Partners In Health and Robert O'Connor</author>
+	<description>A module to collect and manage periodic facility-based
+		indicator data</description>
+	<activator>org.openmrs.module.facilitydata.activator.FacilityDataModuleActivator
+	</activator>
 
-    <!-- /Base Module Properties -->
+	<!-- /Base Module Properties -->
 
-    <require_version>1.9</require_version>
+	<require_version>2.0.5</require_version>
+	<require_modules>
+		<require_module version="${wsrestVersion}">org.openmrs.module.webservices.rest</require_module>
+	</require_modules>
+	<!--<aware_of_modules>
+		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+	</aware_of_modules>-->
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>org.openmrs.module.facilitydata.extension.html.AdminList
+		</class>
+	</extension>
 
-    <!-- Extensions -->
-    <extension>
-        <point>org.openmrs.admin.list</point>
-        <class>org.openmrs.module.facilitydata.extension.html.AdminList</class>
-    </extension>
+	<!-- Required Privileges -->
+	<privilege>
+		<name>Enter Facility Data Reports</name>
+		<description>Allow users to fill out and view reports</description>
+	</privilege>
 
-    <!-- Required Privileges -->
-    <privilege>
-        <name>Enter Facility Data Reports</name>
-        <description>Allow users to fill out and view reports</description>
-    </privilege>
+	<privilege>
+		<name>View Facility Data Reports</name>
+		<description>Allows user to view reports that are saved.</description>
+	</privilege>
 
-    <privilege>
-        <name>View Facility Data Reports</name>
-        <description>Allows user to view reports that are saved.</description>
-    </privilege>
+	<privilege>
+		<name>Manage Facility Data Reports</name>
+		<description>Allows user to manage reports. (e.g. create, delete, etc)
+		</description>
+	</privilege>
 
-    <privilege>
-        <name>Manage Facility Data Reports</name>
-        <description>Allows user to manage reports. (e.g. create, delete, etc)</description>
-    </privilege>
-    
 	<globalProperty>
 		<property>@MODULE_ID@.unsupportedFacilities</property>
 		<defaultValue></defaultValue>
 		<description>
-			An optional comma-separated list of locationIds.  If supplied, this will hide
-			those locations from within the user-interface for Facility Data.  Otherwise, will show all.
+			An optional comma-separated list of locationIds. If
+			supplied, this will hide
+			those locations from within the
+			user-interface for Facility Data. Otherwise, will show all.
 		</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>@MODULE_ID@.dailyReportDaysOfWeek</property>
 		<defaultValue></defaultValue>
 		<description>
-			An optional comma-separated list of days of the week.  If supplied, this will enable entry
-			for DAILY reports only on the days specified. (Sunday = 1, Monday = 2, ... Saturday = 7).
-			To support entry for weekdays only, you would enter 2,3,4,5,6
+			An optional comma-separated list of days of the week. If
+			supplied, this will enable entry
+			for DAILY reports only on the days
+			specified. (Sunday = 1, Monday = 2, ... Saturday = 7).
+			To support
+			entry for weekdays only, you would enter 2,3,4,5,6
 		</description>
 	</globalProperty>
 
-    <!-- All message codes should start with @MODULE_ID@.* -->
-    <messages>
-        <lang>en</lang>
-        <file>messages.properties</file>
-    </messages>
-    <!-- /Internationalization -->
+	<!-- All message codes should start with @MODULE_ID@.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<!-- /Internationalization -->
 
-    <mappingFiles>
+<!-- 	<mappingFiles>
 		FacilityDataFormQuestion.hbm.xml
 		FacilityDataFormSchema.hbm.xml
 		FacilityDataFormSection.hbm.xml
 		FacilityDataQuestion.hbm.xml
 		FacilityDataValue.hbm.xml
-    </mappingFiles>
+	</mappingFiles> -->
 </module>

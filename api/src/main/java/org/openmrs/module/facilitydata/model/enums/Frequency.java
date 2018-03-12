@@ -21,7 +21,8 @@ import java.util.Calendar;
 public enum Frequency {
 	
     DAILY(Calendar.DATE, 1),
-    MONTHLY(Calendar.MONTH, 1);
+    MONTHLY(Calendar.MONTH, 1),
+    RANDOM(Calendar.DATE,0);
     
 	/**
 	 * Constructor

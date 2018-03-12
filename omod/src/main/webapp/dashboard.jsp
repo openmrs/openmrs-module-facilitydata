@@ -1,3 +1,4 @@
+
 <%@ include file="/WEB-INF/view/module/facilitydata/include/include.jsp"%>
 <%@ include file="/WEB-INF/view/module/facilitydata/include/localHeader.jsp"%>
 
@@ -44,9 +45,26 @@
 				    <tbody>
 					    <c:forEach items="${forms}" var="form">
 					        <tr>
-				                <td class="schemaForm"><a href="formEntryOverview.form?form=${form.id}">${form.name}</a></td>
-				                <td class="schemaForm">${form.frequency}</td>
-				                <td class="schemaForm">${form.description}</td>
+								<c:choose >
+									<c:when test="${form.frequency == 'RANDOM'}">
+										<c:forEach items="${form.schemas}" var="schema">
+											<td class="schemaForm"><a href="randomformEntry.form?schema=${schema.schemaId}">${form.name}</a>
+											<td class="schemaForm">${form.frequency}</td>
+											<td class="schemaForm">${form.description}</td>
+										</c:forEach>
+
+
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td class="schemaForm"><a href="formEntryOverview.form?form=${form.id}">${form.name}</a></td>
+										<td class="schemaForm">${form.frequency}</td>
+										<td class="schemaForm">${form.description}</td>
+									</c:otherwise>
+
+								</c:choose>
+
+
 					        </tr>
 					    </c:forEach>
 				    </tbody>

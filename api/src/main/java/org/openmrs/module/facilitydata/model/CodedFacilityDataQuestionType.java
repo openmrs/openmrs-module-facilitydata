@@ -13,17 +13,24 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base class for all question types that are restricted to a particular set of specific values
  */
+@Entity
+@Table(name = "facilitydata_question_type")
+@DiscriminatorValue("org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType")
 public class CodedFacilityDataQuestionType extends FacilityDataQuestionType {
 	
 	//***** PROPERTIES *****
-	
-	private List<FacilityDataCodedOption> options;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "questionType", orphanRemoval = true)
+	//@JoinColumn(name = "question_type_id")
+	private List<FacilityDataCodedOption> options=new ArrayList<FacilityDataCodedOption>();
 	
 	//***** CONSTRUCTORS *****
 	
@@ -35,9 +42,7 @@ public class CodedFacilityDataQuestionType extends FacilityDataQuestionType {
 	 * @return the options
 	 */
 	public List<FacilityDataCodedOption> getOptions() {
-		if (options == null) {
-			options = new ArrayList<FacilityDataCodedOption>();
-		}
+
 		return options;
 	}
 
@@ -84,5 +89,10 @@ public class CodedFacilityDataQuestionType extends FacilityDataQuestionType {
 			}
 		}
 		return ret;
+	}
+
+	public void addFacilityDataCodedOption(FacilityDataCodedOption child) {
+		//child.setQuestionType(this);
+		options.add(child);
 	}
 }
