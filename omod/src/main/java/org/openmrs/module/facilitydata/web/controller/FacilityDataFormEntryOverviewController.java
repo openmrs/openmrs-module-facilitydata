@@ -49,7 +49,7 @@ public class FacilityDataFormEntryOverviewController {
     }
 
     @RequestMapping("/module/facilitydata/formEntryOverview.form")
-    public void formEntryOverview(ModelMap map, 
+    public void formEntryOverview(ModelMap map,
     								@RequestParam(required = true) FacilityDataForm form,
     								@RequestParam(required = false) Integer yearIncrement,
     								@RequestParam(required = false) Integer monthIncrement) throws Exception {
@@ -58,7 +58,7 @@ public class FacilityDataFormEntryOverviewController {
 
     	Calendar cal = Calendar.getInstance();
     	cal.add(Calendar.DATE, 1);
-    	
+
     	if (yearIncrement != null) {
     		cal.add(Calendar.YEAR, yearIncrement);
     	}
@@ -78,6 +78,12 @@ public class FacilityDataFormEntryOverviewController {
     	else if (form.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 2 weeks
     		cal.add(Calendar.DATE, -14);
     	}
+    	else if(form.getFrequency() == Frequency.RANDOM){
+			
+			return;
+    		//return "redirect:/module/facilitydata/formEntry.form";
+    		//cal.add(Calendar.DATE, -14);
+		}
     	else {
     		throw new RuntimeException("Unable to handle a report with frequency: " + form.getFrequency());
     	}
@@ -147,5 +153,6 @@ public class FacilityDataFormEntryOverviewController {
     	map.addAttribute("questionsAnswered", questionsAnswered);
     	map.addAttribute("locations", FacilityDataConstants.getSupportedFacilities());
     	map.addAttribute("datesSupported", datesSupported);
+		//return "/module/facilitydata/formEntryOverview.form";
     }
 }

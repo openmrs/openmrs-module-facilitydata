@@ -70,8 +70,8 @@ public class FacilityDataFormSchemaFormController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveSchema(@ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result, 
     						 ModelMap map, HttpServletRequest request) throws ServletRequestBindingException {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        
+    	
+    	FacilityDataService svc = Context.getService(FacilityDataService.class);
         FacilityDataForm form = schema.getForm();
         if (StringUtils.isBlank(schema.getName())) {
         	schema.setName(form.getName());
@@ -82,10 +82,12 @@ public class FacilityDataFormSchemaFormController {
         
         new FacilityDataFormSchemaValidator().validate(schema, result);
         if (result.hasErrors()) {
+        	
             return "/module/facilitydata/schemaForm";
         }
-
+        
         svc.saveFacilityDataForm(form);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+      
+        return String.format("redirect:schema.form?id=%s", schema.getSchemaId());
     }
 }

@@ -41,7 +41,7 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
     //***** INSTANCE METHODS *****
     
     /**
-     * @see FacilityDataService#saveFacilityDataForm(FacilityDataForm)
+     * @see FacilityDataService#saveFacilityDataF`orm(FacilityDataForm)
      */
     public FacilityDataForm saveFacilityDataForm(FacilityDataForm formSchema) {
         return dao.saveFacilityDataForm(formSchema);

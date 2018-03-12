@@ -15,14 +15,18 @@ package org.openmrs.module.facilitydata.service.db;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
+import org.openmrs.api.db.hibernate.DbSession;
+import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
@@ -31,15 +35,17 @@ import org.openmrs.module.facilitydata.model.FacilityDataValue;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 /**
  * Core implementation of the DAO
  */
+@Repository("facilitydata.hibernatefacilitydatadao")
 public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	
 	//***** PROPERTIES *****
-	
-    private SessionFactory sessionFactory;
+	@Autowired
+    private DbSessionFactory  dbSessionFactory;
 
     //***** INSTANCE METHODS *****
     
@@ -47,7 +53,8 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#saveFacilityDataForm(FacilityDataForm)
 	 */
 	public FacilityDataForm saveFacilityDataForm(FacilityDataForm form) {
-        sessionFactory.getCurrentSession().saveOrUpdate(form);
+		
+		getCurrentSession().saveOrUpdate(form);
         return form;
 	}
 
@@ -55,14 +62,21 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getFacilityDataForm(Integer)
 	 */
 	public FacilityDataForm getFacilityDataForm(Integer id) {
-		return (FacilityDataForm) sessionFactory.getCurrentSession().get(FacilityDataForm.class, id);
+		
+		return (FacilityDataForm) getCurrentSession().get(FacilityDataForm.class, id);
+	}
+
+	private DbSession getCurrentSession() {
+		
+		return dbSessionFactory.getCurrentSession();
 	}
 
 	/**
 	 * @see FacilityDataDAO#getFacilityDataFormByUUID(String)
 	 */
 	public FacilityDataForm getFacilityDataFormByUUID(String uuid) {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataForm.class);
+
+		Criteria c = getCurrentSession().createCriteria(FacilityDataForm.class);
         return (FacilityDataForm) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 
@@ -71,7 +85,8 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataForm> getAllFacilityDataForms() {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataForm.class);
+
+		Criteria c = getCurrentSession().createCriteria(FacilityDataForm.class);
         return c.addOrder(Order.asc("name")).list();
 	}
 
@@ -79,14 +94,15 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#deleteFacilityDataForm(FacilityDataForm)
 	 */
 	public void deleteFacilityDataForm(FacilityDataForm form) {
-		sessionFactory.getCurrentSession().delete(form);
+	
+		getCurrentSession().delete(form);
 	}
 
 	/**
 	 * @see FacilityDataDAO#saveFacilityDataFormSchema(FacilityDataFormSchema)
 	 */
 	public FacilityDataFormSchema saveFacilityDataFormSchema(FacilityDataFormSchema formSchema) {
-        sessionFactory.getCurrentSession().saveOrUpdate(formSchema);
+        getCurrentSession().saveOrUpdate(formSchema);
         return formSchema;
 	}
 
@@ -94,14 +110,14 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getFacilityDataFormSchema(Integer)
 	 */
 	public FacilityDataFormSchema getFacilityDataFormSchema(Integer id) {
-		return (FacilityDataFormSchema) sessionFactory.getCurrentSession().get(FacilityDataFormSchema.class, id);
+		return (FacilityDataFormSchema) getCurrentSession().get(FacilityDataFormSchema.class, id);
 	}
 
 	/**
 	 * @see FacilityDataDAO#getFacilityDataFormSchemaByUUID(String)
 	 */
 	public FacilityDataFormSchema getFacilityDataFormSchemaByUUID(String uuid) {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataFormSchema.class);
+        Criteria c = getCurrentSession().createCriteria(FacilityDataFormSchema.class);
         return (FacilityDataFormSchema) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 
@@ -110,7 +126,11 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataFormSchema> getAllFacilityDataFormSchemas() {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataFormSchema.class);
+		System.out.println("====================================================");
+		System.out.println("Current Session ::::: "+getCurrentSession());
+		System.out.println("====================================================");
+       
+		Criteria c = getCurrentSession().createCriteria(FacilityDataFormSchema.class);
         return c.addOrder(Order.asc("name")).list();
 	}
 
@@ -119,23 +139,24 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	public void deleteFacilityDataFormSchema(Integer schemaId) {
 		
+       
 		String q = "select form from facilitydata_form_schema where schema_id = " + schemaId;
-		Object formId = sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+		Object formId = getCurrentSession().createSQLQuery(q).uniqueResult();
 		
 		String q1 = "delete from facilitydata_form_question where section in " +
 						"(select form_section_id from facilitydata_form_section where schema_id = " + schemaId + ")";
 		String q2 = "delete from facilitydata_form_section where schema_id = " + schemaId;
 		String q3 = "delete from facilitydata_form_schema where schema_id = " + schemaId;
 		
-		sessionFactory.getCurrentSession().createSQLQuery(q1).executeUpdate();
-		sessionFactory.getCurrentSession().createSQLQuery(q2).executeUpdate();
-		sessionFactory.getCurrentSession().createSQLQuery(q3).executeUpdate();
+		getCurrentSession().createSQLQuery(q1).executeUpdate();
+		getCurrentSession().createSQLQuery(q2).executeUpdate();
+		getCurrentSession().createSQLQuery(q3).executeUpdate();
 		
 		String anyQuery = "select count(*) from facilitydata_form_schema where form = " + formId;
-		String result = sessionFactory.getCurrentSession().createSQLQuery(anyQuery).uniqueResult().toString();
+		String result = getCurrentSession().createSQLQuery(anyQuery).uniqueResult().toString();
 		if ("0".equals(result)) {
 			String deleteFormQuery = "delete from facilitydata_form where form_id = " + formId;
-			sessionFactory.getCurrentSession().createSQLQuery(deleteFormQuery).executeUpdate();
+			getCurrentSession().createSQLQuery(deleteFormQuery).executeUpdate();
 		}
 	}
 
@@ -143,7 +164,10 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#saveQuestionType(FacilityDataQuestionType)
 	 */
 	public FacilityDataQuestionType saveQuestionType(FacilityDataQuestionType questionType) {
-		sessionFactory.getCurrentSession().saveOrUpdate(questionType);
+
+       
+		getCurrentSession().saveOrUpdate(questionType);
+		//getCurrentSession().persist(questionType);
 		return questionType;
 	}
 
@@ -151,14 +175,18 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getQuestionType(java.lang.Integer)
 	 */
 	public FacilityDataQuestionType getQuestionType(Integer id) {
-		return (FacilityDataQuestionType) sessionFactory.getCurrentSession().get(FacilityDataQuestionType.class, id);
+
+       
+		return (FacilityDataQuestionType) getCurrentSession().get(FacilityDataQuestionType.class, id);
 	}
 
 	/**
 	 * @see FacilityDataDAO#getQuestionTypeByUUID(String)
 	 */
 	public FacilityDataQuestionType getQuestionTypeByUUID(String uuid) {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestionType.class);
+
+       
+		Criteria c = getCurrentSession().createCriteria(FacilityDataQuestionType.class);
         return (FacilityDataQuestionType) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 
@@ -167,7 +195,9 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataQuestionType> getAllQuestionTypes() {
-        Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestionType.class);
+
+       Criteria c = getCurrentSession().createCriteria(FacilityDataQuestionType.class);
+       //c.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return c.addOrder(Order.asc("name")).list();
 	}
 
@@ -175,14 +205,18 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#deleteQuestionType(FacilityDataQuestionType)
 	 */
 	public void deleteQuestionType(FacilityDataQuestionType questionType) {
-		sessionFactory.getCurrentSession().delete(questionType);
+
+       
+		getCurrentSession().delete(questionType);
 	}
 
 	/**
 	 * @see FacilityDataDAO#saveQuestion(FacilityDataQuestion)
 	 */
 	public FacilityDataQuestion saveQuestion(FacilityDataQuestion question) {
-        sessionFactory.getCurrentSession().saveOrUpdate(question);
+
+       
+		getCurrentSession().saveOrUpdate(question);
         return question;
 	}
 
@@ -190,14 +224,18 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getQuestion(Integer)
 	 */
 	public FacilityDataQuestion getQuestion(Integer id) {
-		return (FacilityDataQuestion) sessionFactory.getCurrentSession().get(FacilityDataQuestion.class, id);
+
+       
+		return (FacilityDataQuestion) getCurrentSession().get(FacilityDataQuestion.class, id);
 	}
 
 	/**
 	 * @see FacilityDataDAO#getQuestionByUUID(String)
 	 */
 	public FacilityDataQuestion getQuestionByUUID(String uuid) {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestion.class);
+
+       
+		Criteria c = getCurrentSession().createCriteria(FacilityDataQuestion.class);
         return (FacilityDataQuestion) c.add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 
@@ -206,7 +244,8 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataQuestion> getAllQuestions() {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataQuestion.class);
+		
+		Criteria c = getCurrentSession().createCriteria(FacilityDataQuestion.class);
         return c.addOrder(Order.asc("dateCreated")).list();
 	}
 
@@ -214,14 +253,14 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#deleteQuestion(FacilityDataQuestion)
 	 */
 	public void deleteQuestion(FacilityDataQuestion question) {
-		sessionFactory.getCurrentSession().delete(question);
+		getCurrentSession().delete(question);
 	}
 
 	/**
 	 * @see FacilityDataDAO#saveFacilityDataValue(FacilityDataValue)
 	 */
 	public FacilityDataValue saveFacilityDataValue(FacilityDataValue value) {
-		sessionFactory.getCurrentSession().saveOrUpdate(value);
+		getCurrentSession().saveOrUpdate(value);
         return value;
 	}
 
@@ -229,7 +268,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#getFacilityDataValue(Integer)
 	 */
 	public FacilityDataValue getFacilityDataValue(Integer id) {
-		return (FacilityDataValue) sessionFactory.getCurrentSession().get(FacilityDataValue.class, id);
+		return (FacilityDataValue) getCurrentSession().get(FacilityDataValue.class, id);
 	}
 
 	/**
@@ -237,7 +276,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataValue> getFacilityDataValues(FacilityDataFormSchema schema, Date fromDate, Date toDate, Location facility) {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataValue.class);
+		Criteria c = getCurrentSession().createCriteria(FacilityDataValue.class);
 		c.createCriteria("question").createCriteria("section").add(Restrictions.eq("schema", schema));
 		c.add(Restrictions.eq("fromDate", fromDate));
 		c.add(Restrictions.eq("toDate", toDate));
@@ -252,7 +291,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	public Map<Integer, Integer> getCodedOptionBreakdown() {
 		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
 		String s = "select value_coded, count(*) from facilitydata_value where value_coded is not null group by value_coded";
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		for (Object entry : query.list()) {
 			Object[] row = (Object[]) entry;
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
@@ -266,7 +305,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	public Map<Integer, Integer> getQuestionBreakdown() {
 		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
 		String s = "select question, count(*) from facilitydata_form_question group by question";
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		for (Object entry : query.list()) {
 			Object[] row = (Object[]) entry;
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
@@ -280,7 +319,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	public Map<Integer, Integer> getQuestionTypeBreakdown() {
 		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
 		String s = "select question_type, count(*) from facilitydata_question group by question_type";
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		for (Object entry : query.list()) {
 			Object[] row = (Object[]) entry;
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
@@ -294,7 +333,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	public Map<Integer, Integer> getFormQuestionBreakdown() {
 		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
 		String s = "select question, count(*) from facilitydata_value group by question";
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		for (Object entry : query.list()) {
 			Object[] row = (Object[]) entry;
 			m.put(new Integer(row[0].toString()), new Integer(row[1].toString()));
@@ -313,8 +352,8 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 				   "and q.section = s.form_section_id " +
 				   "and s.schema_id = :schemaId " +
 				   "and v.voided = 0 ";
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
-		query.setParameter("schemaId", schema.getId());
+		Query query = getCurrentSession().createSQLQuery(s);
+		query.setParameter("schemaId", schema.getSchemaId());
 		for (Object entry : query.list()) {
 			d = (Date) entry;
 		}
@@ -340,7 +379,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 				   "and v.voided = 0 " +
 				   "group by v.facility, v.from_date";
 		
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		query.setParameter("formId", form.getId());
 		query.setParameter("fromDate", df.format(fromDate));
 		query.setParameter("toDate", df.format(toDate));
@@ -376,7 +415,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 				   "and v.voided = 0 " +
 				   "group by q.question";
 		
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(s);
+		Query query = getCurrentSession().createSQLQuery(s);
 		query.setParameter("schemaId", schema.getId());
 		if (facility != null) {
 			query.setParameter("facility", facility);
@@ -400,7 +439,7 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query) {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(FacilityDataValue.class);
+		Criteria c = getCurrentSession().createCriteria(FacilityDataValue.class);
 		if (query.getForm() != null) {
 			c.createCriteria("question").createCriteria("section").createCriteria("schema").add(Restrictions.eq("form", query.getForm()));
 		}
@@ -434,12 +473,43 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 	 * @see FacilityDataDAO#deleteFacilityDataValue(FacilityDataValue)
 	 */
 	public void deleteFacilityDataValue(FacilityDataValue value) {
-		sessionFactory.getCurrentSession().delete(value);
+		getCurrentSession().delete(value);
+	}
+
+	public DbSessionFactory getDbSessionFactory() {
+		return dbSessionFactory;
+	}
+
+	public void setDbSessionFactory(DbSessionFactory dbSessionFactory) {
+		this.dbSessionFactory = dbSessionFactory;
 	}
     
     //***** PROPERTY ACCESS *****
     
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+
+	
+	
+/*	*//**
+		 * Gets the current hibernate session while taking care of the hibernate 3 and 4 differences.
+		 * @author muhammad.ahmed@ihsinformatics.com
+		 * @return the current hibernate session.
+		 *//*
+		private org.hibernate.Session getCurrentSession() {
+			try {
+				return getCurrentSession();
+			}
+			catch (NoSuchMethodError ex) {
+				try {
+					Method method = sessionFactory.getClass().getMethod("getCurrentSession", null);
+					return (org.hibernate.Session)method.invoke(sessionFactory, null);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("Failed to get the current hibernate session", e);
+					//log.error("Failed to get the hibernate session", e);
+				}
+			}
+		}
+    */
+    
 }

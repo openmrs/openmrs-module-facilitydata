@@ -75,7 +75,7 @@ public class FacilityDataFormSchemaController {
         }
     	section.setName(name);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+        return String.format("redirect:schema.form?id=%s",schema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/moveSection.form")
@@ -86,7 +86,7 @@ public class FacilityDataFormSchemaController {
 
     	Collections.swap(schema.getSections(), existingIndex, newIndex);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+        return String.format("redirect:schema.form?id=%s",schema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/deleteSection.form")
@@ -102,7 +102,7 @@ public class FacilityDataFormSchemaController {
     	}
     	schema.getSections().remove(section);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+        return String.format("redirect:schema.form?id=%s", schema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/saveFormQuestion.form")
@@ -115,7 +115,7 @@ public class FacilityDataFormSchemaController {
     						 @RequestParam(required=true) FacilityDataQuestion question) throws Exception {
 
     	FacilityDataFormSection section = schema.getSectionById(sectionId);
-    	
+    
         FacilityDataFormQuestion q = null;
         if (formQuestionId == null) {
         	q = new FacilityDataFormQuestion();
@@ -129,7 +129,7 @@ public class FacilityDataFormSchemaController {
     	q.setQuestionNumber(questionNumber);
     	q.setQuestion(question);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+        return String.format("redirect:schema.form?id=%s", schema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/moveFormQuestion.form")
@@ -144,7 +144,7 @@ public class FacilityDataFormSchemaController {
     	FacilityDataFormQuestion question = fromSection.getQuestionById(formQuestionId);
     	question.setSection(toSection);
     	Context.getService(FacilityDataService.class).saveFacilityDataFormSchema(schema);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+        return String.format("redirect:schema.form?id=%s", schema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/deleteFormQuestion.form")
@@ -206,7 +206,7 @@ public class FacilityDataFormSchemaController {
     		}
     	}
     	newSchema = svc.saveFacilityDataFormSchema(newSchema);
-        return String.format("redirect:schema.form?id=%s", newSchema.getId());
+        return String.format("redirect:schema.form?id=%s", newSchema.getSchemaId());
     }
     
     @RequestMapping("/module/facilitydata/deleteSchema.form")

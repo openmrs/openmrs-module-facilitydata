@@ -82,6 +82,7 @@ $j(document).ready(function() {
 		url += '&name=' + escape($j('#questionNameField').val());
 		url += '&questionNumber=' + escape($j('#questionNumberField').val());
 		url += '&question=' + $j('#questionField').val();
+		console.log(url);
 		window.location.href=url;
 	});
 	
@@ -205,11 +206,11 @@ function deleteQuestion(questionId, sectionId) {
 					</legend>
 					<table class="facilityDataTable">
 						<tr>
-							<th><spring:message code="facilitydata.display-name"/></th>
+							<th><spring:message code="facilitydata.display-name" htmlEscape="false"/></th>
 							<td>${schema.name}</td>				
 						</tr>
 						<tr>
-							<th><spring:message code="facilitydata.schema.frequency"/></th>
+							<th><spring:message code="facilitydata.schema.frequency" htmlEscape="false"/></th>
 							<td>${schema.form.frequency}</td>				
 						</tr>
 						<tr>
@@ -284,18 +285,18 @@ function deleteQuestion(questionId, sectionId) {
 									</select>
 								</c:if>
 								
-								<spring:message code="facilitydata.section.delete-warning"/>
+								<spring:message code="facilitydata.section.delete-warning" htmlEscape="false"/>
 								<input type="submit" value="<spring:message code="general.delete"/>"/>
 							</form>
 						</div>					
 					</c:forEach>
 
-					<a href="javascript:editSection('');" ><spring:message code="facilitydata.add-section"/></a>
+					<a href="javascript:editSection('');" ><spring:message code="facilitydata.add-section" htmlEscape="false"/></a>
 					
 					<div id="editSectionDiv" style="display:none;">
 						<table>
 							<tr>
-								<th><spring:message code="facilitydata.display-name"/></th>
+								<th><spring:message code="facilitydata.display-name" htmlEscape="false"/></th>
 								<td>
 									<input id="editSectionIdField" type="hidden"/>
 									<input id="editSectionNameField" type="text" name="name" size="50"/> <span class="error" id="sectionErrorSpan" style="display:none;"></span>
@@ -312,14 +313,14 @@ function deleteQuestion(questionId, sectionId) {
 			<td style="width:67%; vertical-align:top;">
 				<fieldset>
 					<legend>
-						<spring:message code="facilitydata.questions"/>
+						<spring:message code="facilitydata.questions" htmlEscape="false"/>
 					</legend>
 					<br/>
 					<c:if test="${empty schema.sections}">
 						<i><spring:message code="facilitydata.add-section-to-add-question-message"/></i>
 					</c:if>
 					<div id="questionsInSectionDiv" style="${empty schema.sections ? 'display:none;' : ''}">
-						<spring:message code="facilitydata.questions-in-section"/>
+						<spring:message code="facilitydata.questions-in-section" htmlEscape="false"/>
 						<select id="sectionChooser">
 							<c:forEach items="${schema.sections}" var="section">
 								<option value="${section.id}">${section.name}</option>
@@ -329,8 +330,8 @@ function deleteQuestion(questionId, sectionId) {
 							<thead>
 								<tr>
 									<th style="text-decoration:nowrap;">#</th>
-									<th style="width:100%"><spring:message code="facilitydata.question"/></th>
-									<th style="text-decoration:nowrap;"><spring:message code="facilitydata.actions"/></th>
+									<th style="width:100%"><spring:message code="facilitydata.question" htmlEscape="false"/></th>
+									<th style="text-decoration:nowrap;"><spring:message code="facilitydata.actions" htmlEscape="false"/></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -357,7 +358,7 @@ function deleteQuestion(questionId, sectionId) {
 								</c:forEach>
 							</tbody>
 						</table>
-						<a href="javascript:editQuestion('','','');"><spring:message code="facilitydata.add-form-question"/></a>
+						<a href="javascript:editQuestion('','','');"><spring:message code="facilitydata.add-form-question" htmlEscape="false"/></a>
 					</div>
 					
 					<div id="editQuestionDiv" style="display:none;">
@@ -365,11 +366,11 @@ function deleteQuestion(questionId, sectionId) {
 						<input id="sectionIdField" type="hidden" value=""/>
 						<table>
 							<tr>
-								<th><spring:message code="facilitydata.question.number"/></th>
+								<th><spring:message code="facilitydata.question.number" htmlEscape="false"/></th>
 								<td><input id="questionNumberField" type="text" name="questionNumber" size="15" style="font-size:small;"/></td>
 							</tr>
 							<tr>
-								<th><spring:message code="facilitydata.question"/></th>
+								<th><spring:message code="facilitydata.question" htmlEscape="false"/></th>
 								<td>
 									<select id="questionField" name="question" style="font-size:small;">
 										<option value=""><spring:message code="facilitydata.choose"/>...</option>
@@ -380,7 +381,7 @@ function deleteQuestion(questionId, sectionId) {
 								</td>
 							</tr>
 							<tr>
-								<th><spring:message code="facilitydata.question.display-name"/></th>
+								<th><spring:message code="facilitydata.question.display-name" htmlEscape="false"/></th>
 								<td><input id="questionNameField" type="text" name="name" size="75" style="font-size:small;"/></td>
 							</tr>
 							<tr>
@@ -393,7 +394,7 @@ function deleteQuestion(questionId, sectionId) {
 						<input id="moveFromSectionIdField" type="hidden" value=""/>
 						<table>
 							<tr>
-								<th><spring:message code="facilitydata.new-section-for-question"/></th>
+								<th><spring:message code="facilitydata.new-section-for-question" htmlEscape="false"/></th>
 								<td>
 									<select id="moveToSectionIdField" style="font-size:small;">
 										<option value=""><spring:message code="facilitydata.choose"/>...</option>

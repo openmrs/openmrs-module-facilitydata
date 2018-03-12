@@ -57,13 +57,13 @@
 
 <b class="boxHeader"><spring:message code="facilitydata.question-type-form"/></b>
 <div class="box">
-	<spring:message code="facilitydata.question-type.info"/><br/><br/>
+	<spring:message code="facilitydata.question-type.info" htmlEscape="false"/><br/><br/>
 	<form method="post">
 	    <table class="questionForm">
 	        <tr>
 	            <td>
 	            	<spring:message code="facilitydata.display-name"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
 	            <td><input name="name" size="50" value="${questionType.name}"/></td>
 	        </tr>
@@ -87,6 +87,26 @@
 			            <td><input type="checkbox" name="allowDecimals" ${questionType.allowDecimals ? 'checked="checked"' : ""}/></td>
 			        </tr>
 	        	</c:when>
+				<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.FreeTextFacilityDataQuestionType'}">
+			        <tr>
+			            <td><spring:message code="facilitydata.questionText"/></td>
+			            <td><input name="questionText" size=100 value="${questionType.questionText}"/></td>
+			        </tr>
+			       
+	        	</c:when>
+
+				<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.DocumentTypeFacilityDataQuestionType'}">
+					<tr>
+						<td><spring:message code="facilitydata.documentType"/></td>
+						<td><select name="documentType">
+							<option value=""><spring:message code="facilitydata.default"/></option>
+							<option value="JSON">JSON</option>
+							<option value="XML">XML</option>
+						</select></td>
+					</tr>
+
+				</c:when>
+
 	        	<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType'}">
                     <tr>
                         <td><spring:message code="facilitydata.fieldStyle"/></td>
@@ -103,8 +123,8 @@
 							<table id="sortable" class="questionForm">
 								<thead>
 									<tr>
-										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required"/></th>
-										<th><spring:message code="facilitydata.option-code"/><spring:message code="facilitydata.required"/></th>
+										<th><spring:message code="facilitydata.display-name"/><spring:message code="facilitydata.required" htmlEscape="false"/></th>
+										<th><spring:message code="facilitydata.option-code"/><spring:message code="facilitydata.required" htmlEscape="false"/></th>
 										<th><spring:message code="general.description"/></th>
 										<th></th>
 									</tr>

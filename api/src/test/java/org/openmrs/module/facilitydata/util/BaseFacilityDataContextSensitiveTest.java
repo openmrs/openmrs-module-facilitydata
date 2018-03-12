@@ -67,25 +67,26 @@ public abstract class BaseFacilityDataContextSensitiveTest extends BaseModuleCon
 			StringReader reader = null;
 			try {
 				String xmlFile = IOUtils.toString(fileInInputStreamFormat);
+				
 				StringBuilder openmrsObjectText = new StringBuilder();
-				openmrsObjectText.append("uuid=\"" + UUID.randomUUID().toString() + "\" ");
+				//openmrsObjectText.append("uuid=\"" + UUID.randomUUID().toString() + "\" ");
 				openmrsObjectText.append("creator=\"1\" date_created=\"2005-08-07 00:00:00.0\" ");
 				openmrsObjectText.append("changed_by=\"1\" date_changed=\"2007-10-24 14:51:53.0\" ");
 				
 				StringBuilder metadataObjectText = new StringBuilder(openmrsObjectText);
-				metadataObjectText.append(" retired=\"false\" retired_reason=\"\"");
+				metadataObjectText.append(" retired=\"false\" retire_reason=\"\"");
 				
 				StringBuilder dataObjectText = new StringBuilder(openmrsObjectText);
 				dataObjectText.append(" voided=\"false\" void_reason=\"\"");
-				
+			
 				xmlFile = xmlFile.replace("[METADATA]", metadataObjectText.toString());
 				xmlFile = xmlFile.replace("[DATA]", dataObjectText.toString());
-
+				
 				reader = new StringReader(xmlFile);
 				FlatXmlDataSet flatXml = new FlatXmlDataSet(reader, false, true, false);
 				ReplacementDataSet replacementDataSet = new ReplacementDataSet(flatXml);
 				replacementDataSet.addReplacementObject("[NULL]", null);
-
+				
 				xmlDataSetToRun = replacementDataSet;
 			}
 			finally {
@@ -95,6 +96,7 @@ public abstract class BaseFacilityDataContextSensitiveTest extends BaseModuleCon
 		}
 		
 		cachedDatasets.put(datasetFilename, xmlDataSetToRun);
+		
 		executeDataSet(xmlDataSetToRun);
 	}
 }

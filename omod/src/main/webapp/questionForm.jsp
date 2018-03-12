@@ -13,7 +13,7 @@
 	<a href="question.list"><spring:message code="facilitydata.manage-question"/></a>
 	-&gt;
 	<c:choose>
-		<c:when test="${question.id == null}"><spring:message code="facilitydata.new-question"/></c:when>
+		<c:when test="${question.id == null}"><spring:message code="facilitydata.new-question" htmlEscape="false"/></c:when>
 		<c:otherwise>${question.name}</c:otherwise>
 	</c:choose>
 	<hr/>
@@ -27,7 +27,7 @@
 	        <tr>
 	            <td>
 	            	<spring:message code="facilitydata.display-name"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
 	            <td>
 	                <frm:input path="name" size="50"/>
@@ -37,11 +37,11 @@
 	        <tr>
 	            <td width="20%">
 	            	<spring:message code="facilitydata.period-applicability"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
 	            <td>
 	                <frm:select path="periodApplicability" multiple="false">
-	                    <frm:option value=""><spring:message code="facilitydata.choose"/>...</frm:option>
+	                    <frm:option value=""><spring:message code="facilitydata.choose" />...</frm:option>
 	                    <frm:options items="${periodApplicabilities}"/>
 	                </frm:select>
 	                <frm:errors cssClass="error" path="periodApplicability"/>
@@ -50,12 +50,12 @@
 	        <tr>
 	        	<td>
 	        		<spring:message code="facilitydata.question-type"/>
-	        		<spring:message code="facilitydata.required"/>
+	        		<spring:message code="facilitydata.required" htmlEscape="false"/>
 	        	</td>
 	        	<td>
 	        		<frm:select path="questionType" multiple="false">
 	                    <frm:option value=""><spring:message code="facilitydata.choose"/>...</frm:option>
-	                    <frm:options items="${allQuestionTypes}" itemValue="id" itemLabel="name" />
+	                    <frm:options items="${allQuestionTypes}" itemValue="questionTypeId" itemLabel="name" />
 	                </frm:select>
 	                <frm:errors cssClass="error" path="questionType"/>
 	        	</td>
