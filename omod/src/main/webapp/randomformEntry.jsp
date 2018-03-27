@@ -96,7 +96,7 @@
 
 </script>
 
-<form method="post" id="entryForm">
+<form method="post" id="entryForm" enctype="multipart/form-data">
     <table width="100%" class="facilityDataTable">
         <tr>
             <td> Facility</td>
@@ -106,7 +106,7 @@
                         <span class="readOnly">${facility.name}</span></td>
                 </c:when>
                 <c:otherwise>
-                    <td><select name="facility">
+                    <td><select name="facility" required="true">
                         <option value=""></option>
                         <c:forEach items="${locations}" var="location">
 
@@ -127,7 +127,7 @@
                 </c:when>
                 <c:otherwise>
                     <td>
-                        <input id="fromDate" onclick="showCalendar(this);"
+                        <input required="true" id="fromDate" onclick="showCalendar(this);"
                                name="fromDate"/></td>
                 </c:otherwise>
             </c:choose>
@@ -143,7 +143,7 @@
                 </c:when>
                 <c:otherwise>
                     <td>
-                        <input id="toDate" onclick="showCalendar(this);" name="toDate"/></td>
+                        <input required="true" id="toDate" onclick="showCalendar(this);" name="toDate"/></td>
                 </c:otherwise>
             </c:choose>
         </tr>
@@ -218,12 +218,12 @@
                                     <c:choose>
                                         <c:when test="${!viewOnly}">
                                             <input type="file" name="documentTypeFile" id="documentTypeFile"
-                                                   accept=".xml, .json"/>
+                                                   accept=".xml,.json"/>
                                         </c:when>
 
                                         <c:otherwise>
                                             <c:choose>
-                                                <c:when test="${report.values[q].documentValue != null}">
+                                                <c:when test="${report.values[q].documentValue!= null}">
                                                     <span class="readOnly">${report.values[q].documentValue}</span>
                                                 </c:when>
                                                 <c:otherwise>
@@ -343,7 +343,7 @@
     </c:if>
     <openmrs:hasPrivilege privilege="Enter Facility Data Reports,Manage Facility Data Reports">
         <c:if test="${viewOnly}">
-            <a href="formEntry.form?schema=${schema.schemaId}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
+            <a href="randomformEntry.form?schema=${schema.schemaId}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
                 <input type="button" value="<spring:message code="general.edit"/>">
             </a>
         </c:if>

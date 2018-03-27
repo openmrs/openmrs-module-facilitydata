@@ -13,29 +13,23 @@
  */
 package org.openmrs.module.facilitydata.service;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.FacilityDataReport;
-import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
 import org.openmrs.module.facilitydata.util.BaseFacilityDataContextSensitiveTest;
 import org.openmrs.module.facilitydata.util.FacilityDataUtil;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Test of the Facility Data Service

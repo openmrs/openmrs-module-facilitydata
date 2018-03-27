@@ -169,12 +169,12 @@
 										<c:set var="qt" value="${q.question.questionType}"/>
 									<c:choose>
 										<c:when test="${!viewOnly}">
-											<input type="file" name="documentTypeFile" id="documentTypeFile" accept=".xml, .json" />
+											<input type="file" name="documentTypeFile" id="documentTypeFile" accept=".xml,.json" />
 										</c:when>
 
 										<c:otherwise>
 											<c:choose>
-											<c:when test="${report.values[q].documentValue != null}">
+											<c:when test="${report.values[q].documentValue!= null}">
 												<span class="readOnly">${report.values[q].documentValue}</span>
 											</c:when>
 												<c:otherwise>

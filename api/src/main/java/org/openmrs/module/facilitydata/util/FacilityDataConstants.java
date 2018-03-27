@@ -1,13 +1,13 @@
 package org.openmrs.module.facilitydata.util;
 
+import org.apache.commons.lang.StringUtils;
+import org.openmrs.Location;
+import org.openmrs.api.context.Context;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.openmrs.Location;
-import org.openmrs.api.context.Context;
 
 /**
  * Constants for use within the module

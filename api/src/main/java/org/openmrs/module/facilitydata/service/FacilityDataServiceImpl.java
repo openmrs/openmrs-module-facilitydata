@@ -13,21 +13,16 @@
  */
 package org.openmrs.module.facilitydata.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataForm;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataReport;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.model.*;
 import org.openmrs.module.facilitydata.service.db.FacilityDataDAO;
 import org.openmrs.module.facilitydata.util.FacilityDataQuery;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Core implementation of the FacilityDataService
@@ -385,7 +380,42 @@ public class FacilityDataServiceImpl extends BaseOpenmrsService implements Facil
 	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query) {
 		return dao.evaluateFacilityDataQuery(query);
 	}
-	
+
+	@Override
+	public FacilityDataCodedOption saveCodedOption(FacilityDataCodedOption facilityDataCodedOption) {
+		return dao.saveCodedOption(facilityDataCodedOption);
+	}
+
+	@Override
+	public FacilityDataCodedOption getCodedoptionByUuid(String s) {
+		return dao.getCodedoptionByUuid(s);
+	}
+
+	@Override
+	public FacilityDataFormSection saveFacilityDataFormSection(FacilityDataFormSection facilityDataFormSection) {
+		return dao.saveFacilityDataFormSection(facilityDataFormSection);
+	}
+
+	@Override
+	public FacilityDataFormSection getFacilityDataFormSectionByUUID(String s) {
+		return dao.getFacilityDataFormSectionByUUID(s);
+	}
+
+	@Override
+	public FacilityDataFormQuestion saveFacilityDataFormQuestion(FacilityDataFormQuestion facilityDataFormQuestion) {
+		return dao.saveFacilityDataFormQuestion(facilityDataFormQuestion);
+	}
+
+	@Override
+	public FacilityDataFormQuestion getFacilityDataFormQuestion(String s) {
+		return dao.getFacilityDataFormQuestion(s);
+	}
+
+	@Override
+	public FacilityDataValue getFacilityDataValueByUuid(String s) {
+		return dao.getFacilityDataValueByUuid(s);
+	}
+
 	//***** PROPERTY ACCESS *****
 
 	/**

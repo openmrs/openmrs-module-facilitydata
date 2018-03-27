@@ -10,7 +10,10 @@ import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
 import org.openmrs.module.facilitydata.model.enums.DocumentType;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class QuestionTypeTest extends BaseModuleContextSensitiveTest {
 

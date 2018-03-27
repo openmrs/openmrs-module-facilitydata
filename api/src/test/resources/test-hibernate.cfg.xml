@@ -31,6 +31,13 @@
 
 		<mapping
 			class="org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType" />
+
+		<mapping
+				class="org.openmrs.module.facilitydata.model.BlobFacilityDataQuestionType" />
+		<mapping
+				class="org.openmrs.module.facilitydata.model.DocumentTypeFacilityDataQuestionType" />
+		<mapping
+				class="org.openmrs.module.facilitydata.model.FreeTextFacilityDataQuestionType" />
 	</session-factory>
 </hibernate-configuration>
 

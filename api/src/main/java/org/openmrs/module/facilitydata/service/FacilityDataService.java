@@ -13,23 +13,18 @@
  */
 package org.openmrs.module.facilitydata.service;
 
+import org.openmrs.Location;
+import org.openmrs.annotation.Authorized;
+import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.facilitydata.model.*;
+import org.openmrs.module.facilitydata.util.FacilityDataConstants;
+import org.openmrs.module.facilitydata.util.FacilityDataQuery;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.openmrs.Location;
-import org.openmrs.annotation.Authorized;
-import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.facilitydata.model.FacilityDataForm;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataReport;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
-import org.openmrs.module.facilitydata.util.FacilityDataConstants;
-import org.openmrs.module.facilitydata.util.FacilityDataQuery;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Core Service for FacilityData
@@ -446,4 +441,19 @@ public interface FacilityDataService extends OpenmrsService {
     @Transactional(readOnly = true)
     @Authorized({FacilityDataConstants.VIEW})
 	public List<FacilityDataValue> evaluateFacilityDataQuery(FacilityDataQuery query);
+
+    FacilityDataCodedOption saveCodedOption(FacilityDataCodedOption facilityDataCodedOption);
+
+    FacilityDataCodedOption getCodedoptionByUuid(String s);
+
+    FacilityDataFormSection saveFacilityDataFormSection(FacilityDataFormSection facilityDataFormSection);
+
+    FacilityDataFormSection getFacilityDataFormSectionByUUID(String s);
+
+    FacilityDataFormQuestion saveFacilityDataFormQuestion(FacilityDataFormQuestion facilityDataFormQuestion);
+
+
+    FacilityDataFormQuestion getFacilityDataFormQuestion(String s);
+
+    FacilityDataValue getFacilityDataValueByUuid(String s);
 }

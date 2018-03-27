@@ -13,21 +13,16 @@
  */
 package org.openmrs.module.facilitydata.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.io.IOUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Overrides the default {@link BaseModuleContextSensitiveTest} to allow for better handling

@@ -1,6 +1,5 @@
 package org.openmrs.module.facilitydata.model;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;

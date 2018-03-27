@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.facilitydata.model.enums;
 
-import java.util.Calendar;
-
 /**
  * Represents the available Frequencies for which a Form may be completed
  */

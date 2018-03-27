@@ -13,17 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
@@ -38,6 +27,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class FacilityDataFormEntryOverviewController {

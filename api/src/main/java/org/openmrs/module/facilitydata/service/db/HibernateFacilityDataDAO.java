@@ -13,13 +13,6 @@
  */
 package org.openmrs.module.facilitydata.service.db;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -27,16 +20,19 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
-import org.openmrs.module.facilitydata.model.FacilityDataForm;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.model.*;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.util.FacilityDataQuery;
 import org.openmrs.module.facilitydata.util.FacilityDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * Core implementation of the DAO
  */
@@ -467,6 +463,54 @@ public class HibernateFacilityDataDAO implements FacilityDataDAO {
 		c.add(Restrictions.eq("voided", Boolean.FALSE));
 
 		return c.list();
+	}
+
+	@Override
+	public FacilityDataCodedOption saveCodedOption(FacilityDataCodedOption facilityDataCodedOption) {
+		return (FacilityDataCodedOption) getDbSessionFactory().getCurrentSession().save(facilityDataCodedOption);
+	}
+
+	@Override
+	public FacilityDataCodedOption getCodedoptionByUuid(String s) {
+		Criteria c =getDbSessionFactory().getCurrentSession().createCriteria(FacilityDataCodedOption.class);
+		c.add(Restrictions.eq("uuid",s));
+		FacilityDataCodedOption object=(FacilityDataCodedOption)c.uniqueResult();
+		return object;
+	}
+
+	@Override
+	public FacilityDataFormSection saveFacilityDataFormSection(FacilityDataFormSection facilityDataFormSection) {
+		return (FacilityDataFormSection) getDbSessionFactory().getCurrentSession().save(facilityDataFormSection);
+	}
+
+	@Override
+	public FacilityDataFormSection getFacilityDataFormSectionByUUID(String s) {
+		Criteria c =getDbSessionFactory().getCurrentSession().createCriteria(FacilityDataFormSection.class);
+		c.add(Restrictions.eq("uuid",s));
+		FacilityDataFormSection object=(FacilityDataFormSection)c.uniqueResult();
+		return object;
+
+	}
+
+	@Override
+	public FacilityDataFormQuestion saveFacilityDataFormQuestion(FacilityDataFormQuestion facilityDataFormQuestion) {
+		return (FacilityDataFormQuestion) getDbSessionFactory().getCurrentSession().save(facilityDataFormQuestion);
+	}
+
+	@Override
+	public FacilityDataFormQuestion getFacilityDataFormQuestion(String s) {
+		Criteria c =getDbSessionFactory().getCurrentSession().createCriteria(FacilityDataFormQuestion.class);
+		c.add(Restrictions.eq("uuid",s));
+		FacilityDataFormQuestion object=(FacilityDataFormQuestion)c.uniqueResult();
+		return object;
+	}
+
+	@Override
+	public FacilityDataValue getFacilityDataValueByUuid(String s) {
+		Criteria c =getDbSessionFactory().getCurrentSession().createCriteria(FacilityDataValue.class);
+		c.add(Restrictions.eq("uuid",s));
+		FacilityDataValue object=(FacilityDataValue)c.uniqueResult();
+		return object;
 	}
 
 	/**

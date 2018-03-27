@@ -13,10 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
@@ -32,6 +28,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 
 
 @Controller

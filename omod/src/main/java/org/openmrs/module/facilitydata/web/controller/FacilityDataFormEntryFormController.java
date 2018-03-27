@@ -17,15 +17,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Location;
 import org.openmrs.User;
-import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
-import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.FacilityDataReport;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.model.*;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
@@ -50,7 +43,7 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("/module/facilitydata/formEntry.form")
-public class FacilityDataFormEntryFormController {
+public class   FacilityDataFormEntryFormController {
 
 	protected FacilityDataService getFacilityDataService() {
 		return Context.getService(FacilityDataService.class);

@@ -13,12 +13,9 @@
  */
 package org.openmrs.module.facilitydata.model;
 
-import org.hibernate.annotations.Cascade;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.*;
 
 /**
  * Represents one of the possible answers to a Coded Question.

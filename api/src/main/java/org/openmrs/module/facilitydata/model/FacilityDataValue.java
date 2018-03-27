@@ -16,17 +16,8 @@ package org.openmrs.module.facilitydata.model;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * This represents a particular value entered for a particular question on a form
@@ -71,7 +62,7 @@ public class FacilityDataValue extends BaseOpenmrsData {
     @Column(name="comments")
     private String comments; // Optional comments associated with the value entered
 
-	@Column(name="document_value")
+	@Column(name="document_value", length = Integer.MAX_VALUE)
 	private String documentValue;
 
     //***** CONSTRUCTORS *****

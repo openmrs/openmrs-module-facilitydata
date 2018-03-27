@@ -14,12 +14,12 @@
 
 package org.openmrs.module.facilitydata.extension.html;
 
+import org.openmrs.module.Extension;
+import org.openmrs.module.web.extension.AdministrationSectionExt;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.openmrs.module.Extension;
-import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 
 /**
