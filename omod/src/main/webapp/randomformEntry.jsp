@@ -292,7 +292,7 @@
                                     <c:set var="qt" value="${q.question.questionType}"/>
                                     <c:choose>
                                         <c:when test="${!viewOnly}">
-                                            <input type="text" size="50" id="freeText.${q.id}" name="freeText.${q.id}"
+                                            <input type="text" size="50" id="valueText.${q.id}" name="valueText.${q.id}"
                                                    value="<c:out value="${report.values[q].valueText}"/>"/>
                                             <span id="valueError${q.id}" class="facilityDataAnswerError"
                                                   style="display:none;"></span>
@@ -338,12 +338,12 @@
     </c:forEach>
     <c:if test="${!viewOnly}">
         <input id="submitButton" type="submit" value="<spring:message code="general.save"/>"/>
-        <a href="randomformEntry.form?schema=${schema.schemaId}"><input type="button"
+        <a href="dashboard.list"><input type="button"
                                                                         value="<spring:message code="general.cancel"/>"></a>
     </c:if>
     <openmrs:hasPrivilege privilege="Enter Facility Data Reports,Manage Facility Data Reports">
         <c:if test="${viewOnly}">
-            <a href="randomformEntry.form?schema=${schema.schemaId}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}">
+            <a href="randomformEntry.form?schema=${schema.schemaId}&facility=${facility.id}&fromDate=${facilitydata:formatDate(fromDate, 'yyyy/MM/dd', '')}">
                 <input type="button" value="<spring:message code="general.edit"/>">
             </a>
         </c:if>

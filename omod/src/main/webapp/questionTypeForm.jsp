@@ -84,7 +84,7 @@
 			        </tr>
 			        <tr>
 			            <td><spring:message code="facilitydata.allowDecimals"/></td>
-			            <td><input required="true" type="checkbox" name="allowDecimals" ${questionType.allowDecimals ? 'checked="checked"' : ""}/></td>
+			            <td><input type="checkbox" name="allowDecimals" ${questionType.allowDecimals ? 'checked="checked"' : ""}/></td>
 			        </tr>
 	        	</c:when>
 				<c:when test="${questionType['class'].name == 'org.openmrs.module.facilitydata.model.FreeTextFacilityDataQuestionType'}">

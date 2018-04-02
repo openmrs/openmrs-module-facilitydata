@@ -56,8 +56,7 @@ public class FormQuestionResourceController  extends MetadataDelegatingCrudResou
             description.addProperty("question");
 
 
-            description.addSelfLink();
-            description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+
             return description;
         } else if (representation instanceof FullRepresentation) {
             DelegatingResourceDescription description = new DelegatingResourceDescription();

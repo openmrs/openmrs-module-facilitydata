@@ -20,16 +20,12 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudR
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 @Resource(name = RestConstants.VERSION_1 + "/facilitydata/report", supportedClass = FacilityDataReport.class, supportedOpenmrsVersions = { "2.0.*,2.1.*" })
@@ -163,9 +159,9 @@ public class ReportResourceController extends DataDelegatingCrudResource<Facilit
         return  instance.getSchema();
 
     }
-    @PropertyGetter(value = "values")
+  //  @PropertyGetter(value = "values")
     public static Object getValues(FacilityDataReport instance){
-        return instance.getValues();
+        return null;
 
     }
 
@@ -188,19 +184,24 @@ public class ReportResourceController extends DataDelegatingCrudResource<Facilit
         d.addRequiredProperty("facility");
         d.addRequiredProperty("startDate");
         d.addRequiredProperty("endDate");
-        d.addRequiredProperty("values");
+     //   d.addRequiredProperty("values");
 
         return d;
     }
 
-    @PropertySetter("values")
+  //  @PropertySetter("values")
     public static void setValues(FacilityDataReport instance, Set<FacilityDataValue> values) {
         Iterator var2 = values.iterator();
 
         while(var2.hasNext()) {
             FacilityDataValue o = (FacilityDataValue)var2.next();
-            instance.addValue(o);
+            //instance.addValue(o);
         }
 
+    }
+
+    @PropertyGetter("display")
+    public String getDisplay(FacilityDataReport instance){
+        return  "i m display";
     }
 }

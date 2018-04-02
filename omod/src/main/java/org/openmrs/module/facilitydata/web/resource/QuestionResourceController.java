@@ -53,7 +53,7 @@ public class QuestionResourceController extends MetadataDelegatingCrudResource<F
 
     @Override
     public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
-        System.out.println("QuestionResourceController :::  getRepresentationDescription() ");
+
         if (representation instanceof DefaultRepresentation) {
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");

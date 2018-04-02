@@ -116,7 +116,7 @@ public class FacilityDataReport extends BaseOpenmrsData {
 	}
 	
     /**
-     * @param the value to add
+     * @param value the value to add
      */
 	public void addValue(FacilityDataValue value) {
 		getValues().put(value.getQuestion(), value);

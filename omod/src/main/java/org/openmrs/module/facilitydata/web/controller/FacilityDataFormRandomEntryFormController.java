@@ -98,13 +98,16 @@ public class FacilityDataFormRandomEntryFormController {
 							  @RequestParam(required = false) Location facility,
 							  @RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") Date fromDate,
 							  @RequestParam(required = false)  @DateTimeFormat(pattern="dd/MM/yyyy") Date toDate,
-							  @RequestParam(required = false) MultipartFile documentTypeFile,
-							  @RequestParam(required = false) MultipartFile blobFile,
+							  @RequestParam(required = false) MultipartFile[] documentTypeFile,
+							  @RequestParam(required = false) MultipartFile[] blobFile,
     		                  HttpServletRequest request) {
-		System.out.println("facility :: "+ facility.getLocationId());
+
 		FacilityDataReport report = getFacilityDataService().getReport(schema, fromDate, toDate, facility);
     	Date currentDate = new Date();
     	User currentUser = Context.getAuthenticatedUser();
+
+		int documentTypeCurrentThread=0;
+		int blobFileCurrentThread=0;
 
     	for (FacilityDataFormSection section : schema.getSections()) {
     		for (FacilityDataFormQuestion question : section.getQuestions()) {
@@ -140,21 +143,35 @@ public class FacilityDataFormRandomEntryFormController {
 				else if(StringUtils.isNotBlank(valueTextParam)){
 					valueText=valueTextParam;
 				}
-				else if(documentTypeFile!=null){
-					System.out.println("document Type File ");
-					File convFile = new File( documentTypeFile.getOriginalFilename());
+				else if(documentTypeFile!=null && documentTypeFile.length>0 && documentTypeCurrentThread<=documentTypeFile.length){
+
 					try {
-						System.out.println("in try block !");
-						documentTypeFile.transferTo(convFile);
+						System.out.println("documentTypeCurrentThread :::: "+ documentTypeCurrentThread);
+						System.out.println("documentTypeCurrentThread :::: "+ documentTypeCurrentThread);
+						System.out.println("documentTypeCurrentThread :::: "+ documentTypeCurrentThread);
+						System.out.println("documentTypeCurrentThread :::: "+ documentTypeCurrentThread);
+						File convFile = new File( documentTypeFile[documentTypeCurrentThread].getOriginalFilename());
+
+
+						documentTypeFile[documentTypeCurrentThread].transferTo(convFile);
 						documentValue = FileUtils.readFileToString(convFile);
-						System.out.println("Document ::: "+documentValue) ;
+						if(documentValue!=null) {
+							documentTypeCurrentThread++;
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
-				else if (blobFile!=null){
+				else if (blobFile!=null  && blobFile.length>0 && blobFileCurrentThread<=blobFile.length){
 					try {
-						blobValue=blobFile.getBytes();
+						System.out.println("blobFileCurrentThread :::: "+ blobFileCurrentThread);
+						System.out.println("blobFileCurrentThread :::: "+ blobFileCurrentThread);
+						System.out.println("blobFileCurrentThread :::: "+ blobFileCurrentThread);
+						System.out.println("blobFileCurrentThread :::: "+ blobFileCurrentThread);
+						blobValue=blobFile[blobFileCurrentThread].getBytes();
+						if(blobValue!=null) {
+							blobFileCurrentThread++;
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
