@@ -5,18 +5,28 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-       <changeSet id="facilitydatamodule-1.0" author="Robert O'Connor; Partners In Health">
+    <changeSet id="facilitydatamodule-1.0" author="Robert O'Connor; Partners In Health">
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_form" />
+            </not>
+        </preConditions>
+
         <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
+
         <createTable tableName="facilitydata_form">
+
             <column name="form_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="description" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -33,7 +43,6 @@
             </column>
 
             <column name="changed_by" type="int(11)">
-
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_change_by"
                              references="users(user_id)"/>
@@ -42,34 +51,50 @@
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
 
+            <column name="date_changed" type="datetime"/>
 
             <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_retired_by"
                              references="users(user_id)"/>
             </column>
-            <column name="date_retired" type="datetime"/>
-            <column name="retired_reason" type="varchar(255)"/>
 
+            <column name="date_retired" type="datetime"/>
+
+            <column name="retired_reason" type="varchar(255)"/>
 
         </createTable>
 
+    </changeSet>
+
+    <changeSet id="facilitydatamodule-1.1" author="Robert O'Connor; Partners In Health">
+
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_form_schema" />
+            </not>
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_form_schema">
+
             <column name="schema_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="description" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -79,6 +104,7 @@
                              foreignKeyName="fk_facilitydata_form_schema_form"
                              references="facilitydata_form(form_id)"/>
             </column>
+
             <column name="valid_from" type="date">
                 <constraints nullable="true"/>
 
@@ -88,6 +114,7 @@
                 <constraints nullable="true"/>
 
             </column>
+
             <column name="creator" type="int(11)">
                 <constraints nullable="false"
                              foreignKeyName="fk_facilitydata_form_schema_creator"
@@ -103,34 +130,51 @@
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
+
             <column name="date_changed" type="datetime"/>
 
 
             <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_schema_retired_by"
                              references="users(user_id)"/>
             </column>
-            <column name="date_retired" type="datetime"/>
-            <column name="retired_reason" type="varchar(255)"/>
 
+            <column name="date_retired" type="datetime"/>
+
+            <column name="retired_reason" type="varchar(255)"/>
 
         </createTable>
 
+    </changeSet>
+
+    <changeSet id="facilitydatamodule-1.2" author="Robert O'Connor; Partners In Health">
+
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_form_section" />
+            </not>
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_form_section">
+
             <column name="form_section_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="description" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -160,37 +204,51 @@
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
 
+            <column name="date_changed" type="datetime"/>
 
             <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_section_retired_by"
                              references="users(user_id)"/>
             </column>
-            <column name="date_retired" type="datetime"/>
-            <column name="retired_reason" type="varchar(255)"/>
 
+            <column name="date_retired" type="datetime"/>
+
+            <column name="retired_reason" type="varchar(255)"/>
 
         </createTable>
 
+    </changeSet>
 
+    <changeSet id="facilitydatamodule-1.3" author="Robert O'Connor; Partners In Health">
 
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_question_type" />
+            </not>
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_question_type">
+
             <column name="question_type_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(255)">
+
+            <column name="description" type="varchar(1000)">
                 <constraints nullable="true"/>
             </column>
 
@@ -206,35 +264,36 @@
                              references="users(user_id)"/>
             </column>
 
+            <column name="date_changed" type="datetime"/>
+
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
 
-
-            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false" >
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_type_retired_by"
                              references="users(user_id)"/>
             </column>
-            <column name="date_retired" type="datetime"/>
-            <column name="retired_reason" type="varchar(255)"/>
 
+            <column name="date_retired" type="datetime"/>
+
+            <column name="retired_reason" type="varchar(255)"/>
 
             <column name="data_type" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="min_value" type="double">
                 <constraints nullable="true"/>
-
             </column>
 
             <column name="max_value" type="double">
                 <constraints nullable="true"/>
-
             </column>
 
             <column name="allow_decimal" type="tinyint(1)">
@@ -243,20 +302,32 @@
 
         </createTable>
 
+    </changeSet>
 
+    <changeSet id="facilitydatamodule-1.4" author="Robert O'Connor; Partners In Health">
 
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_coded_option" />
+            </not>
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_coded_option">
-            <column name="id" type="int" autoIncrement="true">
+
+            <column name="id" type="int" autoIncrement="true" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(255)">
+
+            <column name="description" type="varchar(1000)">
                 <constraints nullable="true"/>
             </column>
 
@@ -272,27 +343,32 @@
                              references="users(user_id)"/>
             </column>
 
-            <column name="date_created" type="datetime">
-                <constraints nullable="false"/>
-            </column>
             <column name="date_changed" type="datetime"/>
 
 
-            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
+            <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false" >
+                <constraints nullable="false"/>
+            </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_coded_option_retired_by"
                              references="users(user_id)"/>
             </column>
+
             <column name="date_retired" type="datetime"/>
+
             <column name="retired_reason" type="varchar(255)"/>
 
 
             <column name="option_order" type="int(11)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="code" type="varchar(255)">
                 <constraints nullable="true"/>
 
@@ -302,24 +378,36 @@
                 <constraints nullable="false"
                              foreignKeyName="fk_facilitydata_coded_option_question_type_id"
                              references="facilitydata_question_type(question_type_id)"/>
-
             </column>
 
         </createTable>
 
+    </changeSet>
 
+    <changeSet id="facilitydatamodule-1.5" author="Robert O'Connor; Partners In Health">
+
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_question" />
+            </not>
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_question">
+
             <column name="question_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="uuid" type="char(36)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(255)">
+
+            <column name="description" type="varchar(1000)">
                 <constraints nullable="true"/>
             </column>
 
@@ -334,25 +422,25 @@
                              foreignKeyName="fk_facilitydata_question_change_by"
                              references="users(user_id)"/>
             </column>
+            <column name="date_changed" type="datetime"/>
 
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
-
 
             <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_question_retired_by"
                              references="users(user_id)"/>
             </column>
+
             <column name="date_retired" type="datetime"/>
 
             <column name="retired_reason" type="varchar(255)"/>
-
 
             <column name="period_applicability" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -362,25 +450,37 @@
                 <constraints nullable="false"
                              foreignKeyName="fk_facilitydata_question_question_type"
                              references="facilitydata_question_type(question_type_id)"/>
-
             </column>
-
 
         </createTable>
 
+    </changeSet>
+    <changeSet id="facilitydatamodule-1.6" author="Robert O'Connor; Partners In Health">
+
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_form_question" />
+            </not>
+
+        </preConditions>
+
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_form_question">
+
             <column name="form_question_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="uuid" type="char(36)">
-                <constraints nullable="false"/>
-            </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+
             <column name="description" type="varchar(255)">
                 <constraints nullable="true"/>
+            </column>
+
+            <column name="uuid" type="char(36)">
+                <constraints nullable="false"/>
             </column>
 
             <column name="creator" type="int(11)">
@@ -398,21 +498,22 @@
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
 
+            <column name="date_changed" type="datetime"/>
 
             <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+
             <column name="retired_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_retired_by"
                              references="users(user_id)"/>
             </column>
+
             <column name="date_retired" type="datetime"/>
 
             <column name="retired_reason" type="varchar(255)"/>
-
 
             <column name="question_number" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -422,7 +523,6 @@
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_section"
                              references="facilitydata_form_section(form_section_id)"/>
-
             </column>
 
 
@@ -430,13 +530,19 @@
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_form_question_question"
                              references="facilitydata_question(question_id)"/>
-
             </column>
 
         </createTable>
 
+    </changeSet>
+    <changeSet id="facilitydatamodule-1.7" author="Robert O'Connor; Partners In Health">
 
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="facilitydata_value" />
+            </not>
+        </preConditions>
 
+        <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
 
         <createTable tableName="facilitydata_value">
             <column name="id" type="int" autoIncrement="true">
@@ -446,27 +552,22 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="description" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="creator" type="int(11)">
                 <constraints nullable="false"
                              foreignKeyName="fk_facilitydata_value_creator"
                              references="users(user_id)"/>
             </column>
-
             <column name="changed_by" type="int(11)">
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_value_change_by"
                              references="users(user_id)"/>
             </column>
+            <column name="date_changed" type="datetime"/>
+
 
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_changed" type="datetime"/>
-
 
             <column name="voided" type="tinyint(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
@@ -499,14 +600,11 @@
                 <constraints nullable="true"
                              foreignKeyName="fk_facilitydata_value_value_coded"
                              references="facilitydata_coded_option(id)"/>
-
             </column>
 
 
             <column name="value_numeric" type="double">
                 <constraints nullable="true" />
-
-
             </column>
 
 
@@ -514,19 +612,23 @@
                 <constraints nullable="false"
                              foreignKeyName="fk_facilitydata_value_question"
                              references="facilitydata_form_question(form_question_id)"/>
-
             </column>
 
             <column name="comments" type="varchar(255)">
                 <constraints nullable="true"/>
-
-
             </column>
 
         </createTable>
+
     </changeSet>
 
-    <changeSet id="facilitydatamodule-2.0" author="PartnersInHealth">
+    <changeSet id="facilitydatamodule-2.0" author="Partners In Health">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="facilitydata_question_type" columnName="field_style"/>
+            </not>
+
+        </preConditions>
         <comment> Date : 28 Aug 2014 , Author : Partners In Health</comment>
         <addColumn tableName="facilitydata_question_type">
             <column name="field_style" type="varchar(255)">
@@ -535,10 +637,10 @@
     </changeSet>
 
 
+
 	<changeSet id="facilitydatamodule-3.0" author="engrmahmed14@gmail.com">
 
 		<comment>renaming retired_reason column to retire_column as per openmrs meta data</comment>
-
 
 		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
 		oldColumnName="retired_reason" tableName="facilitydata_question_type" />
