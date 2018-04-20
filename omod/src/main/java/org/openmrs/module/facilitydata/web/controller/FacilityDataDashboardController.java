@@ -13,14 +13,14 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.List;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 public class FacilityDataDashboardController {

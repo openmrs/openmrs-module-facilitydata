@@ -1,20 +1,34 @@
 package org.openmrs.module.facilitydata.model;
 
+import org.openmrs.module.facilitydata.model.enums.Frequency;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openmrs.module.facilitydata.model.enums.Frequency;
-
 /**
  * Represents a particular form, which might be represented by different schemas over time
  */
+
+@Entity
+@Table(name = "facilitydata_form")
 public class FacilityDataForm extends BaseFacilityMetaData {
 	
 	//***** PROPERTIES *****
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="form_id")
+	private Integer formId;
 	
+	@Column(name="frequency")
+	@Enumerated(EnumType.STRING)
 	private Frequency frequency;
+	
+	
+	@OneToMany(fetch=FetchType.EAGER,orphanRemoval = true,cascade=CascadeType.ALL)
+    @JoinColumn(name = "schema_id")
     private Set<FacilityDataFormSchema> schemas;
     
     //***** CONSTRUCTORS *****
@@ -70,4 +84,17 @@ public class FacilityDataForm extends BaseFacilityMetaData {
 	public void setSchemas(Set<FacilityDataFormSchema> schemas) {
 		this.schemas = schemas;
 	}
+
+	@Override
+	public Integer getId() {
+		
+		return formId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.formId=id;
+	}
+	
+	
 }

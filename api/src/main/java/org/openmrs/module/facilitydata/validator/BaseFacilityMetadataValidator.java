@@ -15,7 +15,6 @@ package org.openmrs.module.facilitydata.validator;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.facilitydata.model.BaseFacilityMetaData;
-import org.openmrs.util.HandlerUtil;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

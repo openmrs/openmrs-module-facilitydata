@@ -13,17 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
 import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
@@ -39,6 +28,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 @Controller
 public class FacilityDataFormEntryOverviewController {
 	
@@ -49,7 +42,7 @@ public class FacilityDataFormEntryOverviewController {
     }
 
     @RequestMapping("/module/facilitydata/formEntryOverview.form")
-    public void formEntryOverview(ModelMap map, 
+    public void formEntryOverview(ModelMap map,
     								@RequestParam(required = true) FacilityDataForm form,
     								@RequestParam(required = false) Integer yearIncrement,
     								@RequestParam(required = false) Integer monthIncrement) throws Exception {
@@ -58,7 +51,7 @@ public class FacilityDataFormEntryOverviewController {
 
     	Calendar cal = Calendar.getInstance();
     	cal.add(Calendar.DATE, 1);
-    	
+
     	if (yearIncrement != null) {
     		cal.add(Calendar.YEAR, yearIncrement);
     	}
@@ -78,6 +71,12 @@ public class FacilityDataFormEntryOverviewController {
     	else if (form.getFrequency() == Frequency.DAILY) {  // For daily reports, display last 2 weeks
     		cal.add(Calendar.DATE, -14);
     	}
+    	else if(form.getFrequency() == Frequency.RANDOM){
+			
+			return;
+    		//return "redirect:/module/facilitydata/formEntry.form";
+    		//cal.add(Calendar.DATE, -14);
+		}
     	else {
     		throw new RuntimeException("Unable to handle a report with frequency: " + form.getFrequency());
     	}
@@ -147,5 +146,6 @@ public class FacilityDataFormEntryOverviewController {
     	map.addAttribute("questionsAnswered", questionsAnswered);
     	map.addAttribute("locations", FacilityDataConstants.getSupportedFacilities());
     	map.addAttribute("datesSupported", datesSupported);
+		//return "/module/facilitydata/formEntryOverview.form";
     }
 }

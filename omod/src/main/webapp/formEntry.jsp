@@ -88,7 +88,7 @@
 
 </script>
 
-<form method="post" id="entryForm">
+<form method="post" id="entryForm" enctype="multipart/form-data">
 	<input type="hidden" name="fromDate" value="${facilitydata:formatDate(fromDate, 'yyyy-MM-dd', '')}"/>
 	<input type="hidden" name="toDate" value="${facilitydata:formatDate(toDate, 'yyyy-MM-dd', '')}"/>
 	<c:forEach items="${schema.sections}" var="section">
@@ -164,6 +164,74 @@
 							        		</c:otherwise>
 							        	</c:choose>
 							         </c:when>
+
+									<c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.DocumentTypeFacilityDataQuestionType'}">
+										<c:set var="qt" value="${q.question.questionType}"/>
+									<c:choose>
+										<c:when test="${!viewOnly}">
+											<input type="file" name="documentTypeFile" id="documentTypeFile" accept=".xml,.json" />
+										</c:when>
+
+										<c:otherwise>
+											<c:choose>
+											<c:when test="${report.values[q].documentValue!= null}">
+												<span class="readOnly">${report.values[q].documentValue}</span>
+											</c:when>
+												<c:otherwise>
+													<span class="noAnswer"><spring:message code="facilitydata.no-answer"/></span>
+												</c:otherwise>
+											</c:choose>
+										</c:otherwise>
+
+
+									</c:choose>
+
+									</c:when>
+
+									<c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.BlobFacilityDataQuestionType'}">
+										<c:set var="qt" value="${q.question.questionType}"/>
+										<c:choose>
+											<c:when test="${!viewOnly}">
+												<input type="file" name="blobFile" id="blobFile" accept="*/*" />
+											</c:when>
+
+											<c:otherwise>
+												<c:choose>
+													<c:when test="${report.values[q].valueBlob != null}">
+														<span class="readOnly">Saved as Binary Value in System</span>
+													</c:when>
+													<c:otherwise>
+														<span class="noAnswer"><spring:message code="facilitydata.no-answer"/></span>
+													</c:otherwise>
+												</c:choose>
+											</c:otherwise>
+
+
+										</c:choose>
+
+									</c:when>
+							         
+									<c:when test="${q.question.questionType['class'].name == 'org.openmrs.module.facilitydata.model.FreeTextFacilityDataQuestionType'}">
+							         	<c:set var="qt" value="${q.question.questionType}"/>
+							         	<c:choose>
+							    			<c:when test="${!viewOnly}">
+							         			<input type="text" size="50" id="valueText.${q.id}" name="valueText.${q.id}" value="<c:out value="${report.values[q].valueText}"/>" />
+							        			<span id="valueError${q.id}" class="facilityDataAnswerError" style="display:none;"></span>
+							        		</c:when>
+							        		<c:otherwise>
+							        			<c:choose>
+							        				<c:when test="${report.values[q].valueText != null}">
+							        					<span class="readOnly">${report.values[q].valueText}</span>
+							        				</c:when>
+						    						<c:otherwise>
+						    							<span class="noAnswer"><spring:message code="facilitydata.no-answer"/></span>
+						    						</c:otherwise>
+						    						</c:choose>
+							        			</span>
+							        		</c:otherwise>
+							        	</c:choose>
+							         </c:when>
+							         
 							         <c:otherwise>
 							         	<spring:message code="facilitydata.invalid-question-type"/>: ${q.question.questionType['class'].name}
 							         </c:otherwise>

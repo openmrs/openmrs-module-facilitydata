@@ -1,15 +1,16 @@
 package org.openmrs.module.facilitydata.model;
 
+import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Location;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openmrs.Location;
-
 /**
  * Represents the data entered for a particular form, for a particular location and period
  */
-public class FacilityDataReport {
+public class FacilityDataReport extends BaseOpenmrsData {
 	
 	//***** PROPERTIES *****
 	
@@ -115,7 +116,7 @@ public class FacilityDataReport {
 	}
 	
     /**
-     * @param the value to add
+     * @param value the value to add
      */
 	public void addValue(FacilityDataValue value) {
 		getValues().put(value.getQuestion(), value);
@@ -143,5 +144,15 @@ public class FacilityDataReport {
 	 */
 	public void setValues(Map<FacilityDataFormQuestion, FacilityDataValue> values) {
 		this.values = values;
+	}
+
+	@Override
+	public Integer getId() {
+		return null;
+	}
+
+	@Override
+	public void setId(Integer id) {
+
 	}
 }

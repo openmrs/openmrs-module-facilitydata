@@ -1,0 +1,189 @@
+	<?xml version="1.0" encoding="UTF-8"?>
+	<databaseChangeLog
+	  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+			 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+			 
+		<changeSet id="facilitydatamodule-01022018" author="ahmed14">
+			<createTable tableName="facilitydata_form">
+				<column name="form_id" type="int">
+					<constraints primaryKey="true" nullable="false"/>
+				</column>
+				<column name="uuid" type="char(36)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="name" type="varchar(255)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="description" type="varchar(255)">
+					<constraints nullable="true"/>
+				</column>
+				
+			<column name="frequency" type="varchar(255)">
+					<constraints nullable="false"/>
+				</column>
+			  
+				
+			<column name="creator" type="int(11)">
+					<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_creator" 
+					references="users(user_id)"/>
+				</column>
+				
+					<column name="changed_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_change_by" 
+					references="users(user_id)"/>
+					</column>
+				
+				<column name="date_created" type="datetime">
+					<constraints nullable="false" />
+				</column>
+					<column name="date_changed" type="datetime" />
+				
+		
+			
+			
+				<column name="retired" type="tinyint(1)">
+					<constraints nullable="false" />
+				</column>
+				<column name="retired_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_retired_by" 
+					references="users(user_id)"/>
+				</column>
+				<column name="date_retired" type="datetime" />
+				<column name="retired_reason" type="varchar(255)" />
+				
+
+			</createTable>
+			
+			
+			
+			
+			
+			
+			<createTable tableName="facilitydata_form_schema">
+				<column name="schema_id" type="int">
+					<constraints primaryKey="true" nullable="false"/>
+				</column>
+				<column name="uuid" type="char(36)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="name" type="varchar(255)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="description" type="varchar(255)">
+					<constraints nullable="true"/>
+				</column>
+				
+			<column name="form" type="int(11)">
+					<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_schema_creator" 
+					references="facilitydata_form(form_id)"/>
+				</column>
+				<column name="valid_from" type="date">
+					<constraints nullable="true" /
+				</column>
+				
+					<column name="valid_to" type="date">
+					<constraints nullable="true" /
+				</column>
+			<column name="creator" type="int(11)">
+					<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_schema_creator" 
+					references="users(user_id)"/>
+				</column>
+				
+					<column name="changed_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_schema_change_by" 
+					references="users(user_id)"/>
+					</column>
+				
+				<column name="date_created" type="datetime">
+					<constraints nullable="false" />
+				</column>
+					<column name="date_changed" type="datetime" />
+				
+		
+			
+			
+				<column name="retired" type="tinyint(1)">
+					<constraints nullable="false" />
+				</column>
+				<column name="retired_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_schema_retired_by" 
+					references="users(user_id)"/>
+				</column>
+				<column name="date_retired" type="datetime" />
+				<column name="retired_reason" type="varchar(255)" />
+				
+
+			</createTable>
+			
+			
+			
+			<createTable tableName="facilitydata_form_section">
+				<column name="form_section_id" type="int">
+					<constraints primaryKey="true" nullable="false"/>
+				</column>
+				<column name="uuid" type="char(36)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="name" type="varchar(255)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="description" type="varchar(255)">
+					<constraints nullable="true"/>
+				</column>
+				
+			<column name="section_number" type="int(11)">
+					<constraints nullable="false"/>
+				</column>
+				<column name="valid_from" type="date">
+					<constraints nullable="true" /
+				</column>
+				
+					<column name="valid_to" type="date">
+					<constraints nullable="true" /
+				</column>
+			<column name="creator" type="int(11)">
+					<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_creator" 
+					references="users(user_id)"/>
+				</column>
+				
+					<column name="changed_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_change_by" 
+					references="users(user_id)"/>
+					</column>
+				
+				<column name="date_created" type="datetime">
+					<constraints nullable="false" />
+				</column>
+					<column name="date_changed" type="datetime" />
+				
+		
+			
+			
+				<column name="retired" type="tinyint(1)">
+					<constraints nullable="false" />
+				</column>
+				<column name="retired_by" type="int(11)" >
+				<constraints nullable="false" 
+					foreignKeyName="fk_facilitydata_form_retired_by" 
+					references="users(user_id)"/>
+				</column>
+				<column name="date_retired" type="datetime" />
+				<column name="retired_reason" type="varchar(255)" />
+				
+
+			</createTable>
+			
+		</changeSet>
+
+	</databaseChangeLog>

@@ -13,10 +13,6 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataForm;
@@ -31,11 +27,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/module/facilitydata/schemaForm.form")
@@ -70,8 +65,8 @@ public class FacilityDataFormSchemaFormController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveSchema(@ModelAttribute("schema") FacilityDataFormSchema schema, BindingResult result, 
     						 ModelMap map, HttpServletRequest request) throws ServletRequestBindingException {
-        FacilityDataService svc = Context.getService(FacilityDataService.class);
-        
+    	
+    	FacilityDataService svc = Context.getService(FacilityDataService.class);
         FacilityDataForm form = schema.getForm();
         if (StringUtils.isBlank(schema.getName())) {
         	schema.setName(form.getName());
@@ -82,10 +77,12 @@ public class FacilityDataFormSchemaFormController {
         
         new FacilityDataFormSchemaValidator().validate(schema, result);
         if (result.hasErrors()) {
+        	
             return "/module/facilitydata/schemaForm";
         }
-
+        
         svc.saveFacilityDataForm(form);
-        return String.format("redirect:schema.form?id=%s", schema.getId());
+      
+        return String.format("redirect:schema.form?id=%s", schema.getSchemaId());
     }
 }

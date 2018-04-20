@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +21,29 @@ import java.util.List;
 /**
  * This represents a collection of questions that are asked together on a Form, in one or more sections
  */
+@Entity
+@Table(name = "facilitydata_form_schema")
 public class FacilityDataFormSchema extends BaseFacilityMetaData {
 
 	//***** PROPERTIES *****
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="schema_id")
+	private int schemaId;
+	
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL,optional=false)
+	@JoinColumn(name = "form")
 	private FacilityDataForm form;
+	
+	@Column(name="valid_from",nullable=true)
     private Date validFrom;
+	
+	@Column(name="valid_to", nullable=true)
     private Date validTo;
-    private List<FacilityDataFormSection> sections;
+	
+	@OneToMany(cascade = CascadeType.ALL,targetEntity=FacilityDataFormSection.class,fetch=FetchType.EAGER,orphanRemoval=true)
+	@JoinColumn(name="schema_id",nullable=false)
+	private List<FacilityDataFormSection> sections;
 
     //***** CONSTRUCTORS *****
     
@@ -154,4 +170,27 @@ public class FacilityDataFormSchema extends BaseFacilityMetaData {
 	public void addSection(FacilityDataFormSection section) {
 		getSections().add(section);
 	}
+
+	public int getSchemaId() {
+		return schemaId;
+	}
+
+	public void setSchemaId(int schemaId) {
+		this.schemaId = schemaId;
+	}
+
+	@Override
+	public Integer getId() {
+		
+		return schemaId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.schemaId=id;
+	}
+	
+	
+	
+	
 }

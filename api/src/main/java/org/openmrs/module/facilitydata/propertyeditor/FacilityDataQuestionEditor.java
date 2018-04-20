@@ -13,12 +13,12 @@
  */
 package org.openmrs.module.facilitydata.propertyeditor;
 
-import java.beans.PropertyEditorSupport;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.facilitydata.model.FacilityDataQuestion;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.springframework.util.StringUtils;
+
+import java.beans.PropertyEditorSupport;
 
 /**
  * Editor for FacilityDataQuestion

@@ -13,19 +13,31 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 
 /**
  * The base class for all question types.
  */
+@Entity
+@Table(name="facilitydata_question")
 public class FacilityDataQuestion extends BaseFacilityMetaData {
 
 	//***** PROPERTIES *****
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="question_id")
+	private int questionId;
 	
+	@Column(name="period_applicability")
+	@Enumerated(EnumType.STRING)
     private PeriodApplicability periodApplicability;
+    
+    @ManyToOne(fetch = FetchType.EAGER,cascade= {CascadeType.ALL}, optional = false)
+    @JoinColumn(name = "question_type")
     private FacilityDataQuestionType questionType;
 
     //***** CONSTRUCTORS *****
@@ -72,4 +84,25 @@ public class FacilityDataQuestion extends BaseFacilityMetaData {
 	public void setQuestionType(FacilityDataQuestionType questionType) {
 		this.questionType = questionType;
 	}
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+
+	@Override
+	public Integer getId() {
+		
+		return questionId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.questionId=id;
+	}
+	
+	
 }
