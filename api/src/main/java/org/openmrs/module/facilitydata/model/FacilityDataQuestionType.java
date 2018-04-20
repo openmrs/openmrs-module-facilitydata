@@ -13,11 +13,25 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import org.hibernate.annotations.DiscriminatorOptions;
+
+import javax.persistence.*;
 /**
  * The base class for all question types.
  */
-public abstract class FacilityDataQuestionType extends BaseFacilityMetaData {
+@Entity  
+@Table(name = "facilitydata_question_type")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="data_type",discriminatorType=DiscriminatorType.STRING,length=255)
+@DiscriminatorOptions(insert=true,force=true)  // prevent WrongClassException
+public abstract class FacilityDataQuestionType extends BaseFacilityMetaData  {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="question_type_id", unique = true, nullable = false, updatable = false )
+	private Integer questionTypeId; 
+	
+	@Column(name="field_style")
 	private String fieldStyle;
 
     public FacilityDataQuestionType() {}
@@ -35,4 +49,55 @@ public abstract class FacilityDataQuestionType extends BaseFacilityMetaData {
 	public void setFieldStyle(String fieldStyle) {
 		this.fieldStyle = fieldStyle;
 	}
+
+	public Integer getQuestionTypeId() {
+		return questionTypeId;
+	}
+
+	public void setQuestionTypeId(Integer questionTypeId) {
+		this.questionTypeId = questionTypeId;
+	}
+	
+
+	/**
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        if (getName() == null) {
+            return super.toString();
+        }
+        return getName();
+    }
+ 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (this.getClass().isAssignableFrom(o.getClass())) {
+        	FacilityDataQuestionType that = (FacilityDataQuestionType)o;
+        	return this.getQuestionTypeId() != null && this.getQuestionTypeId().equals(that.getQuestionTypeId());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = questionTypeId != null ? questionTypeId.hashCode() : super.hashCode();
+        return result;
+    }
+
+	@Override
+	public Integer getId() {
+		
+		return questionTypeId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.questionTypeId=id;
+	}
+    
+    
+    
+    
 }

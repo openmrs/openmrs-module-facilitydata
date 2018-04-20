@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+<!-- 		<mapping resource="FacilityDataFormQuestion.hbm.xml"/>
+		<mapping resource="FacilityDataFormSchema.hbm.xml"/>
+		<mapping resource="FacilityDataFormSection.hbm.xml"/>
+		<mapping resource="FacilityDataQuestion.hbm.xml"/>
+		<mapping resource="FacilityDataValue.hbm.xml"/> -->
+
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataValue" />
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataForm" />
+
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataFormSchema" />
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataFormSection" />
+
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataQuestion" />
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataQuestionType" />
+
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataValue" />
+	<mapping class="org.openmrs.module.facilitydata.model.FacilityDataForm" />
+ </session-factory> 
+</hibernate-configuration>
+
+ 

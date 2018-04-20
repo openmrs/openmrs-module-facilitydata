@@ -30,11 +30,11 @@
 	<hr/>
 </div>
 
-<b class="boxHeader"><spring:message code="facilitydata.manage-question-type"/></b>
+<b class="boxHeader"><spring:message code="facilitydata.manage-question-type" htmlEscape="false"/></b>
 <div class="box">
 	
 	<form action="questionTypeForm.form">
-		<spring:message code="facilitydata.add-question-type"/>:
+		<spring:message code="facilitydata.add-question-type" htmlEscape="false"/>:
 		<select name="dataType">
 			<c:forEach items="${questionDataTypes}" var="qdt">
 				<option value="${qdt.key.name}"><spring:message code="${qdt.value}"/></option>

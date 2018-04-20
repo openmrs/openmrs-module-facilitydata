@@ -16,23 +16,54 @@ package org.openmrs.module.facilitydata.model;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * This represents a particular value entered for a particular question on a form
  */
+@Entity
+@Table(name = "facilitydata_value")
 public class FacilityDataValue extends BaseOpenmrsData {
 	
 	//***** PROPERTIES *****
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
     private Integer id;
+	
+	@ManyToOne
+    @JoinColumn(nullable = false,name = "facility")
     private Location facility;
+    
+    @Column(name="from_date",nullable = false)
     private Date fromDate;
+    
+    @Column(name="to_date",nullable = false)
     private Date toDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "question",nullable = false)
     private FacilityDataFormQuestion question; // The question on the form that was answered
+    
+    @Column(name="value_numeric")
     private Double valueNumeric; // Populated if this is a Numeric question
+
+    @ManyToOne
+    @JoinColumn(name = "value_coded")
     private FacilityDataCodedOption valueCoded; // Populated if this is a Coded question
+    
+    @Column(name="value_text")
+    private String valueText;
+    
+    @Column(name="value_blob")
+    private byte[] valueBlob;
+    
+    @Column(name="comments")
     private String comments; // Optional comments associated with the value entered
+
+	@Column(name="document_value", length = Integer.MAX_VALUE)
+	private String documentValue;
 
     //***** CONSTRUCTORS *****
     
@@ -173,5 +204,29 @@ public class FacilityDataValue extends BaseOpenmrsData {
 	 */
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public String getValueText() {
+		return valueText;
+	}
+
+	public void setValueText(String valueText) {
+		this.valueText = valueText;
+	}
+
+	public byte[] getValueBlob() {
+		return valueBlob;
+	}
+
+	public void setValueBlob(byte[] valueBlob) {
+		this.valueBlob = valueBlob;
+	}
+
+	public String getDocumentValue() {
+		return documentValue;
+	}
+
+	public void setDocumentValue(String documentValue) {
+		this.documentValue = documentValue;
 	}
 }

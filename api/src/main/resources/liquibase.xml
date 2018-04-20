@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
     <changeSet id="facilitydatamodule-1.0" author="Robert O'Connor; Partners In Health">
         <preConditions onFail="MARK_RAN">
-           <not> <tableExists tableName="facilitydata_form" />
-           </not>
+            <not> <tableExists tableName="facilitydata_form" />
+            </not>
         </preConditions>
 
         <comment>Author : Robert O'Connor; Partners In Health  , Date : 28 Mar 2011  </comment>
@@ -636,5 +636,69 @@
         </addColumn>
     </changeSet>
 
+
+
+	<changeSet id="facilitydatamodule-3.0" author="engrmahmed14@gmail.com">
+
+		<comment>renaming retired_reason column to retire_column as per openmrs meta data</comment>
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_question_type" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_form_question" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_question" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_coded_option" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_form_section" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_form_schema" />
+
+		<renameColumn columnDataType="VARCHAR(255)" newColumnName="retire_reason"
+		oldColumnName="retired_reason" tableName="facilitydata_form" />
+
+
+	</changeSet>
+
+	<changeSet id="facilitydatamodule-3.1" author="engrmahmed14@gmail.com">
+		<addColumn tableName="facilitydata_value">
+			<column name="value_text" type="varchar(1024)">
+			</column>
+		</addColumn>
+		<addColumn tableName="facilitydata_value">
+			<column name="value_blob" type="MEDIUMBLOB">
+			</column>
+		</addColumn>
+	</changeSet>
+
+    <changeSet id="facilitydatamodule-3.2" author="engrmahmed14@gmail.com">
+        <addColumn tableName="facilitydata_question_type">
+            <column name="question_text" type="varchar(1024)">
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="facilitydatamodule-3.3" author="engrmahmed14@gmail.com">
+        <addColumn tableName="facilitydata_question_type">
+            <column name="document_type" type="varchar(4)">
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="facilitydatamodule-3.4" author="engrmahmed14@gmail.com">
+        <addColumn tableName="facilitydata_value">
+            <column name="document_value" type="LONGTEXT">
+            </column>
+        </addColumn>
+
+    </changeSet>
 
 </databaseChangeLog>

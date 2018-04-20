@@ -19,14 +19,14 @@
 
 <b class="boxHeader"><spring:message code="facilitydata.schema.form"/></b>
 <div class="box">
-	<spring:message code="facilitydata.schema.info"/><br/><br/>
+	<spring:message code="facilitydata.schema.info" htmlEscape="false"/><br/><br/>
 	<frm:form commandName="schema" method="post">
 	    <table class="schemaForm">
 	    	<tr><th colspan="2"><spring:message code="facilitydata.form-details"/></th></tr>
 	        <tr>
 	            <td>
 	            	<spring:message code="facilitydata.display-name"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
 	            <td>
 	                <frm:input path="form.name" size="50"/>
@@ -36,7 +36,7 @@
 	        <tr>
 	            <td>
 	            	<spring:message code="facilitydata.schema.frequency"/>
-	            	<spring:message code="facilitydata.required"/>
+	            	<spring:message code="facilitydata.required" htmlEscape="false"/>
 	            </td>
 	            <td>
 	                <frm:select path="form.frequency" multiple="false">

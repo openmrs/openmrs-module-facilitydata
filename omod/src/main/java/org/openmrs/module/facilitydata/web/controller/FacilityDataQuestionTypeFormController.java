@@ -14,10 +14,8 @@
 package org.openmrs.module.facilitydata.web.controller;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType;
+import org.openmrs.module.facilitydata.model.*;
+import org.openmrs.module.facilitydata.model.enums.DocumentType;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataQuestionTypeEditor;
 import org.openmrs.module.facilitydata.service.FacilityDataService;
 import org.openmrs.module.facilitydata.validator.FacilityDataQuestionTypeValidator;
@@ -32,13 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/module/facilitydata/questionTypeForm.form")
@@ -70,7 +62,9 @@ public class FacilityDataQuestionTypeFormController {
                              @RequestParam(required = false) Integer[] optionId,
                              @RequestParam(required = false) String[] optionName,
                              @RequestParam(required = false) String[] optionCode,
-                             @RequestParam(required = false) String[] optionDescription) throws Exception {
+                             @RequestParam(required = false) String[] optionDescription,
+                             @RequestParam(required = false) String questionText,
+						     @RequestParam(required = false) String documentType   ) throws Exception {
     	
     	FacilityDataQuestionType questionType = getQuestionType(id, dataType);
     	questionType.setName(name);
@@ -83,6 +77,14 @@ public class FacilityDataQuestionTypeFormController {
     		numericType.setMaxValue(maxValue);
     		numericType.setAllowDecimals(allowDecimals != null && allowDecimals == Boolean.TRUE);
     	}
+    	else if(questionType instanceof FreeTextFacilityDataQuestionType) {
+			FreeTextFacilityDataQuestionType freeTextType=(FreeTextFacilityDataQuestionType)questionType;
+			freeTextType.setQuestionText(questionText);
+		}
+		else if(questionType instanceof DocumentTypeFacilityDataQuestionType) {
+			DocumentTypeFacilityDataQuestionType documentTypeQuestion=(DocumentTypeFacilityDataQuestionType)questionType;
+			documentTypeQuestion.setDocumentType(DocumentType.valueOf(documentType));
+		}
     	else if (questionType instanceof CodedFacilityDataQuestionType) {
     		CodedFacilityDataQuestionType codedType = (CodedFacilityDataQuestionType) questionType;
 
@@ -127,6 +129,8 @@ public class FacilityDataQuestionTypeFormController {
 					codedOption.setRetired(false);
 					codedOption.setRetiredBy(null);
 					codedOption.setDateRetired(null);
+					codedOption.setQuestionType(codedType);
+					//codedType.addFacilityDataCodedOption(codedOption);
 					codedType.getOptions().add(codedOption);
 				}
         	}
@@ -136,6 +140,7 @@ public class FacilityDataQuestionTypeFormController {
 				option.setRetired(true);
 				option.setRetiredBy(Context.getAuthenticatedUser());
 				option.setDateRetired(now);
+				//codedType.addFacilityDataCodedOption(option);
 				codedType.getOptions().add(option);
 			}
     		

@@ -13,16 +13,28 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * The Numeric question type, which contains additional fields including min/max values
  * Example Numeric Question: "How many children were seen today?"
  */
+@Entity
+@Table(name = "facilitydata_question_type")
+@DiscriminatorValue("org.openmrs.module.facilitydata.model.NumericFacilityDataQuestionType")
 public class NumericFacilityDataQuestionType extends FacilityDataQuestionType {
 
 	//***** PROPERTIES *****
-	
+	@Column(name="min_value")
     private Double minValue;
+	
+	@Column(name="max_value")
     private Double maxValue;
+	
+	@Column(name="allow_decimal")
     private boolean allowDecimals;
 
     //***** CONSTRUCTORS *****

@@ -13,19 +13,33 @@
  */
 package org.openmrs.module.facilitydata.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents one of the possible answers to a Coded Question.
  */
+
+@Entity
+@Table(name="facilitydata_coded_option")
 public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	
 	//***** PROPERTIES *****
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
+	private Integer id;
+
+	@ManyToOne
+	@JoinColumn(name = "question_type_id")
 	private CodedFacilityDataQuestionType questionType;
+	
+	@Column(name="code")
 	private String code;
 
+	@Column(name="option_order")
+	private int optionOrder;
 	//***** CONSTRUCTORS *****
 	
 	public FacilityDataCodedOption() {super();}
@@ -69,5 +83,21 @@ public class FacilityDataCodedOption extends BaseFacilityMetaData {
 	 */
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public int getOptionOrder() {
+		return optionOrder;
+	}
+
+	public void setOptionOrder(int optionOrder) {
+		this.optionOrder = optionOrder;
 	}
 }

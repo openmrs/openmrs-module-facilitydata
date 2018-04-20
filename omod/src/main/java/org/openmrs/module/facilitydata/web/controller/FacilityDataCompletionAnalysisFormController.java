@@ -13,19 +13,9 @@
  */
 package org.openmrs.module.facilitydata.web.controller;
 
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.facilitydata.model.CodedFacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataCodedOption;
-import org.openmrs.module.facilitydata.model.FacilityDataFormQuestion;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSchema;
-import org.openmrs.module.facilitydata.model.FacilityDataFormSection;
-import org.openmrs.module.facilitydata.model.FacilityDataQuestionType;
-import org.openmrs.module.facilitydata.model.FacilityDataValue;
+import org.openmrs.module.facilitydata.model.*;
 import org.openmrs.module.facilitydata.model.enums.Frequency;
 import org.openmrs.module.facilitydata.model.enums.PeriodApplicability;
 import org.openmrs.module.facilitydata.propertyeditor.FacilityDataFormSchemaEditor;
@@ -41,6 +31,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller
 public class FacilityDataCompletionAnalysisFormController {
