@@ -22,8 +22,9 @@
         <!-- / OpenMRS Stuff -->
 
         <property name='periodApplicability' column="period_applicability" not-null="true">
-            <type name="org.openmrs.module.facilitydata.service.db.GenericEnumUserType">
+            <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">org.openmrs.module.facilitydata.model.enums.PeriodApplicability</param>
+                 <param name="useNamed">true</param>
             </type>
         </property>
         <many-to-one name="questionType" class="FacilityDataQuestionType" column="question_type" not-null="true" lazy="false"/>

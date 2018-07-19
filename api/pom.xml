@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>facilitydata</artifactId>
-		<version>2.6-SNAPSHOT</version>
+		<version>3.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>facilitydata-api</artifactId>
